@@ -1,0 +1,7 @@
+Route: Chia cổng để xác định API cần làm gì
+
+Controller: nhận request, gọi service, trả respons
+
+Service: làm trung gian, có thể thêm logic (validate, xử lý data).
+
+Model: thao tác database (db.query).
