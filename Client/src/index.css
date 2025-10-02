@@ -3,8 +3,8 @@
 /* ---break---  */
 @custom-variant dark (&:is(.dark *));
 @theme {
-  --color-theme: #fff8ee;
-  --color-mainRed: #cc3333;
+  --color-theme: #FFFFFF;
+  --color-mainRed: #0B2347;
   --color-mainBlue: #2a435d;
 }
 /* body{

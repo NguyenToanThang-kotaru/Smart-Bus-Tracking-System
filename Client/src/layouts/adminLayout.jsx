@@ -79,70 +79,7 @@ export default function AdminLayout() {
               className="block bg-[#FFFF] text-mainRed hover:bg-[#e7e5e5] text-xl font-bold p-2 rounded"
               onClick={() => { setIsOpen(false) }}
             >
-              Products
-            </Link>
-          </li>
-          <li>
-            <Link
-              to="/admin/orders"
-              className="block bg-[#FFFF] text-mainRed hover:bg-[#e7e5e5] text-xl font-bold p-2 rounded"
-              onClick={() => { setIsOpen(false) }}
-            >
-              Orders
-            </Link>
-          </li>
-          <li>
-            <Link
-              to="/admin/suppliers"
-              className="block bg-[#FFFF] text-mainRed hover:bg-[#e7e5e5] text-xl font-bold p-2 rounded"
-              onClick={() => { setIsOpen(false) }}
-            >
-              Suppliers
-            </Link>
-          </li>
-          <li>
-            <Link
-              to="/admin/accounts"
-              className="block bg-[#FFFF] text-mainRed hover:bg-[#e7e5e5] text-xl font-bold p-2 rounded"
-              onClick={() => { setIsOpen(false) }}
-            >
-              Accounts
-            </Link>
-          </li>
-          <li>
-            <Link
-              to="/admin/customers"
-              className="block bg-[#FFFF] text-mainRed hover:bg-[#e7e5e5] text-xl font-bold p-2 rounded"
-              onClick={() => { setIsOpen(false) }}
-            >
-              Customers
-            </Link>
-          </li>
-          <li>
-            <Link
-              to="/admin/employees"
-              className="block bg-[#FFFF] text-mainRed hover:bg-[#e7e5e5] text-xl font-bold p-2 rounded"
-              onClick={() => { setIsOpen(false) }}
-            >
-              Employees
-            </Link>
-          </li>
-          <li>
-            <Link
-              to="/admin/inventory"
-              className="block bg-[#FFFF] text-mainRed hover:bg-[#e7e5e5] text-xl font-bold p-2 rounded"
-              onClick={() => { setIsOpen(false) }}
-            >
-              Inventory
-            </Link>
-          </li>
-          <li>
-            <Link
-              to="/admin/permissions"
-              className="block bg-[#FFFF] text-mainRed hover:bg-[#e7e5e5] text-xl font-bold p-2 rounded"
-              onClick={() => { setIsOpen(false) }}
-            >
-              Permission
+              Students
             </Link>
           </li>
 
@@ -171,12 +108,12 @@ export default function AdminLayout() {
           </div>
 
           <h1 className="text-3xl w-1/3 text-center text-white font-bold">
-            CHICK AND BEEF
+            Smart Bus Tracking System
           </h1>
 
           <div className="flex-1 flex gap-5 justify-end items-center">
             {/* Avatar placeholder */}
-            <div className="w-10 h-10 border-2 border-[#8C0004] rounded-full overflow-hidden bg-white"></div>
+            <div className="w-10 h-10 border-2 border-mainRed rounded-full overflow-hidden bg-white"></div>
             <span className="text-white text-2xl">Admin01</span>
             <button onClick={handleLogout} 
             className="hover:scale-105 active:scale-95">
