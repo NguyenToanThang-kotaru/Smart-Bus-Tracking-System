@@ -244,7 +244,7 @@ export default function AdminLayout() {
             <div className="w-10 h-10 border-2 border-mainRed rounded-full overflow-hidden bg-white"></div>
             <span className="text-white text-2xl">Admin01</span>
             <button onClick={handleLogout}
-              className="hover:scale-105 active:scale-95">
+              className="hover:scale-105 cursor-pointer active:scale-95">
               <img src={LogoutIcon} alt="Logout" className="w-8 h-8" />
             </button>
           </div>
