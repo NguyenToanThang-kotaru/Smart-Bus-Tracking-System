@@ -5,7 +5,8 @@
 @theme {
   --color-theme: #FFFFFF;
   --color-mainRed: #0B2347;
-  --color-mainBlue: #2a435d;
+  --color-mainBlue: #0B2347;
+  --color-mainYellow: #F2BA1D;
 }
 /* body{
     margin: 0 0;

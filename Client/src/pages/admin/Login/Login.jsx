@@ -1,84 +1,50 @@
-import { useState } from "react";
-import { ToastContainer, toast } from "react-toastify";
-import axiosClient from "../../../middleware/axiosClient";
-import "react-toastify/dist/ReactToastify.css";
+import React from "react";
 
-export default function AdminLogin() {
-  const [username, setUsername] = useState("");
-  const [password, setPassword] = useState("");
-
-const handleLogin = async () => {
-  try {
-    const res = await axiosClient.post("/users/login", { username, password });
-    const data = res.data;
-
-    if (data.error) {
-      toast.error("Lỗi: " + data.error);
-    } else if (data.message === "Invalid credentials") {
-      toast.error("Sai tài khoản hoặc mật khẩu!");
-    } else {
-      toast.success("Đăng nhập thành công!");
-
-      sessionStorage.setItem("isAdmin", true);
-      sessionStorage.setItem("accessToken", data.accessToken);
-
-      setTimeout(() => {
-        window.location.href = "/admin";
-      }, 1000);
-    }
-  } catch (err) {
-    console.error("Axios error:", err);
-    toast.error("Lỗi kết nối server!");
-  }
-};
-
-
+export default function LoginPage() {
   return (
-    <div className="bg-mainRed w-screen h-screen flex justify-center items-center"
-    onKeyDown={(e) => { if (e.key === 'Enter') handleLogin(); }}
-    >
-      <div
-        style={{ padding: "10%", paddingTop: "2%" }}
-        className="bg-[#FFF8EE] rounded-xl w-1/2 h-3/5"
-      >
-        <div className="w-full text-5xl text-mainRed font-bold text-center mb-5">
-          Đăng nhập
+    <div className="flex items-center justify-center h-screen bg-[#0d2346]">
+      {/* Khối bên trái */}
+      <div className="flex items-center justify-center bg-[#0d2346] gap-16">
+        <div className="rounded-2xl bg-gray-300 border-2 border-[#c9a227] shadow-xl w-82 h-102 flex items-center justify-center text-center relative">
+          {/* Map overlay */}
+          <div className="absolute inset-0 bg-[url('/map-bg.png')] bg-center bg-cover opacity-40 rounded-2xl"></div>
+          <div className="relative z-10 font-bold text-[#0d2346] text-3xl leading-tight">
+            BUS<br />
+            TRACKING<br />
+            AND<br />
+            SCHEDULE<br />
+            SYSTEM
+          </div>
         </div>
 
-        <div className="w-full">
-          <h2 className="mb-4">Tài khoản:</h2>
-          <input
-            id="usr"
-            value={username}
-            type="text"
-            className="mb-4 bg-[#FFFFFF] w-full rounded-xl p-3 shadow-[0_1px_4px_3px_rgba(0,0,0,0.25)]"
-            onChange={(e) => setUsername(e.target.value)}
-          />
-        </div>
+        {/* Khối bên phải */}
+        <div className="text-white">
+          <h2 className="text-3xl font-bold mb-6 text-center">ĐĂNG NHẬP</h2>
 
-        <div className="w-full">
-          <h2 className="mb-4">Mật khẩu:</h2>
-          <input
-            id="pwd"
-            value={password}
-            type="password"
-            className="bg-[#FFFFFF] w-full rounded-xl p-3 shadow-[0_1px_4px_3px_rgba(0,0,0,0.25)]"
-            onChange={(e) => setPassword(e.target.value)}
-          />
-        </div>
-
-        <div className="w-full text-center mt-5">
-          <button
-            onClick={handleLogin}
-            className="bg-mainRed rounded-xl w-3/5 text-4xl text-white p-5 font-bold shadow-md transition duration-300 ease-in-out hover:bg-[#b12a2a] hover:shadow-xl hover:scale-105 active:scale-95 active:bg-[#a02222] active:shadow-inner"
-          >
-            Đăng nhập
-          </button>
+          <form className="flex flex-col gap-4 w-72">
+            <div>
+              <label className="text-sm font-bold">Tên đăng nhập</label>
+              <input
+                type="text"
+                className="w-full mt-1 p-2 rounded-full bg-white text-black outline-none"
+              />
+            </div>
+            <div>
+              <label className="text-sm font-bold">Mật khẩu</label>
+              <input
+                type="password"
+                className="w-full mt-1 bg-white p-2 rounded-full text-black outline-none"
+              />
+            </div>
+            <button
+              type="submit"
+              className="mt-4 m-auto w-fit hover:bg-[#F2BA1D] hover:text-[#0B2347] border-2 rounded-l border-[#F2BA1D] text-[#F2BA1D] font-semibold px-5 py-1 transition"
+            >
+              ĐĂNG NHẬP
+            </button>
+          </form>
         </div>
       </div>
-
-      {/* Toast Container phải nằm trong cây DOM */}
-      <ToastContainer position="top-right" autoClose={2000} />
     </div>
   );
 }
