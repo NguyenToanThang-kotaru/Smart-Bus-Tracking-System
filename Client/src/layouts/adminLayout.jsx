@@ -81,7 +81,7 @@ export default function AdminLayout() {
           </li>
           <li>
             <Link
-              to="/admin/user"
+              to="/admin/users"
               className="flex gap-1 items-center hover:bg-mainYellow align-middle hover:text-mainBlue text-white text-xl font-bold p-2 rounded"
               onClick={() => { setIsOpen(false) }}
             >

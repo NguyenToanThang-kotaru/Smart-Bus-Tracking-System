@@ -11,7 +11,7 @@ import AdminLogin from "../pages/admin/Login/Login";
 // import Inventory from "../pages/admin/Inventory/Inventory";
 // import Permission from "../pages/admin/Permission/Permission";
 // import Products from "../pages/admin/Products/Products";
-// import Users from "../pages/admin/Users/users"; // Ensure this import is correct
+import Users from "../pages/admin/Users/users"; // Ensure this import is correct
 import RequireAdminAuth from "../middleware/RequireAdminAuth";
 // import UserList from "../pages/admin/Users/UserList";
 // import ProductList from "../pages/admin/Products/ProductList";
@@ -23,7 +23,8 @@ export default function AdminRoutes() {
       <Route element={<RequireAdminAuth />}>
         <Route path="/admin" element={<AdminLayout />}>
           <Route path="/admin/Dashboard" element={<Dashboard />} />
-          {/* <Route path="/admin/Orders" element={<Orders />} />
+          {/* 
+          <Route path="/admin/Orders" element={<Orders />} />
           <Route path="/admin/Suppliers" element={<Suppliers />} />
           <Route path="/admin/Accounts" element={<Accounts />} /> 
           <Route path="/admin/Customers" element={<Customers />} />
@@ -31,7 +32,8 @@ export default function AdminRoutes() {
           <Route path="/admin/Inventory" element={<Inventory />} />
           <Route path="/admin/Permissions" element={<Permission />} />
           <Route path="/admin/Products" element={<Products />} />
-          <Route path="/admin/Users" element={<Users />} /> */}
+          */}
+          <Route path="/admin/Users" element={<Users />} />
         </Route>
       </Route>
     </Routes>
