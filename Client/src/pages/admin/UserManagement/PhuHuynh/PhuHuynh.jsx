@@ -52,7 +52,7 @@ export default function PhuHuynh() {
 
     return (
         <div>
-            <div className="flex w-full justify-between ">
+            <div className="px-10 pt-5 flex w-full justify-between gap-10">
                 <SearchBar placeholder="Value..." />
                 <AddButton />
             </div>

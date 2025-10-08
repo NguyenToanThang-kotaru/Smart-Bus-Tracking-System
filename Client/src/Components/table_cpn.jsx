@@ -6,11 +6,11 @@ export default function TableCPN({ data }) {
 
     return (
 
-        <table className="w-full border-collapse rounded-xl overflow-hidden">
+        <table className="w-full border-collapse overflow-hidden">
             <thead>
-                <tr className="bg-[#2A435D] text-white text-left">
+                <tr className="bg-[#F5F5F5] text-mainBlue text-left">
                     {Object.keys(data[0]).map((key) => (
-                        <th key={key} className="p-3">
+                        <th key={key} className="p-4">
                             {key.toUpperCase()}
                         </th>
                     ))}

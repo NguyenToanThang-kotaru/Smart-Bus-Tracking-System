@@ -19,15 +19,12 @@ export default function AdminLayout() {
   const titles = {
     "/admin": "Home",
     "/admin/dashboard": "Dashboard",
-    "/admin/users": "Users",
-    "/admin/orders": "Orders",
-    "/admin/products": "Products",
-    "/admin/suppliers": "Suppliers",
-    "/admin/accounts": "Accounts",
-    "/admin/customers": "Customers",
-    "/admin/employees": "Employees",
-    "/admin/inventory": "Inventory",
-    "/admin/permissions": "Permissions",
+    "/admin/usermanagement": "User Management",
+    "/admin/studentmanagement": "Student Management",
+    "/admin/routemanagement": "Route Management",
+    "/admin/schedulemanagement": "Schedule Management",
+    "/admin/tripmanagement": "Trip Management",
+    "/admin/driverschedule": "Driver Schedule",
     // Add more paths and titles as needed
   };
   const title = titles[location.pathname];
@@ -81,7 +78,7 @@ export default function AdminLayout() {
           </li>
           <li>
             <Link
-              to="/admin/users"
+              to="/admin/usermanagement"
               className="flex gap-1 items-center hover:bg-mainYellow align-middle hover:text-mainBlue text-white text-xl font-bold p-2 rounded"
               onClick={() => { setIsOpen(false) }}
             >
@@ -103,7 +100,7 @@ export default function AdminLayout() {
           </li>
           <li>
             <Link
-              to="/admin/student"
+              to="/admin/studentmanagement"
               className="flex gap-1 items-center hover:bg-mainYellow align-middle hover:text-mainBlue text-white text-xl font-bold p-2 rounded"
               onClick={() => { setIsOpen(false) }}
             >
@@ -125,7 +122,7 @@ export default function AdminLayout() {
           </li>
           <li>
             <Link
-              to="/admin/route"
+              to="/admin/routemanagement"
               className="flex gap-1 items-center hover:bg-mainYellow align-middle hover:text-mainBlue text-white text-xl font-bold p-2 rounded"
               onClick={() => { setIsOpen(false) }}
             >
@@ -145,7 +142,7 @@ export default function AdminLayout() {
 
           <li>
             <Link
-              to="/admin/schedule"
+              to="/admin/schedulemanagement"
               className="flex gap-1 items-center hover:bg-mainYellow align-middle hover:text-mainBlue text-white text-xl font-bold p-2 rounded"
               onClick={() => { setIsOpen(false) }}
             >
@@ -170,7 +167,7 @@ export default function AdminLayout() {
 
           <li>
             <Link
-              to="/admin/trip"
+              to="/admin/tripmanagement"
               className="flex gap-1 items-center hover:bg-mainYellow align-middle hover:text-mainBlue text-white text-xl font-bold p-2 rounded"
               onClick={() => { setIsOpen(false) }}
             >
@@ -190,7 +187,7 @@ export default function AdminLayout() {
           </li>
           <li>
             <Link
-              to="/admin/driver"
+              to="/admin/driverschedule"
               className="flex gap-1 items-center hover:bg-mainYellow align-middle hover:text-mainBlue text-white text-xl font-bold p-2 rounded"
               onClick={() => { setIsOpen(false) }}
             >
@@ -222,7 +219,7 @@ export default function AdminLayout() {
       {/* Main content */}
       <div className="flex-1 flex flex-col">
         {/* Header */}
-        <header className="bg-mainRed flex justify-between items-center p-4 h-[65px] ">
+        <header className="bg-mainBlue flex justify-between items-center p-4 h-[65px] ">
           {/* Nút bấm toggle sidebar */}
           <div className="w-1/3 flex justify-start gap-5 items-center">
             <button onClick={() => setIsOpen(!isOpen)}>
