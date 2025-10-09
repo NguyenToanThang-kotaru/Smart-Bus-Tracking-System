@@ -17,7 +17,7 @@ export default function PhuHuynh() {
             status: "Pending",
             paymentMethod: "Tiền mặt",
             date: "12:00 24/08/2025",
-            tableNumber: "00000000",
+            tableNumber: "0000",
             items: [
                 { name: "Món A", qty: 2, price: 230000 },
                 { name: "Món B", qty: 1, price: 120000 },
