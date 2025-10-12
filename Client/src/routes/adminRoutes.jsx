@@ -3,7 +3,7 @@ import { Routes, Route } from "react-router-dom";
 import AdminLayout from "../layouts/adminLayout";
 import Dashboard from "../pages/admin/Dashboard/Dashboard";
 import AdminLogin from "../pages/admin/Login/Login";
-import Student from "../pages/admin/Student/Students";
+import Student from "../pages/admin/Student/Student/Students";
 import RouteManagement from "../pages/admin/Route/Route"
 import Schedule from "../pages/admin/Schedule/Schedule";
 import Trip from "../pages/admin/Trip/Trip";

@@ -1,17 +1,18 @@
 import { useState } from "react";
 import Table from "../../../../Components/table_cpn";
 import eye from "../../../../assets/Icon/Eye.png";
+import del from "../../../../assets/Icon/delete.png";
+import Edit from "../../../../assets/Icon/Edit.png";
 import SearchBar from "@/Components/searchBar";
-import InvoiceDetail from "../../Dashboard/InvoiceDetail";
-import InvoiceStatus from "../../Dashboard/InvoiceStatus";
 import AddButton from "@/Components/button_cpn";
+import "./PhuHuynh.css"
 
 export default function PhuHuynh() {
     // const [active, setActive] = useState("taiquan"); // mặc định chọn "Tại quán"
-    const [selectedInvoice, setSelectedInvoice] = useState(null);
+    // const [selectedInvoice, setSelectedInvoice] = useState(null);
     const [invoices, setInvoices] = useState([
         {
-            id: "00000",
+            MaPhuHuynh: "00000",
             name: "Nguyen van A",
             total: 9999,
             status: "Pending",
@@ -24,7 +25,7 @@ export default function PhuHuynh() {
             ],
         },
         {
-            id: "00001",
+            MaPhuHuynh: "00001",
             name: "Nguyen van B",
             total: 8888,
             status: "Done",
@@ -36,19 +37,19 @@ export default function PhuHuynh() {
     ]);
 
     // Hàm xử lý chuyển status theo luồng Pending -> Done -> Paied
-    const handleNextStatus = (id) => {
-        setInvoices((prev) =>
-            prev.map((inv) => {
-                if (inv.id === id) {
-                    let next = inv.status;
-                    if (inv.status === "Pending") next = "Done";
-                    else if (inv.status === "Done") next = "Paied";
-                    return { ...inv, status: next };
-                }
-                return inv;
-            })
-        );
-    };
+    // const handleNextStatus = (id) => {
+    //     setInvoices((prev) =>
+    //         prev.map((inv) => {
+    //             if (inv.id === id) {
+    //                 let next = inv.status;
+    //                 if (inv.status === "Pending") next = "Done";
+    //                 else if (inv.status === "Done") next = "Paied";
+    //                 return { ...inv, status: next };
+    //             }
+    //             return inv;
+    //         })
+    //     );
+    // };
 
     return (
         <div>
@@ -61,31 +62,27 @@ export default function PhuHuynh() {
             
             <div className="mt-10">
 
-            <Table
+            <Table 
                 data={invoices.map((inv) => ({
-                    ID: inv.id,
-                    name: inv.name,
-                    Phone: inv.total,
-                    Status: (
-                        <InvoiceStatus invoice={inv} onNext={handleNextStatus} />
-                    ),
-                    watch: (
-                        <button
-                            onClick={() => setSelectedInvoice(inv)}
-                            className="focus:outline-none"
-                        >
-                            <img src={eye} alt="eye" className="w-6 h-6" />
+                    "Mã Phụ Huynh": inv.MaPhuHuynh,
+                    
+                    "Chức năng": (
+                        <button className="focus:outline-none flex gap-x-5">
+                            <img src={Edit} alt="edit" className="w-6 h-6 icon-yellow " />
+                            <img src={eye} alt="eye" className="w-6 h-6 icon-yellow " />
+                            <img src={del} alt="delete" className="w-6 h-6 icon-yellow" />
                         </button>
                     ),
                 }))}
+                
             />
 
             {/* Popup */}
-            <InvoiceDetail
+            {/* <InvoiceDetail
                 open={!!selectedInvoice}
                 onClose={() => setSelectedInvoice(null)}
                 invoice={selectedInvoice}
-            />
+            /> */}
             </div>
             {/* Table */}
         </div>

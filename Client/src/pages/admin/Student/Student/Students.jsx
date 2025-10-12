@@ -1,12 +1,13 @@
 import { useState } from "react";
-import Table from "../../../Components/table_cpn";
-import eye from "../../../assets/Icon/Eye.png";
-import del from "../../../assets/Icon/delete.png";
-import Edit from "../../../assets/Icon/Edit.png";
+import Table from "../../../../Components/table_cpn";
+import eye from "../../../../assets/Icon/Eye.png";
+import del from "../../../../assets/Icon/delete.png";
+import Edit from "../../../../assets/Icon/Edit.png";
 import SearchBar from "@/Components/searchBar";
 import AddButton from "@/Components/button_cpn";
+import Tab from "../Tabs";
 
-export default function Route() {
+export default function Student() {
   const [invoices, setInvoices] = useState([
           {
               MaHocSinh: "00000",
@@ -34,6 +35,7 @@ export default function Route() {
       ]);
   return (
     <div>
+      <Tab/>
       <div className="px-10 pt-5 flex w-full justify-between gap-10">
         <SearchBar placeholder="Value..." />
         <AddButton />
