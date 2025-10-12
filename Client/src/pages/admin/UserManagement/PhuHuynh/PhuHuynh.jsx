@@ -7,7 +7,7 @@ import InvoiceStatus from "../../Dashboard/InvoiceStatus";
 import AddButton from "@/Components/button_cpn";
 
 export default function PhuHuynh() {
-    const [active, setActive] = useState("taiquan"); // mặc định chọn "Tại quán"
+    // const [active, setActive] = useState("taiquan"); // mặc định chọn "Tại quán"
     const [selectedInvoice, setSelectedInvoice] = useState(null);
     const [invoices, setInvoices] = useState([
         {
