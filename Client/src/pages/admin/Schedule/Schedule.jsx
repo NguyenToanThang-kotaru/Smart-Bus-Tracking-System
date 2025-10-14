@@ -7,6 +7,8 @@ import eye from "@/assets/Icon/Eye.png";
 import edit from "@/assets/Icon/Edit.png";
 import DeleteIcon from "@/assets/Icon/delete.png";
 import { Search, Bus, Route } from "lucide-react";
+import dayjs from "dayjs";
+import { ChevronLeft, ChevronRight } from "lucide-react";
 
 
 export default function Dashboard() {
@@ -96,7 +98,7 @@ function PhanCong() {
 }
 
 // Component: Lịch trình
-
+/* */
 function LichTrinh() {
   const shifts = [
     { id: 1, name: "CA 1", time: "6h00 đến 7h00" },
@@ -105,60 +107,100 @@ function LichTrinh() {
     { id: 4, name: "CA 4", time: "17h30 đến 18h30" },
   ];
 
-  const days = ["Thứ 2", "Thứ 3", "Thứ 4", "Thứ 5", "Thứ 6", "Thứ 7"];
+  const [weekOffset, setWeekOffset] = useState(0);
+
+  //  Tính toán tuần hiện tại 
+  const today = dayjs().add(weekOffset, "week");
+  const startOfWeek = today.startOf("week").add(1, "day"); // Thứ 2
+  const days = Array.from({ length: 6 }, (_, i) => startOfWeek.add(i, "day")); // Thứ 2 → Thứ 7
+
+  //  Chuyển tuần
+  const prevWeek = () => setWeekOffset(weekOffset - 1);
+  const nextWeek = () => setWeekOffset(weekOffset + 1);
 
   return (
-    <div className="overflow-x-auto p-4">
-      <table className="min-w-full border border-gray-300 text-center text-sm">
-        <thead className="bg-mainBlue text-white">
-          <tr>
-            <th className="border px-3 py-2">
-              LỊCH TRÌNH <br /> TÀI XẾ
-            </th>
-            {days.map((day) => (
-              <th key={day} className="border px-3 py-2">
-                {day}
-                <br />
-                <span className="text-xs text-gray-200">DD/MM/YYYY</span>
+    <div className="relative">
+      {/* Thanh tìm kiếm + nút thêm */}
+      <div className="flex px-10 gap-10 mb-5">
+        <SearchBar />
+        <AddButton />
+      </div>
+
+      <div className="relative overflow-x-auto p-10 pt-0">
+        {/*  Mũi tên chuyển tuần */}
+        <button
+          onClick={prevWeek}
+          className="absolute left-2 top-1/2 -translate-y-1/2 bg-mainBlue text-white p-2 rounded-full shadow-md hover:bg-blue-800"
+        >
+          <ChevronLeft size={24} />
+        </button>
+
+        <button
+          onClick={nextWeek}
+          className="absolute right-2 top-1/2 -translate-y-1/2 bg-mainBlue text-white p-2 rounded-full shadow-md hover:bg-blue-800"
+        >
+          <ChevronRight size={24} />
+        </button>
+
+        {/*  Hiển thị tuần hiện tại */}
+        <div className="text-center mb-4 text-mainBlue font-bold text-lg">
+          Tuần {startOfWeek.format("DD/MM")} - {startOfWeek.add(5, "day").format("DD/MM/YYYY")}
+        </div>
+
+        {/*  Bảng lịch */}
+        <table className="min-w-full border border-gray-300 text-center text-sm">
+          <thead className="bg-mainBlue text-white">
+            <tr>
+              <th className="border px-3 py-2 w-[160px]">
+                LỊCH TRÌNH <br /> TÀI XẾ
               </th>
-            ))}
-          </tr>
-        </thead>
-
-        <tbody>
-          {shifts.map((shift) => (
-            <tr key={shift.id} className="border">
-              <td className="border font-semibold py-4">
-                {shift.name}
-                <br />
-                <span className="text-gray-600 text-xs">({shift.time})</span>
-              </td>
-
-              {days.map((day) => (
-                <td key={day} className="border py-3">
-                  <div className="flex flex-col items-center gap-1">
-                    <p className="text-gray-800 font-medium">Tên tài xế</p>
-                    <p className="text-gray-600 text-xs">Số xe buýt</p>
-                    <p className="text-gray-600 text-xs">Tên tuyến đường</p>
-
-                    <div className="flex gap-2 mt-2">
-                      <button className=" hover:bg-blue-800 text-white p-1 rounded">
-                        <img src={eye} alt="eye" className="w-4 h-4" />
-                      </button>
-                      <button className=" hover:bg-yellow-600 text-white p-1 rounded">
-                        <img src={edit} alt="edit" className="w-4 h-4" />
-                      </button>
-                      <button className=" hover:bg-red-700 text-white p-1 rounded">
-                        <img src={DeleteIcon} alt="delete" className="w-4 h-4" />
-                      </button>
-                    </div>
-                  </div>
-                </td>
+              {days.map((day, index) => (
+                <th key={index} className="border px-3 py-2">
+                  {`Thứ ${index + 2}`}
+                  <br />
+                  <span className="text-xs text-gray-200">
+                    {day.format("DD/MM/YYYY")}
+                  </span>
+                </th>
               ))}
             </tr>
-          ))}
-        </tbody>
-      </table>
+          </thead>
+
+          <tbody>
+            {shifts.map((shift) => (
+              <tr key={shift.id} className="border">
+                <td className="border font-semibold py-4">
+                  {shift.name}
+                  <br />
+                  <span className="text-gray-600 text-xs">({shift.time})</span>
+                </td>
+
+                {days.map((_, index) => (
+                  <td key={index} className="border py-3">
+                    <div className="flex flex-col items-center gap-1">
+                      <p className="text-gray-800 font-medium">Tên tài xế</p>
+                      <p className="text-gray-600 text-xs">Số xe buýt</p>
+                      <p className="text-gray-600 text-xs">Tên tuyến đường</p>
+
+                      <div className="flex gap-2 mt-2">
+                        <button className=" hover:bg-blue-800 text-white p-1 rounded">
+                          <img src={eye} alt="eye" className="w-4 h-4" />
+                        </button>
+                        <button className=" hover:bg-yellow-600 text-white p-1 rounded">
+                          <img src={edit} alt="edit" className="w-4 h-4" />
+                        </button>
+                        <button className="  hover:bg-red-700 text-white p-1 rounded">
+                          <img src={DeleteIcon} alt="delete" className="w-4 h-4" />
+                        </button>
+                      </div>
+                    </div>
+                  </td>
+                ))}
+              </tr>
+            ))}
+          </tbody>
+        </table>
+      </div>
     </div>
   );
 }
