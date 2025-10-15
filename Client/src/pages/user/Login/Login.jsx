@@ -16,7 +16,7 @@ export default function LoginPage() {
     try {
       const res = await axiosClient.post("users/user/login", { username, password });
       const data = res.data;
-      console.log("Đã đăng nhập");
+      console.log(data);
 
       if (data.error) {
         toast.error("Lỗi: " + data.error);
@@ -24,7 +24,7 @@ export default function LoginPage() {
         toast.error("Sai tài khoản hoặc mật khẩu!");
       } else {
         toast.success("Đăng nhập thành công!");
-        sessionStorage.setItem("isPhuHuynh", "true");
+        sessionStorage.setItem("user", JSON.stringify(data.user));
         sessionStorage.setItem("accessToken", data.accessToken);
         setTimeout(() => (window.location.href = "/"), 1000);
       }
@@ -35,7 +35,13 @@ export default function LoginPage() {
   };
 
   return (
-    <div className="flex items-center justify-center min-h-screen bg-white px-4 sm:px-6 lg:px-8">
+    <div
+      onKeyDown={(e) => {
+        if (e.key == 'Enter') {
+          handleLogin()
+        }
+      }}
+      className="flex items-center justify-center min-h-screen bg-white px-4 sm:px-6 lg:px-8">
       {/* Container chính */}
       <div className="bg-white border-2 border-[#F2BA1D] rounded-2xl shadow-lg p-6 sm:p-8 md:p-10 w-full max-w-md sm:max-w-lg md:max-w-md text-center">
         {/* Tiêu đề */}
