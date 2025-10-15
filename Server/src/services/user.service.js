@@ -8,15 +8,15 @@ exports.createUser = (data, callback) => {
   userModel.createUser(data, callback);
 };
 
-exports.login = (username, password, callback) => {
+exports.Userlogin = (username, password, callback) => {
   var regexUsername = /^[a-zA-Z0-9_]{3,30}$/;
-  var regexPassword = /^(?=.*[A-Za-z])(?=.*\d)[A-Za-z\d]{6,}$/;
+  var regexPassword = /^(?=.*[A-Za-z])(?=.*\d)[A-Za-z\d]{5,}$/;
   if(!regexUsername.test(username)) {
     return callback('Invalid username format');
   }
-  if(!regexPassword.test(password)) {
-    return callback('Password must be at least 6 characters long and contain letters and numbers');
-  }
+  // if(!regexPassword.test(password)) {
+  //   return callback('Password must be at least 6 characters long and contain letters and numbers');
+  // }
 
   if(!username || !password) {
     return callback('Username and password are required');
@@ -25,5 +25,25 @@ exports.login = (username, password, callback) => {
     return callback('Password must be at least 6 characters long');
   }
   
-  userModel.login(username, password, callback);
+  userModel.Userlogin(username, password, callback);
+}
+
+exports.Adminlogin = (username, password, callback) => {
+  var regexUsername = /^[a-zA-Z0-9_]{3,30}$/;
+  var regexPassword = /^(?=.*[A-Za-z])(?=.*\d)[A-Za-z\d]{5,}$/;
+  if(!regexUsername.test(username)) {
+    return callback('Invalid username format');
+  }
+  // if(!regexPassword.test(password)) {
+  //   return callback('Password must be at least 6 characters long and contain letters and numbers');
+  // }
+
+  if(!username || !password) {
+    return callback('Username and password are required');
+  }
+  if(password.length < 6) {
+    return callback('Password must be at least 6 characters long');
+  }
+  
+  userModel.Adminlogin(username, password, callback);
 }
