@@ -9,7 +9,9 @@ export default function UserLayout() {
 
   useEffect(() => {
     const socket = io("http://localhost:5000");
+    const user = JSON.parse(sessionStorage.getItem("user"));
 
+    console.log("Phụ huynh là " + user.TenDangNhap);
     fetch("/api/routes/1")
       .then((res) => res.json())
       .then((data) => {
