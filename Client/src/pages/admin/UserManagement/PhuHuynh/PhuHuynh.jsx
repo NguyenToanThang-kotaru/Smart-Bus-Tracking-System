@@ -5,11 +5,13 @@ import del from "../../../../assets/Icon/delete.png";
 import Edit from "../../../../assets/Icon/Edit.png";
 import SearchBar from "@/Components/searchBar";
 import AddButton from "@/Components/button_cpn";
+import AddPhuHuynhModal from "./AddPhuHuynh";
 import "./PhuHuynh.css"
 
 export default function PhuHuynh() {
     // const [active, setActive] = useState("taiquan"); // mặc định chọn "Tại quán"
     // const [selectedInvoice, setSelectedInvoice] = useState(null);
+    const [isModalOpen, setModalOpen] = useState(false);
     const [invoices, setInvoices] = useState([
         {
             MaPhuHuynh: "00000",
@@ -50,12 +52,24 @@ export default function PhuHuynh() {
     //         })
     //     );
     // };
-
+    const handleAddPhuHuynh = (newParent) => {
+    setInvoices((prev) => [
+      ...prev,
+      {
+        MaPhuHuynh: newParent.maPhuHuynh,
+        name: newParent.tenPhuHuynh,
+        phone: newParent.soDienThoai,
+        username: newParent.tenDangNhap,
+        password: newParent.matKhau,
+        hocSinh: newParent.hocSinh,
+      },
+    ]);
+  };
     return (
         <div>
             <div className="px-10 pt-5 flex w-full justify-between gap-10">
                 <SearchBar placeholder="Value..." />
-                <AddButton />
+                <AddButton onClick={() => setModalOpen(true)} />
             </div>
             {/* Search */}
             {/* Buttons */}
@@ -85,6 +99,11 @@ export default function PhuHuynh() {
             /> */}
             </div>
             {/* Table */}
+            <AddPhuHuynhModal
+                open={isModalOpen}
+                onClose={() => setModalOpen(false)}
+                onAdd={handleAddPhuHuynh}
+            />
         </div>
     );
 }

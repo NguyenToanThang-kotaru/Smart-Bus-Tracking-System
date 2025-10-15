@@ -34,6 +34,7 @@ export default function Student() {
           },
       ]);
   return (
+    
     <div>
       <Tab/>
       <div className="px-10 pt-5 flex w-full justify-between gap-10">

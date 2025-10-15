@@ -1,5 +1,5 @@
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
-import PhuHuynh from "./Student/Students"
+import HocSinh  from "./Student/Students"
 export default function User() {
   return (
     <div className="h-full bg-theme">
@@ -27,31 +27,10 @@ export default function User() {
           className="w-full rounded-4xl max-h-full"
         >
           {/* Phu Huynh Content */}
-          <PhuHuynh />
+          <HocSinh />
         </TabsContent>
 
-        <TabsContent
-          value="TaiXeXeBuyt"
-          className="w-full rounded-4xl max-h-full"
-        >
-          Tai Xe Content
-          {/* <Invoices /> */}
-        </TabsContent>
-        <TabsContent
-          value="QuanLyXeBuyt"
-          className="w-full rounded-4xl max-h-full"
-        >
-          Quan Ly Xe Bus Content
-          {/* <Invoices /> */}
-        </TabsContent>
-        <TabsContent
-          value="QuanTriVien"
-          className="w-full rounded-4xl max-h-full"
-        >
-          Quan Tri Vien Content
-          {/* <Invoices /> */}
-        </TabsContent>
-
+        
       </Tabs>
     </div>
   );

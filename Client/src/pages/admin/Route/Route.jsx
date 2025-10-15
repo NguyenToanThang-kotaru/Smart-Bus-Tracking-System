@@ -9,7 +9,7 @@ import AddButton from "@/Components/button_cpn";
 export default function Route() {
   const [invoices, setInvoices] = useState([
           {
-              MaHocSinh: "00000",
+              MaTram: "00000",
               name: "Nguyen van A",
               total: 9999,
               status: "Pending",
@@ -22,7 +22,7 @@ export default function Route() {
               ],
           },
           {
-              MaHocSinh: "00001",
+              MaTram: "00001",
               name: "Nguyen van B",
               total: 8888,
               status: "Done",
@@ -42,7 +42,7 @@ export default function Route() {
       
         <Table 
           data={invoices.map((inv) => ({
-            "Mã Học Sinh": inv.MaHocSinh,
+            "Mã Trạm": inv.MaTram,
                           
             "Chức năng": (
               <button className="focus:outline-none flex gap-x-5">
