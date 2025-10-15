@@ -4,7 +4,7 @@ const db = mysql.createPool({
   host: 'localhost',
   user: 'root',
   password: '',
-  database: 'chick_beef'
+  database: 'smartbustrackingsystem'
 });
 
 module.exports = db;

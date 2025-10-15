@@ -8,17 +8,8 @@ import RouteManagement from "../pages/admin/Route/Route"
 import Schedule from "../pages/admin/Schedule/Schedule";
 import Trip from "../pages/admin/Trip/Trip";
 import Driver from "../pages/admin/Driver/Driver";
-// import Suppliers from "../pages/admin/Suppliers/Suppliers";  
-// import Accounts from "../pages/admin/Accounts/Accounts";
-// import Customers from "../pages/admin/Customers/Customers";
-// import Employees from "../pages/admin/Employees/Employees";
-// import Inventory from "../pages/admin/Inventory/Inventory";
-// import Permission from "../pages/admin/Permission/Permission";
-// import Products from "../pages/admin/Products/Products";
 import Users from "../pages/admin/UserManagement/users"; // Ensure this import is correct
 import RequireAdminAuth from "../middleware/RequireAdminAuth";
-// import UserList from "../pages/admin/Users/UserList";
-// import ProductList from "../pages/admin/Products/ProductList";
 
 export default function AdminRoutes() {
   return (
