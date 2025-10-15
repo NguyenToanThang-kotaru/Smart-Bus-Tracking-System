@@ -2,6 +2,7 @@
 import axios from "axios";
 
 const axiosClient = axios.create({
+  // baseURL: "http://172.20.10.2:3700/api",
   baseURL: "http://localhost:3700/api",
   headers: { "Content-Type": "application/json" },
   withCredentials: true,
@@ -27,7 +28,7 @@ axiosClient.interceptors.response.use(
       originalRequest._retry = true; // tránh lặp vô hạn
       console.log("loadrftoke...")
       try {
-        const res = await axios.post("http://localhost:3700/api/auth/refresh", {},{ withCredentials: true } );
+        const res = await axios.post("http://localhost:3700/api/auth/refresh", {}, { withCredentials: true });
         const newAccessToken = res.data.accessToken;
         sessionStorage.setItem("accessToken", newAccessToken);
 
