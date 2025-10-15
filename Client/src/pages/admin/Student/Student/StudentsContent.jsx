@@ -5,9 +5,10 @@ import del from "../../../../assets/Icon/delete.png";
 import Edit from "../../../../assets/Icon/Edit.png";
 import SearchBar from "@/Components/searchBar";
 import AddButton from "@/Components/button_cpn";
-import Tab from "../Tabs";
+import AddStudentModal from "./AddStudent";
 
 export default function Student() {
+  const [isModalOpen, setModalOpen] = useState(false);
   const [invoices, setInvoices] = useState([
           {
               MaHocSinh: "00000",
@@ -33,13 +34,25 @@ export default function Student() {
               items: [{ name: "Món C", qty: 3, price: 50000 }],
           },
       ]);
+    const handleAddHocSinh = (newParent) => {
+      setInvoices((prev) => [
+        ...prev,
+        {
+          MaPhuHuynh: newParent.maPhuHuynh,
+          name: newParent.tenPhuHuynh,
+          phone: newParent.soDienThoai,
+          username: newParent.tenDangNhap,
+          password: newParent.matKhau,
+          hocSinh: newParent.hocSinh,
+        },
+      ]);
+    };
   return (
     
     <div>
-      <Tab/>
       <div className="px-10 pt-5 flex w-full justify-between gap-10">
         <SearchBar placeholder="Value..." />
-        <AddButton />
+        <AddButton onClick={() => setModalOpen(true)}/>
       </div>
       <div className="mt-10">
       
@@ -57,6 +70,11 @@ export default function Student() {
         }))}
                       
         />
+      <AddStudentModal
+        open={isModalOpen}
+        onClose={() => setModalOpen(false)}
+        onAdd={handleAddHocSinh}
+      />
       </div>
     </div>
     
