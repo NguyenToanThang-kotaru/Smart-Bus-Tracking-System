@@ -31,7 +31,7 @@ export default function AdminRoutes() {
           <Route path="/admin/RouteManagement" element={<RouteManagement />} />
           <Route path="/admin/ScheduleManagement" element={<Schedule />} />
           <Route path="/admin/TripManagement" element={<Trip />} />
-          <Route path="/admin/DriverManagement" element={<Driver />} />
+          <Route path="/admin/DriverSchedule" element={<Driver />} />
           {/* 
           <Route path="/admin/Orders" element={<Orders />} />
           <Route path="/admin/Suppliers" element={<Suppliers />} />
