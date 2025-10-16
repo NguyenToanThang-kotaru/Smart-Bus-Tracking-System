@@ -34,7 +34,7 @@ export default function ViewScheduleDetail({ item, onClose }) {
       <div className="absolute inset-0 bg-black/30" onClick={onClose}></div>
 
       {/* Popup */}
-      <div className="bg-white rounded-lg p-6 z-10 w-2/3 relative max-h-[90vh] overflow-y-auto">
+      <div className="bg-white rounded-lg p-6 z-10 w-2/3 relative max-h-[95vh] overflow-y-auto">
         <h2 className="text-2xl font-bold mb-4 text-mainBlue border-b-4 border-mainBlue pb-2 text-left">
           Chi tiết lịch làm việc
         </h2>
@@ -67,7 +67,7 @@ export default function ViewScheduleDetail({ item, onClose }) {
         </div>
 
         {/* Danh sách trạm */}
-        <div className="border rounded-lg border-[#7d7d7d] p-2 mt-5">
+        <div className="border bg-[#F5F5F5] rounded-lg border-[#7d7d7d] p-2 mt-5">
           {tram.map((t) => (
             <div key={t.MaTram} className="p-2 rounded">
               {/* Header trạm */}
@@ -88,21 +88,21 @@ export default function ViewScheduleDetail({ item, onClose }) {
               {/* Danh sách học sinh */}
               <div
                 className={`transition-all duration-500 overflow-hidden ${
-                  openTram === t.MaTram ? "max-h-96 opacity-100 mt-2" : "max-h-0 opacity-0"
+                  openTram === t.MaTram ? "max-h-96 opacity-100" : "max-h-0 opacity-0"
                 }`}
               >
                 <ul className="ml-6 mr-6 list-disc text-gray-700">
                   {chiTietTram
                     .filter((hs) => hs.MaTram === t.MaTram)
                     .map((hs) => (
-                      <li key={hs.MaHS} className="py-1  flex justify-between">
+                      <li key={hs.MaHS} className="border border-gray p-2 bg-[#FAFAFA] shadow flex justify-between">
                         <div className="font-bold w-1/4">{hs.TenHS} </div>
                         <div className="font-bold w-1/4">{hs.MaHS} </div>
                         <div className="font-bold w-1/4">{hs.Lop} </div>
                         <div className="w-1/4 text-right">
                             <div
-                              className={`font-bold ${
-                                hs.TrangThai === "Đã đón" ? "text-green-600" : "text-red-500"
+                              className={`font-bold border-4 w-fit px-4 rounded-lg ${
+                                hs.TrangThai === "Đã đón" ? "text-[#F2BA1D] border-[#F2BA1D]" : "text-[#0B2347] border-[#0B2347]"
                               }`}
                             >
                               {hs.TrangThai}
