@@ -6,37 +6,38 @@ import Edit from "../../../../assets/Icon/Edit.png";
 import SearchBar from "@/Components/searchBar";
 import AddButton from "@/Components/button_cpn";
 import AddPhuHuynhModal from "./AddPhuHuynh";
+import ViewPhuHuynhModal from "./ViewPhuHuynh";
 import "./PhuHuynh.css"
 
 export default function PhuHuynh() {
     // const [active, setActive] = useState("taiquan"); // mặc định chọn "Tại quán"
     // const [selectedInvoice, setSelectedInvoice] = useState(null);
+    const [selectedPhuHuynh, setSelectedPhuHuynh] = useState(null); 
+    const [isModalOpenView,setModalOpenView]= useState(false);
     const [isModalOpen, setModalOpen] = useState(false);
     const [invoices, setInvoices] = useState([
         {
             MaPhuHuynh: "00000",
             name: "Nguyen van A",
-            total: 9999,
-            status: "Pending",
-            paymentMethod: "Tiền mặt",
-            date: "12:00 24/08/2025",
-            tableNumber: "0000",
-            items: [
-                { name: "Món A", qty: 2, price: 230000 },
-                { name: "Món B", qty: 1, price: 120000 },
-            ],
+            SoDT:"0123456789", 
+            tenDangNhap:"23456789",
+            matKhau:"123456789",
+            
+            
         },
         {
             MaPhuHuynh: "00001",
             name: "Nguyen van B",
-            total: 8888,
-            status: "Done",
-            paymentMethod: "Chuyển khoản",
-            date: "13:00 24/08/2025",
-            tableNumber: "00000001",
-            items: [{ name: "Món C", qty: 3, price: 50000 }],
+            SoDT:"0123456789", 
+            tenDangNhap:"23456789",
+            matKhau:"123456789",
         },
+        
     ]);
+    const handleViewPhuHuynh = (ph) => {
+    setSelectedPhuHuynh(ph);
+    setModalOpenView(true);
+  };
 
     // Hàm xử lý chuyển status theo luồng Pending -> Done -> Paied
     // const handleNextStatus = (id) => {
@@ -79,11 +80,15 @@ export default function PhuHuynh() {
             <Table 
                 data={invoices.map((inv) => ({
                     "Mã Phụ Huynh": inv.MaPhuHuynh,
+                    "Tên Phụ Huynh": inv.name,
+                    "Số điện thoại":inv.SoDT,
+                    "Tên đăng nhập":inv.tenDangNhap,
+                    "Mật khẩu":inv.matKhau,
                     
                     "Chức năng": (
                         <button className="focus:outline-none flex gap-x-5">
                             <img src={Edit} alt="edit" className="w-6 h-6 icon-yellow " />
-                            <img src={eye} alt="eye" className="w-6 h-6 icon-yellow " />
+                            <img src={eye} alt="eye" className="w-6 h-6 icon-yellow " onClick={() => handleViewPhuHuynh(inv)}/>
                             <img src={del} alt="delete" className="w-6 h-6 icon-yellow" />
                         </button>
                     ),
@@ -103,6 +108,11 @@ export default function PhuHuynh() {
                 open={isModalOpen}
                 onClose={() => setModalOpen(false)}
                 onAdd={handleAddPhuHuynh}
+            />
+            <ViewPhuHuynhModal
+                open={isModalOpenView}
+                onClose={() => setModalOpenView(false)}
+                phuHuynh={selectedPhuHuynh} // Truyền phụ huynh được chọn
             />
         </div>
     );

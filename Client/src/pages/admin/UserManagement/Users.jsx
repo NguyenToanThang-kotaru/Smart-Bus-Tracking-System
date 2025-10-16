@@ -1,6 +1,6 @@
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import PhuHuynh from "./PhuHuynh/PhuHuynh"
-import TaiXe from "./DriverUser/DriverUser"
+import TaiXe from "./DriverManage/DriverManage"
 import BusManage from "./BusManage/BusManage";
 import AdminManage from "./AdminManage/AdminManage"
 export default function User() {
