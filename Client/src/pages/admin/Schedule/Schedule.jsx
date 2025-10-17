@@ -120,13 +120,13 @@ function LichTrinh() {
 
   return (
     <div className="relative">
-      {/* Thanh tìm kiếm + nút thêm */}
+      {/* Thanh tìm kiếm + nút thêm
       <div className="flex px-10 gap-10 mb-5">
         <SearchBar />
         <AddButton />
-      </div>
+      </div> */}
 
-      <div className="relative overflow-x-auto p-10 pt-0">
+      <div className=" relative overflow-x-auto p-10 pt-0">
         {/*  Mũi tên chuyển tuần */}
         <button
           onClick={prevWeek}
@@ -134,7 +134,7 @@ function LichTrinh() {
         >
           <ChevronLeft size={24} />
         </button>
-
+        
         <button
           onClick={nextWeek}
           className="absolute right-2 top-1/2 -translate-y-1/2 bg-mainBlue text-white p-2 rounded-full shadow-md hover:bg-blue-800"
@@ -205,7 +205,7 @@ function LichTrinh() {
   );
 }
 
-// Popup thêm phân công
+
 
 function AddPhanCongPopup({ onClose }) {
   return (
