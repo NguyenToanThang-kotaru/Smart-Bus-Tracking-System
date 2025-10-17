@@ -63,9 +63,9 @@ export default function PhuHuynh() {
       {
         MaPhuHuynh: newParent.maPhuHuynh,
         name: newParent.tenPhuHuynh,
-        phone: newParent.soDienThoai,
-        username: newParent.tenDangNhap,
-        password: newParent.matKhau,
+        SoDT: newParent.soDienThoai,
+        tenDangNhap: newParent.tenDangNhap,
+        matKhau: newParent.matKhau,
         hocSinh: newParent.hocSinh,
       },
     ]);
@@ -77,6 +77,13 @@ export default function PhuHuynh() {
     const handleSave = (updatedData) => {
         console.log("Dữ liệu sau khi sửa:", updatedData);
   // TODO: Cập nhật vào state hoặc gửi API
+    };
+     const handleDelete = (maPhuHuynh) => {
+        if (window.confirm("Bạn có chắc chắn muốn xóa phụ huynh này không?")) {
+            setphuHuynhList((prev) =>
+                prev.filter((item) => item.MaPhuHuynh !== maPhuHuynh)
+            );
+        }
     };
     return (
         <div>
@@ -101,7 +108,7 @@ export default function PhuHuynh() {
                         <button className="focus:outline-none flex gap-x-5">
                             <img src={Edit} alt="edit" className="w-6 h-6 icon-yellow " onClick={() => handleEdit(ph)}/>
                             <img src={eye} alt="eye" className="w-6 h-6 icon-yellow " onClick={() => handleViewPhuHuynh(ph)}/>
-                            <img src={del} alt="delete" className="w-6 h-6 icon-yellow" />
+                            <img src={del} alt="delete" className="w-6 h-6 icon-yellow" onClick={() => handleDelete(ph.MaPhuHuynh)} />
                         </button>
                     ),
                 }))}

@@ -132,6 +132,7 @@ export default function AddPhuHuynhModal({ open, onClose, onAdd }) {
             Hủy
           </button>
           <button
+            onClick={handleSubmit}
             type="submit"
             className="bg-mainYellow text-black font-semibold px-6 py-2 rounded-md hover:opacity-90 transition"
           >
