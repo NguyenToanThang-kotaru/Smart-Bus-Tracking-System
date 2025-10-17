@@ -7,15 +7,18 @@ import SearchBar from "@/Components/searchBar";
 import AddButton from "@/Components/button_cpn";
 import AddPhuHuynhModal from "./AddPhuHuynh";
 import ViewPhuHuynhModal from "./ViewPhuHuynh";
+import EditPhuHuynhModal from "./EditPhuHuynh";
 import "./PhuHuynh.css"
 
 export default function PhuHuynh() {
     // const [active, setActive] = useState("taiquan"); // mặc định chọn "Tại quán"
     // const [selectedInvoice, setSelectedInvoice] = useState(null);
+    const [openEdit, setOpenEdit] = useState(false);
+
     const [selectedPhuHuynh, setSelectedPhuHuynh] = useState(null); 
     const [isModalOpenView,setModalOpenView]= useState(false);
     const [isModalOpen, setModalOpen] = useState(false);
-    const [invoices, setInvoices] = useState([
+    const [phuHuynhList, setphuHuynhList] = useState([
         {
             MaPhuHuynh: "00000",
             name: "Nguyen van A",
@@ -34,6 +37,7 @@ export default function PhuHuynh() {
         },
         
     ]);
+    
     const handleViewPhuHuynh = (ph) => {
     setSelectedPhuHuynh(ph);
     setModalOpenView(true);
@@ -54,7 +58,7 @@ export default function PhuHuynh() {
     //     );
     // };
     const handleAddPhuHuynh = (newParent) => {
-    setInvoices((prev) => [
+    setphuHuynhList((prev) => [
       ...prev,
       {
         MaPhuHuynh: newParent.maPhuHuynh,
@@ -65,7 +69,15 @@ export default function PhuHuynh() {
         hocSinh: newParent.hocSinh,
       },
     ]);
-  };
+    };
+    const handleEdit = (phuHuynh) => {
+        setSelectedPhuHuynh(phuHuynh);
+        setOpenEdit(true);
+    };
+    const handleSave = (updatedData) => {
+        console.log("Dữ liệu sau khi sửa:", updatedData);
+  // TODO: Cập nhật vào state hoặc gửi API
+    };
     return (
         <div>
             <div className="px-10 pt-5 flex w-full justify-between gap-10">
@@ -78,17 +90,17 @@ export default function PhuHuynh() {
             <div className="mt-10">
 
             <Table 
-                data={invoices.map((inv) => ({
-                    "Mã Phụ Huynh": inv.MaPhuHuynh,
-                    "Tên Phụ Huynh": inv.name,
-                    "Số điện thoại":inv.SoDT,
-                    "Tên đăng nhập":inv.tenDangNhap,
-                    "Mật khẩu":inv.matKhau,
+                data={phuHuynhList.map((ph) => ({
+                    "Mã Phụ Huynh": ph.MaPhuHuynh,
+                    "Tên Phụ Huynh": ph.name,
+                    "Số điện thoại":ph.SoDT,
+                    "Tên đăng nhập":ph.tenDangNhap,
+                    "Mật khẩu":ph.matKhau,
                     
                     "Chức năng": (
                         <button className="focus:outline-none flex gap-x-5">
-                            <img src={Edit} alt="edit" className="w-6 h-6 icon-yellow " />
-                            <img src={eye} alt="eye" className="w-6 h-6 icon-yellow " onClick={() => handleViewPhuHuynh(inv)}/>
+                            <img src={Edit} alt="edit" className="w-6 h-6 icon-yellow " onClick={() => handleEdit(ph)}/>
+                            <img src={eye} alt="eye" className="w-6 h-6 icon-yellow " onClick={() => handleViewPhuHuynh(ph)}/>
                             <img src={del} alt="delete" className="w-6 h-6 icon-yellow" />
                         </button>
                     ),
@@ -113,6 +125,12 @@ export default function PhuHuynh() {
                 open={isModalOpenView}
                 onClose={() => setModalOpenView(false)}
                 phuHuynh={selectedPhuHuynh} // Truyền phụ huynh được chọn
+            />
+            <EditPhuHuynhModal
+                open={openEdit}
+                onClose={() => setOpenEdit(false)}
+                onSave={handleSave}
+                phuHuynh={selectedPhuHuynh}
             />
         </div>
     );
