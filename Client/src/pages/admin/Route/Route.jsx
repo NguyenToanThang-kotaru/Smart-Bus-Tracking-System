@@ -28,7 +28,7 @@ export default function RouteManagement() {
                 data-[state=active]:after:left-0 data-[state=active]:after:right-0 data-[state=active]:after:-bottom-[1px]
                 data-[state=active]:after:h-[2px] data-[state=active]:after:bg-mainBlue"
             >
-              {label}``
+              {label}
             </TabsTrigger>
           ))}
         </TabsList>
