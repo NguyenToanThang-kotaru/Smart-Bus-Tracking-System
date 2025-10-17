@@ -6,46 +6,48 @@ import Edit from "../../../../assets/Icon/Edit.png";
 import SearchBar from "@/Components/searchBar";
 import AddButton from "@/Components/button_cpn";
 import AddStudentModal from "./AddStudent";
-
+import ViewStudentModal from "./ViewStudent";
 export default function Student() {
+  const [isViewModalOpen, setViewModalOpen] = useState(false);
+  const [selectedStudent, setSelectedStudent] = useState(null);
   const [isModalOpen, setModalOpen] = useState(false);
-  const [invoices, setInvoices] = useState([
+  const [HocSinhList, setHocSinhList] = useState([
           {
               MaHocSinh: "00000",
-              name: "Nguyen van A",
-              total: 9999,
-              status: "Pending",
-              paymentMethod: "Tiền mặt",
-              date: "12:00 24/08/2025",
-              tableNumber: "0000",
-              items: [
-                  { name: "Món A", qty: 2, price: 230000 },
-                  { name: "Món B", qty: 1, price: 120000 },
-              ],
+              TenHocSinh:"Nguyễn Thái A",
+              Lop:"9A1",
+              Tram:"Quận 5",
+              maPhuHuynh:"00000",
+              tenPhuHuynh:"Nguyễn Văn A"
+              
+
           },
           {
               MaHocSinh: "00001",
-              name: "Nguyen van B",
-              total: 8888,
-              status: "Done",
-              paymentMethod: "Chuyển khoản",
-              date: "13:00 24/08/2025",
-              tableNumber: "00000001",
-              items: [{ name: "Món C", qty: 3, price: 50000 }],
+              TenHocSinh:"Nguyễn Thái B",
+              Lop:"9A2",
+              Tram:"Quận 8",
+              maPhuHuynh:"00001",
+              tenPhuHuynh:"Nguyễn Văn B"
+              
           },
       ]);
-    const handleAddHocSinh = (newParent) => {
-      setInvoices((prev) => [
+    const handleAddHocSinh = (newStudent) => {
+      setHocSinhList((prev) => [
         ...prev,
         {
-          MaPhuHuynh: newParent.maPhuHuynh,
-          name: newParent.tenPhuHuynh,
-          phone: newParent.soDienThoai,
-          username: newParent.tenDangNhap,
-          password: newParent.matKhau,
-          hocSinh: newParent.hocSinh,
+          MaHocSinh: newStudent.maHocSinh,
+          TenHocSinh: newStudent.tenHocSinh,
+          Lop: newStudent.Lop,
+          Tram: newStudent.Tram,
+          maPhuHuynh: newStudent.maPhuHuynh,
+          tenPhuHuynh: newStudent.tenPhuHuynh,
         },
       ]);
+    };
+    const handleViewHocSinh = (hocSinh) => {
+      setSelectedStudent(hocSinh);
+      setViewModalOpen(true);
     };
   return (
     
@@ -57,13 +59,19 @@ export default function Student() {
       <div className="mt-10">
       
         <Table 
-          data={invoices.map((inv) => ({
-            "Mã Học Sinh": inv.MaHocSinh,
+          data={HocSinhList.map((hs) => ({
+            "Mã Học Sinh": hs.MaHocSinh,
+            "Tên Học Sinh": hs.TenHocSinh,
+            "Lớp" : hs.Lop,
+            "Trạm ": hs.Tram,
+            "Mã Phụ Huynh": hs.maPhuHuynh,
+            "Tên Phụ Huynh": hs.tenPhuHuynh,
+
                           
             "Chức năng": (
               <button className="focus:outline-none flex gap-x-5">
                 <img src={Edit} alt="edit" className="w-6 h-6 icon-yellow " />
-                <img src={eye} alt="eye" className="w-6 h-6 icon-yellow " />
+                <img src={eye} alt="eye" className="w-6 h-6 icon-yellow " onClick={() => handleViewHocSinh(hs)} />
                 <img src={del} alt="delete" className="w-6 h-6 icon-yellow" />
               </button>
             ),
@@ -74,6 +82,11 @@ export default function Student() {
         open={isModalOpen}
         onClose={() => setModalOpen(false)}
         onAdd={handleAddHocSinh}
+      /> 
+      <ViewStudentModal
+        open={isViewModalOpen}
+        onClose={() => setViewModalOpen(false)}
+        hocSinh={selectedStudent}
       />
       </div>
     </div>

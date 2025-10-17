@@ -40,14 +40,14 @@ export default function AddPhuHuynhModal({ open, onClose, onAdd }) {
               <label className="font-medium text-sm mb-1">Mã học sinh</label>
               <input
                 type="text"
-                name="maPhuHuynh"
-                value={form.maPhuHuynh}
+                name="maHocSinh"
+                value={form.maHocSinh}
                 onChange={handleChange}
                 className="border border-gray-300 rounded-full p-2 px-4 focus:outline-none focus:ring-2 focus:ring-mainBlue"
               />
             </div>
 
-            {/* Số điện thoại */}
+            
             
 
             {/* Tên đăng nhập */}
@@ -55,8 +55,8 @@ export default function AddPhuHuynhModal({ open, onClose, onAdd }) {
               <label className="font-medium text-sm mb-1">Tên học sinh</label>
               <input
                 type="text"
-                name="tenDangNhap"
-                value={form.tenDangNhap}
+                name="tenHocSinh"
+                value={form.tenHocSinh}
                 onChange={handleChange}
                 className="border border-gray-300 rounded-full p-2 px-4 focus:outline-none focus:ring-2 focus:ring-mainBlue"
               />
@@ -67,8 +67,8 @@ export default function AddPhuHuynhModal({ open, onClose, onAdd }) {
               <label className="font-medium text-sm mb-1">Lớp</label>
               <input
                 type="text"
-                name="matKhau"
-                value={form.matKhau}
+                name="Lop"
+                value={form.Lop}
                 onChange={handleChange}
                 className="border border-gray-300 rounded-full p-2 px-4 focus:outline-none focus:ring-2 focus:ring-mainBlue"
               />
@@ -82,8 +82,8 @@ export default function AddPhuHuynhModal({ open, onClose, onAdd }) {
               <label className="font-medium text-sm mb-1">Trạm</label>
               <input
                 type="text"
-                name="tenPhuHuynh"
-                value={form.tenPhuHuynh}
+                name="Tram"
+                value={form.Tram}
                 onChange={handleChange}
                 className="border border-gray-300 rounded-full p-2 px-4 focus:outline-none focus:ring-2 focus:ring-mainBlue"
               />
@@ -95,8 +95,8 @@ export default function AddPhuHuynhModal({ open, onClose, onAdd }) {
               <label className="font-medium text-sm mb-1">Mã Phụ Huynh</label>
               <input 
                 type="text"
-                name="hocSinh"
-                value={form.hocSinh}
+                name="maPhuHuynh"
+                value={form.maPhuHuynh}
                 onChange={handleChange}
                 className="border border-gray-300 rounded-full p-2 px-4 focus:outline-none focus:ring-2 focus:ring-mainBlue"
               />
@@ -120,7 +120,7 @@ export default function AddPhuHuynhModal({ open, onClose, onAdd }) {
         <div className="flex justify-end mt-6 gap-4">
           <button
             type="button"
-            
+            onClick={handleSubmit}
             
             className="bg-mainYellow text-black font-semibold px-6 py-2 rounded-md hover:opacity-90 transition"
           >
