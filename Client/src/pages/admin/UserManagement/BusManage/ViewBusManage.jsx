@@ -8,7 +8,7 @@ export default function ViewBusManageModal({ open, onClose, busManage }) {
     matKhau: "",
   });
 
-  // ✅ Khi modal mở và có dữ liệu, cập nhật form
+  
   useEffect(() => {
     if (busManage) {
       console.log("📦 Dữ liệu busManage nhận được:", busManage);

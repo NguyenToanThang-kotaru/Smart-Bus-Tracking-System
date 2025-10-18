@@ -30,7 +30,7 @@ export default function AdminManage() {
     },
   ]);
 
-  // ✅ Thêm quản trị viên mới
+  
   const handleAddAdminManage = (newAdmin) => {
     setAdminManageList((prev) => [
       ...prev,
@@ -43,19 +43,19 @@ export default function AdminManage() {
     ]);
   };
 
-  // ✅ Xem thông tin
+  
   const handleViewAdminManage = (admin) => {
     setSelectedAdminManage(admin);
     setModalOpenView(true);
   };
 
-  // ✅ Sửa thông tin
+  
   const handleEditAdminManage = (admin) => {
     setSelectedAdminManage(admin);
     setOpenEdit(true);
   };
 
-  // ✅ Lưu sau khi sửa
+  
   const handleSaveAdminManage = (updatedAdmin) => {
     setAdminManageList((prev) =>
       prev.map((a) => (a.maQTV === updatedAdmin.maQTV ? updatedAdmin : a))
@@ -63,7 +63,7 @@ export default function AdminManage() {
     setOpenEdit(false);
   };
 
-  // ✅ Xóa
+  
   const handleDeleteAdminManage = (maQTV) => {
     if (window.confirm("Bạn có chắc chắn muốn xóa quản trị viên này không?")) {
       setAdminManageList((prev) => prev.filter((item) => item.maQTV !== maQTV));

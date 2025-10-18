@@ -8,13 +8,13 @@ export default function AddAdminManageModal({ open, onClose, onAdd }) {
     matKhau: "",
   });
 
-  // ✅ Xử lý khi nhập liệu
+  
   const handleChange = (e) => {
     const { name, value } = e.target;
     setForm((prev) => ({ ...prev, [name]: value }));
   };
 
-  // ✅ Xử lý khi bấm Thêm
+  
   const handleSubmit = () => {
     if (!form.maQTV || !form.tenQTV || !form.tenDangNhap || !form.matKhau) {
       alert("Vui lòng nhập đầy đủ thông tin quản trị viên!");

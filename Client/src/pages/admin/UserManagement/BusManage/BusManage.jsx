@@ -30,7 +30,7 @@ export default function BusManage() {
     },
   ]);
 
-  // ✅ Thêm quản lý xe buýt mới
+ 
   const handleAddBusManage = (newBusManage) => {
     setBusManageList((prev) => [
       ...prev,
@@ -43,19 +43,19 @@ export default function BusManage() {
     ]);
   };
 
-//   // ✅ Xem thông tin
+//   
   const handleViewBusManage = (busManage) => {
     setSelectedBusManage(busManage);
     setModalOpenView(true);
   };
 
-//   // ✅ Sửa thông tin
+//   
   const handleEditBusManage = (busManage) => {
     setSelectedBusManage(busManage);
     setOpenEdit(true);
   };
 
-//   // ✅ Lưu sau khi sửa
+//   
   const handleSaveBusManage = (updatedBusManage) => {
     setBusManageList((prev) =>
       prev.map((u) =>
@@ -67,7 +67,7 @@ export default function BusManage() {
     setOpenEdit(false);
   };
 
-//   // ✅ Xóa
+//   
   const handleDeleteBusManage = (maNguoiDung) => {
     if (window.confirm("Bạn có chắc chắn muốn xóa người quản lý này không?")) {
       setBusManageList((prev) =>

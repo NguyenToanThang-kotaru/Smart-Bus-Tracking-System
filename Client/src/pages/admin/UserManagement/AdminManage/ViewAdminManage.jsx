@@ -8,7 +8,7 @@ export default function ViewAdminManageModal({ open, onClose, adminManage }) {
     matKhau: "",
   });
 
-  // ✅ Cập nhật dữ liệu khi modal mở
+  
   useEffect(() => {
     if (adminManage) {
       console.log("📦 Dữ liệu adminManage nhận được:", adminManage);

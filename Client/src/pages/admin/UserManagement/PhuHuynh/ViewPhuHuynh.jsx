@@ -10,7 +10,7 @@ export default function ViewPhuHuynhModal({ open, onClose, phuHuynh }) {
     
   });
 
-  // ✅ Khi modal mở và có dữ liệu, cập nhật form
+  
    useEffect(() => {
     if (phuHuynh) {
        console.log("📦 Dữ liệu phuHuynh nhận được:", phuHuynh);

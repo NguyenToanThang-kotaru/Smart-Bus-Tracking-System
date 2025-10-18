@@ -11,7 +11,7 @@ export default function EditDriverModal({ open, onClose, onSave, driver }) {
     matKhau: "",
   });
 
-  // ✅ Khi modal mở và có dữ liệu, cập nhật form
+  
   useEffect(() => {
     if (driver) {
       console.log("📦 Dữ liệu driver nhận được:", driver);
@@ -27,13 +27,13 @@ export default function EditDriverModal({ open, onClose, onSave, driver }) {
     }
   }, [driver]);
 
-  // ✅ Xử lý thay đổi input
+  
   const handleChange = (e) => {
     const { name, value } = e.target;
     setForm((prev) => ({ ...prev, [name]: value }));
   };
 
-  // ✅ Gửi dữ liệu ra ngoài khi nhấn Lưu
+  
   const handleSave = () => {
     if (onSave) onSave(form);
     onClose();

@@ -11,7 +11,7 @@ export default function ViewDriverModal({ open, onClose, driver }) {
     matKhau: "",
   });
 
-  // ✅ Khi modal mở và có dữ liệu, cập nhật form
+  
   useEffect(() => {
     if (driver) {
       console.log("📦 Dữ liệu driver nhận được:", driver);

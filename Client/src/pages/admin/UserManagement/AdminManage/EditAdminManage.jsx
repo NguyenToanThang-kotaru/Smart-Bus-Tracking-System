@@ -8,7 +8,7 @@ export default function EditAdminManageModal({ open, onClose, adminManage, onSav
     matKhau: "",
   });
 
-  // ✅ Cập nhật dữ liệu khi modal mở
+  // 
   useEffect(() => {
     if (adminManage) {
       console.log("🛠️ Dữ liệu adminManage cần sửa:", adminManage);
@@ -23,13 +23,13 @@ export default function EditAdminManageModal({ open, onClose, adminManage, onSav
 
   if (!open || !adminManage) return null;
 
-  // ✅ Cập nhật khi nhập
+  // 
   const handleChange = (e) => {
     const { name, value } = e.target;
     setForm((prev) => ({ ...prev, [name]: value }));
   };
 
-  // ✅ Lưu thay đổi
+  // 
   const handleSave = () => {
     if (!form.tenQTV || !form.tenDangNhap || !form.matKhau) {
       alert("Vui lòng nhập đầy đủ thông tin trước khi lưu!");
