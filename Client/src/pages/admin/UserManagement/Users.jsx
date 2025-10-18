@@ -1,5 +1,8 @@
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import PhuHuynh from "./PhuHuynh/PhuHuynh"
+import TaiXe from "./DriverManage/DriverManage"
+import BusManage from "./BusManage/BusManage";
+import AdminManage from "./AdminManage/AdminManage"
 export default function User() {
   return (
     <div className="h-full bg-theme">
@@ -36,21 +39,21 @@ export default function User() {
           value="TaiXeXeBuyt"
           className="w-full rounded-4xl max-h-full"
         >
-          Tai Xe Content
+          <TaiXe />
           {/* <Invoices /> */}
         </TabsContent>
         <TabsContent
           value="QuanLyXeBuyt"
           className="w-full rounded-4xl max-h-full"
         >
-          Quan Ly Xe Bus Content
+          <BusManage />
           {/* <Invoices /> */}
         </TabsContent>
         <TabsContent
           value="QuanTriVien"
           className="w-full rounded-4xl max-h-full"
         >
-          Quan Tri Vien Content
+          <AdminManage />
           {/* <Invoices /> */}
         </TabsContent>
 
