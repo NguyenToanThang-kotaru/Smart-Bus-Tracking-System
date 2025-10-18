@@ -7,8 +7,10 @@ import SearchBar from "@/Components/searchBar";
 import AddButton from "@/Components/button_cpn";
 import AddStudentModal from "./AddStudent";
 import ViewStudentModal from "./ViewStudent";
+import EditStudentModal from "./EditStudent"; 
 export default function Student() {
   const [isViewModalOpen, setViewModalOpen] = useState(false);
+  const [isEditModalOpen, setEditModalOpen] = useState(false);
   const [selectedStudent, setSelectedStudent] = useState(null);
   const [isModalOpen, setModalOpen] = useState(false);
   const [HocSinhList, setHocSinhList] = useState([
@@ -49,6 +51,18 @@ export default function Student() {
       setSelectedStudent(hocSinh);
       setViewModalOpen(true);
     };
+     const handleEditHocSinh = (hocSinh) => {
+    setSelectedStudent(hocSinh);
+    setEditModalOpen(true);
+    };
+    const handleSaveEdit = (updatedStudent) => {
+    setHocSinhList((prev) =>
+      prev.map((hs) =>
+        hs.MaHocSinh === updatedStudent.MaHocSinh ? updatedStudent : hs
+      )
+    );
+    setEditModalOpen(false);
+    };
   return (
     
     <div>
@@ -70,7 +84,7 @@ export default function Student() {
                           
             "Chức năng": (
               <button className="focus:outline-none flex gap-x-5">
-                <img src={Edit} alt="edit" className="w-6 h-6 icon-yellow " />
+                <img src={Edit} alt="edit" className="w-6 h-6 icon-yellow " onClick={() => handleEditHocSinh(hs)}/>
                 <img src={eye} alt="eye" className="w-6 h-6 icon-yellow " onClick={() => handleViewHocSinh(hs)} />
                 <img src={del} alt="delete" className="w-6 h-6 icon-yellow" />
               </button>
@@ -88,6 +102,12 @@ export default function Student() {
         onClose={() => setViewModalOpen(false)}
         hocSinh={selectedStudent}
       />
+      <EditStudentModal
+          open={isEditModalOpen}
+          onClose={() => setEditModalOpen(false)}
+          hocSinh={selectedStudent}
+          onSave={handleSaveEdit}
+        />
       </div>
     </div>
     
