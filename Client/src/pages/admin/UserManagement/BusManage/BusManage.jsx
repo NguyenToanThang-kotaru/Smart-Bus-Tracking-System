@@ -5,89 +5,135 @@ import del from "../../../../assets/Icon/delete.png";
 import Edit from "../../../../assets/Icon/Edit.png";
 import SearchBar from "@/Components/searchBar";
 import AddButton from "@/Components/button_cpn";
+import AddBusManageModal from "./AddBusManage";
+import ViewBusManageModal from "./ViewBusManage";
+import EditBusManageModal from "./EditBusManage";
 
+export default function BusManage() {
+  const [openEdit, setOpenEdit] = useState(false);
+  const [isModalOpenView, setModalOpenView] = useState(false);
+  const [isModalOpen, setModalOpen] = useState(false);
+  const [selectedBusManage, setSelectedBusManage] = useState(null);
 
+  const [busManageList, setBusManageList] = useState([
+    {
+      maNguoiDung: "00001",
+      tenNguoiDung: "Nguyễn Văn A",
+      tenDangNhap: "nguyenvana",
+      matKhau: "123456",
+    },
+    {
+      maNguoiDung: "00002",
+      tenNguoiDung: "Trần Thị B",
+      tenDangNhap: "tranthib",
+      matKhau: "abcdef",
+    },
+  ]);
 
-export default function Driver() {
-    // const [active, setActive] = useState("taiquan"); // mặc định chọn "Tại quán"
-    // const [selectedInvoice, setSelectedInvoice] = useState(null);
-    
-    const [invoices, setInvoices] = useState([
-        {
-            MaPhuHuynh: "00000",
-            name: "Nguyen van A",
-            total: 9999,
-            status: "Pending",
-            paymentMethod: "Tiền mặt",
-            date: "12:00 24/08/2025",
-            tableNumber: "0000",
-            items: [
-                { name: "Món A", qty: 2, price: 230000 },
-                { name: "Món B", qty: 1, price: 120000 },
-            ],
-        },
-        {
-            MaPhuHuynh: "00001",
-            name: "Nguyen van B",
-            total: 8888,
-            status: "Done",
-            paymentMethod: "Chuyển khoản",
-            date: "13:00 24/08/2025",
-            tableNumber: "00000001",
-            items: [{ name: "Món C", qty: 3, price: 50000 }],
-        },
+  // ✅ Thêm quản lý xe buýt mới
+  const handleAddBusManage = (newBusManage) => {
+    setBusManageList((prev) => [
+      ...prev,
+      {
+        maNguoiDung: newBusManage.maNguoiDung,
+        tenNguoiDung: newBusManage.tenNguoiDung,
+        tenDangNhap: newBusManage.tenDangNhap,
+        matKhau: newBusManage.matKhau,
+      },
     ]);
+  };
 
-    // Hàm xử lý chuyển status theo luồng Pending -> Done -> Paied
-    // const handleNextStatus = (id) => {
-    //     setInvoices((prev) =>
-    //         prev.map((inv) => {
-    //             if (inv.id === id) {
-    //                 let next = inv.status;
-    //                 if (inv.status === "Pending") next = "Done";
-    //                 else if (inv.status === "Done") next = "Paied";
-    //                 return { ...inv, status: next };
-    //             }
-    //             return inv;
-    //         })
-    //     );
-    // };
-    
-    return (
-        <div>
-            <div className="px-10 pt-5 flex w-full justify-between gap-10">
-                <SearchBar placeholder="Value..." />
-                <AddButton  />
-            </div>
-            {/* Search */}
-            {/* Buttons */}
-            
-            <div className="mt-10">
+//   // ✅ Xem thông tin
+  const handleViewBusManage = (busManage) => {
+    setSelectedBusManage(busManage);
+    setModalOpenView(true);
+  };
 
-            <Table 
-                data={invoices.map((inv) => ({
-                    "Mã Phụ Huynh": inv.MaPhuHuynh,
-                    
-                    "Chức năng": (
-                        <button className="focus:outline-none flex gap-x-5">
-                            <img src={Edit} alt="edit" className="w-6 h-6 icon-yellow " />
-                            <img src={eye} alt="eye" className="w-6 h-6 icon-yellow " />
-                            <img src={del} alt="delete" className="w-6 h-6 icon-yellow" />
-                        </button>
-                    ),
-                }))}
-                
-            />
+//   // ✅ Sửa thông tin
+  const handleEditBusManage = (busManage) => {
+    setSelectedBusManage(busManage);
+    setOpenEdit(true);
+  };
 
-            {/* Popup */}
-            {/* <InvoiceDetail
-                open={!!selectedInvoice}
-                onClose={() => setSelectedInvoice(null)}
-                invoice={selectedInvoice}
-            /> */}
-            </div>
-            {/* Table */}
-            
-        </div>
+//   // ✅ Lưu sau khi sửa
+  const handleSaveBusManage = (updatedBusManage) => {
+    setBusManageList((prev) =>
+      prev.map((u) =>
+        u.maNguoiDung === updatedBusManage.maNguoiDung
+          ? updatedBusManage
+          : u
+      )
     );
+    setOpenEdit(false);
+  };
+
+//   // ✅ Xóa
+  const handleDeleteBusManage = (maNguoiDung) => {
+    if (window.confirm("Bạn có chắc chắn muốn xóa người quản lý này không?")) {
+      setBusManageList((prev) =>
+        prev.filter((item) => item.maNguoiDung !== maNguoiDung)
+      );
+    }
+  };
+
+  return (
+    <div>
+      <div className="px-10 pt-5 flex w-full justify-between gap-10">
+        <SearchBar placeholder="Tìm kiếm người quản lý xe buýt..." />
+        <AddButton onClick={() => setModalOpen(true)} />
+      </div>
+
+      <div className="mt-10">
+        <Table
+          data={busManageList.map((u) => ({
+            "Mã người dùng": u.maNguoiDung,
+            "Tên người dùng": u.tenNguoiDung,
+            "Tên đăng nhập": u.tenDangNhap,
+            "Mật khẩu": u.matKhau,
+            "Chức năng": (
+              <button className="focus:outline-none flex gap-x-5">
+                <img
+                  src={Edit}
+                  alt="edit"
+                  className="w-6 h-6 icon-yellow"
+                  onClick={() => handleEditBusManage(u)}
+                />
+                <img
+                  src={eye}
+                  alt="eye"
+                  className="w-6 h-6 icon-yellow"
+                  onClick={() => handleViewBusManage(u)}
+                />
+                <img
+                  src={del}
+                  alt="delete"
+                  className="w-6 h-6 icon-yellow"
+                  onClick={() => handleDeleteBusManage(u.maNguoiDung)}
+                />
+              </button>
+            ),
+          }))}
+        />
+
+        <AddBusManageModal
+          open={isModalOpen}
+          onClose={() => setModalOpen(false)}
+          onAdd={handleAddBusManage}
+        />
+
+        <ViewBusManageModal
+          open={isModalOpenView}
+          onClose={() => setModalOpenView(false)}
+          busManage={selectedBusManage}
+        />
+
+        <EditBusManageModal
+          open={openEdit}
+          onClose={() => setOpenEdit(false)}
+          busManage={selectedBusManage}
+          onSave={handleSaveBusManage}
+        />
+      </div>
+    </div>
+  );
 }
