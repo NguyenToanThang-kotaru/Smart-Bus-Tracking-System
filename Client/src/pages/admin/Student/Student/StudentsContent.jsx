@@ -63,6 +63,13 @@ export default function Student() {
     );
     setEditModalOpen(false);
     };
+    const handleDelete = (maHocSinh) => {
+        if (window.confirm("Bạn có chắc chắn muốn xóa học sinh này không?")) {
+            setHocSinhList((prev) =>
+                prev.filter((item) => item.MaHocSinh !== maHocSinh)
+            );
+        }
+    };
   return (
     
     <div>
@@ -86,7 +93,7 @@ export default function Student() {
               <button className="focus:outline-none flex gap-x-5">
                 <img src={Edit} alt="edit" className="w-6 h-6 icon-yellow " onClick={() => handleEditHocSinh(hs)}/>
                 <img src={eye} alt="eye" className="w-6 h-6 icon-yellow " onClick={() => handleViewHocSinh(hs)} />
-                <img src={del} alt="delete" className="w-6 h-6 icon-yellow" />
+                <img src={del} alt="delete" className="w-6 h-6 icon-yellow" onClick={() => handleDelete(hs.MaHocSinh)} />
               </button>
             ),
         }))}
