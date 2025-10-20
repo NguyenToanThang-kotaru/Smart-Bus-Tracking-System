@@ -17,7 +17,7 @@ export default function AdminRoutes() {
       <Route path="/admin/login" element={<AdminLogin />} />
       <Route element={<RequireAdminAuth />}>
         <Route path="/admin" element={<AdminLayout />}>
-          <Route path="/admin/DashboardManagement" element={<Dashboard />} />
+          <Route path="/admin/Dashboard" element={<Dashboard />} />
           <Route path="/admin/StudentManagement" element={<StudentManagement />} />
           <Route path="/admin/RouteManagement" element={<RouteManagement />} />
           <Route path="/admin/ScheduleManagement" element={<ScheduleManagement />} />

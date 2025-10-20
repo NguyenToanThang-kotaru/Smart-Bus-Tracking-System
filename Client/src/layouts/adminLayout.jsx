@@ -203,7 +203,7 @@ export default function AdminLayout() {
                 />
               </svg>
 
-              <span>Driver Management</span>
+              <span>Driver Schedule</span>
             </Link>
           </li>
         </ul>
