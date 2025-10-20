@@ -1,9 +1,7 @@
 import { useState } from "react";
-import Table from "../../../Components/table_cpn";
-import eye from "../../../assets/Icon/Eye.png";
-import SearchBar from "@/Components/searchBar";
-import InvoiceDetail from "./InvoiceDetail";
-import InvoiceStatus from "./InvoiceStatus";
+import Table from "@/Components/tableComponent";
+import view from "@/assets/Icon/viewYellow.png";
+import SearchBar from "@/Components/searchBarComponent";
 
 export default function Invoices() {
   const [active, setActive] = useState("taiquan"); // mặc định chọn "Tại quán"
@@ -94,7 +92,7 @@ export default function Invoices() {
               onClick={() => setSelectedInvoice(inv)}
               className="focus:outline-none"
             >
-              <img src={eye} alt="eye" className="w-6 h-6" />
+              <img src={view} alt="view" className="w-6 h-6" />
             </button>
           ),
         }))}
