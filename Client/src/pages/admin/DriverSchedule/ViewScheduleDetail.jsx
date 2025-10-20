@@ -29,37 +29,34 @@ export default function ViewScheduleDetail({ item, onClose }) {
   };
 
   return (
-    <div className="fixed inset-0 z-50 flex items-center justify-center">
-      {/* Overlay */}
-      <div className="absolute inset-0 bg-black/30" onClick={onClose}></div>
-
+    <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/40">
       {/* Popup */}
-      <div className="bg-white rounded-lg p-6 z-10 w-2/3 relative max-h-[95vh] overflow-y-auto">
-        <h2 className="text-2xl font-bold mb-4 text-mainBlue border-b-4 border-mainBlue pb-2 text-left">
+      <form className="bg-white flex flex-col rounded-[50px] px-[50px] py-[30px] w-3/7 min-w-[700px] gap-y-[35px] select-none">
+        <h2 className="text-4xl font-bold text-mainBlue">
           Chi tiết lịch làm việc
         </h2>
 
         {/* Thông tin lịch */}
-        <div className="space-y-3 flex gap-10 justify-between">
-          <div className="w-full">
-            <label className="block text-mainBlue text-sm font-bold mb-1">Ngày</label>
+        <div className="flex gap-x-[50px] justify-center">
+          <div className="flex flex-col gap-y-2 w-full">
+            <label className="text-2xl text-mainBlue font-bold">Ngày</label>
             <input
               type="text"
               defaultValue={item?.NgayHanhTrinh?.split("T")[0] || ""}
               readOnly={isView}
-              className={`border rounded-full border-[#7d7d7d] px-3 py-2 w-full ${
+              className={`border-2 border-gray-300 rounded-[10px] px-3 py-2 w-full ${
                 isView ? "bg-gray-100" : "focus:outline-mainYellow"
               }`}
             />
           </div>
 
-          <div className="w-full">
-            <label className="block text-mainBlue text-sm font-bold mb-1">Ca</label>
+          <div className="flex flex-col gap-y-2 w-full">
+            <label className="text-2xl text-mainBlue font-bold">Ca</label>
             <input
               type="text"
               defaultValue={item?.TenTD || ""}
               readOnly={isView}
-              className={`border rounded-full border-[#7d7d7d] px-3 py-2 w-full ${
+              className={`border-2 border-gray-300 rounded-[10px] px-3 py-2 w-full ${
                 isView ? "bg-gray-100" : "focus:outline-mainYellow"
               }`}
             />
@@ -67,15 +64,15 @@ export default function ViewScheduleDetail({ item, onClose }) {
         </div>
 
         {/* Danh sách trạm */}
-        <div className="border bg-[#F5F5F5] rounded-lg border-[#7d7d7d] p-2 mt-5">
+        <div className="border-2 bg-[#F5F5F5] rounded-lg border-gray-300 p-2 ">
           {tram.map((t) => (
             <div key={t.MaTram} className="p-2 rounded">
               {/* Header trạm */}
               <div
-                className="bg-mainBlue text-2xl flex items-center justify-between rounded-lg cursor-pointer select-none"
+                className="bg-mainBlue text-xl flex items-center justify-between rounded-lg cursor-pointer select-none"
                 onClick={() => toggleTram(t.MaTram)}
               >
-                <h3 className="font-bold text-white p-3">{t.TenTram}</h3>
+                <h3 className="font-bold text-white py-2 px-5">{t.TenTram}</h3>
                 <img
                   src={dropDown}
                   alt="dropdown"
@@ -91,18 +88,18 @@ export default function ViewScheduleDetail({ item, onClose }) {
                   openTram === t.MaTram ? "max-h-96 opacity-100" : "max-h-0 opacity-0"
                 }`}
               >
-                <ul className="ml-6 mr-6 list-disc text-gray-700">
+                <ul className="mx-3 list-disc text-gray-700">
                   {chiTietTram
                     .filter((hs) => hs.MaTram === t.MaTram)
                     .map((hs) => (
-                      <li key={hs.MaHS} className="border border-gray p-2 bg-[#FAFAFA] shadow flex justify-between">
-                        <div className="font-bold w-1/4">{hs.TenHS} </div>
-                        <div className="font-bold w-1/4">{hs.MaHS} </div>
-                        <div className="font-bold w-1/4">{hs.Lop} </div>
-                        <div className="w-1/4 text-right">
+                      <li key={hs.MaHS} className="border border-gray p-1.5 bg-white flex justify-between px-[20px] ">
+                        <div className="font-semibold flex-2">{hs.TenHS} </div>
+                        <div className="font-semibold flex-1">{hs.MaHS} </div>
+                        <div className="font-semibold flex-1">{hs.Lop} </div>
+                        <div className="flex-1">
                             <div
-                              className={`font-bold border-4 w-fit px-4 rounded-lg ${
-                                hs.TrangThai === "Đã đón" ? "text-[#F2BA1D] border-[#F2BA1D]" : "text-[#0B2347] border-[#0B2347]"
+                              className={`flex font-semibold border-2 rounded-lg w-[100px] justify-center ${
+                                hs.TrangThai === "Đã đón" ? "text-mainYellow border-mainYellow" : "text-mainBlue border-mainBlue"
                               }`}
                             >
                               {hs.TrangThai}
@@ -117,20 +114,17 @@ export default function ViewScheduleDetail({ item, onClose }) {
         </div>
 
         {/* Nút đóng */}
-        <div className="flex justify-center gap-3 mt-5">
+        <div className="flex justify-end mt-6 gap-x-[30px]">
           {!isView && (
-            <button className="bg-yellow-400 text-black font-semibold px-4 py-2 rounded hover:bg-yellow-500">
-              Xác nhận
+            <button className="text-xl bg-mainYellow w-[170px] text-black font-bold py-2 rounded-[10px] hover:bg-yellow-500">
+              XÁC NHẬN
             </button>
           )}
-          <button
-            onClick={onClose}
-            className="bg-mainBlue text-white font-semibold px-4 py-2 rounded hover:bg-blue-900"
-          >
-            Đóng
+          <button onClick={onClose} className="text-xl bg-mainBlue w-[170px] text-white font-bold py-2 rounded-[10px] hover:bg-blue-900">
+            ĐÓNG
           </button>
         </div>
-      </div>
+      </form>
     </div>
   );
 }

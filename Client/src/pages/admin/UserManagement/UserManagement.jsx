@@ -7,7 +7,7 @@ import AdminManage from "./Administrator/AdministratorContent"
 export default function UserManagement() {
   return (
     <div className="h-full bg-theme">
-      <Tabs defaultValue="PhuHuynh" className="w-full h-full">
+      <Tabs defaultValue="PhuHuynh" className="w-full h-full select-none">
         {/* Thanh Tab */}
         <TabsList className="bg-white shadow-[0_1px_4px_3px_rgba(0,0,0,0.25)] w-full flex justify-start align-middle rounded-none gap-5 h-1/15 p-2 px-5">
           {[

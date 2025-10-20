@@ -37,7 +37,7 @@ export default function AdminLogin() {
         <div className="bg-mainBlue w-screen h-screen flex items-center justify-center"
             onKeyDown={(e) => { if (e.key === 'Enter') handleLogin(); }}
         >
-            <div className="flex items-center justify-center bg-[#0d2346] gap-x-[50px]">
+            <div className="flex items-center justify-center bg-[#0d2346] gap-x-[50px] select-none">
                 <div className=" rounded-2xl border-2 border-mainYellow flex">
                     {/* Map overlay */}
                     <div className="rounded-2xl border-2 border-mainYellow w-82 h-102 flex items-center justify-center text-center

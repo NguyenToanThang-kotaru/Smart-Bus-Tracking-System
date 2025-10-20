@@ -219,7 +219,7 @@ export default function AdminLayout() {
         {/* Header */}
         <header className="bg-mainBlue flex justify-between items-center p-4 h-1/14 shadow-[0_1px_4px_3px_rgba(0,0,0,0.25)] z-15">
           {/* Nút bấm toggle sidebar */}
-          <div className="w-1/3 flex justify-start gap-5 items-center">
+          <div className="w-1/3 flex justify-start gap-5 items-center select-none">
             <button onClick={() => setIsOpen(!isOpen)}>
               <img
                 src={menu}
@@ -230,7 +230,7 @@ export default function AdminLayout() {
             <h1 className="text-2xl text-mainYellow font-semibold">{title}</h1>
           </div>
 
-          <h1 className="text-3xl w-1/3 text-center text-mainYellow font-bold">
+          <h1 className="text-3xl w-1/3 text-center text-mainYellow font-bold select-none">
             Smart Bus Tracking System
           </h1>
 

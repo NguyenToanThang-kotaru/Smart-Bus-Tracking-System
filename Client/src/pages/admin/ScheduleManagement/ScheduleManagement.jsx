@@ -5,7 +5,7 @@ import ScheduleContent from "./Schedule/ScheduleContent";
 export default function ScheduleManagement() {
   return (
     <div className="w-full h-full">
-      <Tabs defaultValue="PhanCong" className="w-full h-full">
+      <Tabs defaultValue="PhanCong" className="w-full h-full select-none">
         <TabsList className="bg-white shadow-[0_1px_4px_3px_rgba(0,0,0,0.25)] w-full flex justify-start align-middle rounded-none gap-5 h-1/15 p-2 px-5">
           {[
             ["PhanCong", "Phân công"],

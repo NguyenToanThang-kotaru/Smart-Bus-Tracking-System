@@ -5,7 +5,7 @@ import ContentTram from "./Station/StationContent"
 export default function RouteManagement() {
   return (
     <div className="w-full h-full">
-      <Tabs defaultValue="TuyenDuong" className="w-full h-full">
+      <Tabs defaultValue="TuyenDuong" className="w-full h-full select-none">
         <TabsList className="bg-white shadow-[0_1px_4px_3px_rgba(0,0,0,0.25)] w-full flex justify-start align-middle rounded-none gap-6 h-1/15 p-3 px-6">
           {[
             ["TuyenDuong", "Tuyến đường"],

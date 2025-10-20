@@ -24,10 +24,10 @@ export default function Dashboard() {
   }, [Schedule]);
 
   return (
-    <div className="p-[50px] h-full bg-theme flex gap-x-[50px]">
+    <div className="p-[50px] h-full bg-theme flex gap-x-[50px] select-none">
       <div className="h-full w-1/3 bg-white rounded-2xl shadow-[0_1px_4px_3px_rgba(0,0,0,0.25)] p-6 flex flex-col gap-y-[50px] items-center justify-start">
-        <h2 className="text-2xl font-semibold text-mainBlue">
-          Số chuyến đi hôm nay
+        <h2 className="text-2xl font-bold text-mainBlue">
+          CHUYẾN ĐI HÔM NAY
         </h2>
 
         <div className="w-full h-2/3">

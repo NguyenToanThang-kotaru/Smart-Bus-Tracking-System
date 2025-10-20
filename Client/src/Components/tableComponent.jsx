@@ -6,8 +6,8 @@ export default function TableCPN({ data }) {
 
     return (
 
-        <table className="w-full border-collapse overflow-hidden">
-            <thead >
+        <table className="w-full border-collapse overflow-hidden select-none">
+            <thead className="select-none">
                 <tr className="bg-[#F5F5F5] text-mainBlue text-left">
                     {Object.keys(data[0]).map((key) => (
                         <th key={key} className="p-4 px-10 last:text-center">

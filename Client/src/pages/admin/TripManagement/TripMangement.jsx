@@ -31,7 +31,7 @@ export default function Dashboard() {
   ];
 
   return (
-    <div className="flex h-full gap-4 p-4">
+    <div className="flex h-full gap-4 p-4 select-none">
       {/* Cột trái: Bản đồ */}
       <div className="flex-1 z-0">
         <MapView routePoints={routePoints} markers={markers} />
