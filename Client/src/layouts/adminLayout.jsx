@@ -1,10 +1,9 @@
 // src/layouts/AdminLayout.jsx
 import { useState } from "react";
 import { Outlet, Link, useLocation } from "react-router-dom";
-import MenuIcon from "../assets/Icon/Menu.png";
-import LogoutIcon from "../assets/Icon/Log out.png";
-import CloseIcon from "../assets/Icon/X.png";
-
+import menu from "@/assets/Icon/menuYellow.png";
+import logout from "@/assets/Icon/logoutYellow.png";
+import closeMenu from "@/assets/Icon/closeMenuWhite.png";
 
 function handleLogout() {
   sessionStorage.clear();
@@ -25,7 +24,6 @@ export default function AdminLayout() {
     "/admin/schedulemanagement": "Schedule Management",
     "/admin/tripmanagement": "Trip Management",
     "/admin/driverschedule": "Driver Schedule",
-    // Add more paths and titles as needed
   };
   const title = titles[location.pathname];
 
@@ -45,9 +43,9 @@ export default function AdminLayout() {
           </h1>
           <button>
             <img
-              src={CloseIcon}
+              src={closeMenu}
               alt="CloseSideBar"
-              className="w-8 h-8 cursor-pointer hover:scale-105 active:scale-95"
+              className="w-10 h-10 cursor-pointer hover:scale-105 active:scale-95"
               onClick={() => setIsOpen(!isOpen)}
             />
           </button>
@@ -95,7 +93,7 @@ export default function AdminLayout() {
                 />
               </svg>
 
-              <span>User Managerment</span>
+              <span>User Management</span>
             </Link>
           </li>
           <li>
@@ -117,7 +115,7 @@ export default function AdminLayout() {
                 />
               </svg>
 
-              <span>Student Managerment</span>
+              <span>Student Management</span>
             </Link>
           </li>
           <li>
@@ -136,7 +134,7 @@ export default function AdminLayout() {
                   fill="currentColor" />
               </svg>
 
-              <span>Route Managerment</span>
+              <span>Route Management</span>
             </Link>
           </li>
 
@@ -161,7 +159,7 @@ export default function AdminLayout() {
                 <path d="M20 14H14V32H20V14Z" stroke="currentColor" strokeWidth="4" strokeLinecap="round" strokeLinejoin="round" />
                 <path d="M34 14H28V24H34V14Z" stroke="currentColor" strokeWidth="4" strokeLinecap="round" strokeLinejoin="round" />
               </svg>
-              <span>Schedule Managerment</span>
+              <span>Schedule Management</span>
             </Link>
           </li>
 
@@ -182,7 +180,7 @@ export default function AdminLayout() {
                 />
               </svg>
 
-              <span>Trip Managerment</span>
+              <span>Trip Management</span>
             </Link>
           </li>
           <li>
@@ -205,7 +203,7 @@ export default function AdminLayout() {
                 />
               </svg>
 
-              <span>Driver Managerment</span>
+              <span>Driver Schedule</span>
             </Link>
           </li>
         </ul>
@@ -219,38 +217,35 @@ export default function AdminLayout() {
       {/* Main content */}
       <div className="flex-1 flex flex-col">
         {/* Header */}
-        <header className="bg-mainBlue flex justify-between items-center p-4 h-[65px] ">
+        <header className="bg-mainBlue flex justify-between items-center p-4 h-1/14 shadow-[0_1px_4px_3px_rgba(0,0,0,0.25)] z-15">
           {/* Nút bấm toggle sidebar */}
-          <div className="w-1/3 flex justify-start gap-5 items-center">
+          <div className="w-1/3 flex justify-start gap-5 items-center select-none">
             <button onClick={() => setIsOpen(!isOpen)}>
               <img
-                src={MenuIcon}
+                src={menu}
                 alt="Menu"
                 className="hover:scale-105 active:scale-95 cursor-pointer w-8 h-8"
               />
             </button>
-            <h1 className="text-3xl text-white font-bold">{title}</h1>
+            <h1 className="text-2xl text-mainYellow font-semibold">{title}</h1>
           </div>
 
-          <h1 className="text-3xl w-1/3 text-center text-white font-bold">
+          <h1 className="text-3xl w-1/3 text-center text-mainYellow font-bold select-none">
             Smart Bus Tracking System
           </h1>
 
           <div className="flex-1 flex gap-5 justify-end items-center">
-            {/* Avatar placeholder */}
-            <div className="w-10 h-10 border-2 border-mainRed rounded-full overflow-hidden bg-white"></div>
-            <span className="text-white text-2xl">Admin01</span>
-            <button onClick={handleLogout}
-              className="hover:scale-105 cursor-pointer active:scale-95">
-              <img src={LogoutIcon} alt="Logout" className="w-8 h-8" />
+            <button onClick={handleLogout} className="hover:scale-105 cursor-pointer active:scale-95 flex gap-x-3 bg-mainBlue items-center 
+              border-2 border-mainYellow rounded-[10px] px-[10px] py-[4px] font-semibold text-mainYellow">
+              Logout
+              <img src={logout} alt="Logout" className="w-6 h-6" />
             </button>
           </div>
         </header>
 
         {/* Nội dung chính */}
 
-        <main className="flex-1 overflow-y-auto scrollbar-hide">
-
+        <main className="h-13/14 overflow-y-auto scrollbar-hide">
           <Outlet />
         </main>
       </div>

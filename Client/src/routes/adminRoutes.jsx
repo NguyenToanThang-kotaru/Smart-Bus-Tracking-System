@@ -3,12 +3,12 @@ import { Routes, Route } from "react-router-dom";
 import AdminLayout from "../layouts/adminLayout";
 import Dashboard from "../pages/admin/Dashboard/Dashboard";
 import AdminLogin from "../pages/admin/Login/Login";
-import Student from "../pages/admin/Student/Students";
-import RouteManagement from "../pages/admin/Route/Route"
-import Schedule from "../pages/admin/Schedule/Schedule";
-import Trip from "../pages/admin/Trip/Trip";
-import Driver from "../pages/admin/Driver/Driver";
-import Users from "../pages/admin/UserManagement/users"; // Ensure this import is correct
+import StudentManagement from "../pages/admin/StudentManagement/StudentManagement";
+import RouteManagement from "../pages/admin/RouteManagement/RouteManagement"
+import ScheduleManagement from "../pages/admin/ScheduleManagement/ScheduleManagement";
+import TripManagement from "../pages/admin/TripManagement/TripMangement";
+import DriverSchedule from "../pages/admin/DriverSchedule/DriverSchedule";
+import UserManagement from "../pages/admin/UserManagement/UserManagement";
 import RequireAdminAuth from "../middleware/RequireAdminAuth";
 
 export default function AdminRoutes() {
@@ -17,23 +17,13 @@ export default function AdminRoutes() {
       <Route path="/admin/login" element={<AdminLogin />} />
       <Route element={<RequireAdminAuth />}>
         <Route path="/admin" element={<AdminLayout />}>
-          <Route path="/admin/DashboardManagement" element={<Dashboard />} />
-          <Route path="/admin/StudentManagement" element={<Student />} />
+          <Route path="/admin/Dashboard" element={<Dashboard />} />
+          <Route path="/admin/StudentManagement" element={<StudentManagement />} />
           <Route path="/admin/RouteManagement" element={<RouteManagement />} />
-          <Route path="/admin/ScheduleManagement" element={<Schedule />} />
-          <Route path="/admin/TripManagement" element={<Trip />} />
-          <Route path="/admin/DriverManagement" element={<Driver />} />
-          {/* 
-          <Route path="/admin/Orders" element={<Orders />} />
-          <Route path="/admin/Suppliers" element={<Suppliers />} />
-          <Route path="/admin/Accounts" element={<Accounts />} /> 
-          <Route path="/admin/Customers" element={<Customers />} />
-          <Route path="/admin/Employees" element={<Employees />} />
-          <Route path="/admin/Inventory" element={<Inventory />} />
-          <Route path="/admin/Permissions" element={<Permission />} />
-          <Route path="/admin/Products" element={<Products />} />
-          */}
-          <Route path="/admin/UserManagement" element={<Users />} />
+          <Route path="/admin/ScheduleManagement" element={<ScheduleManagement />} />
+          <Route path="/admin/TripManagement" element={<TripManagement />} />
+          <Route path="/admin/DriverSchedule" element={<DriverSchedule />} />
+          <Route path="/admin/UserManagement" element={<UserManagement />} />
         </Route>
       </Route>
     </Routes>

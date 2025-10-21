@@ -19,7 +19,7 @@ export default function MapView({ routePoints, markers }) {
       center={defaultCenter}
       zoom={14}
       scrollWheelZoom={true}
-      style={{ height: "500px", width: "100%" }}
+      style={{ height: "100%", width: "100%" }}
     >
       <TileLayer
         attribution='&copy; OpenStreetMap contributors'
