@@ -1,0 +1,1 @@
+const assignmentModel = require('../models/assignment.model');

@@ -1,0 +1,1 @@
+const stationModel = require('../models/station.model');
