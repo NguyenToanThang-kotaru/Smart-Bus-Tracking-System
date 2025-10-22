@@ -67,7 +67,6 @@ return ( <div className="relative"> <div className="relative overflow-x-auto p-1
        className="absolute right-2 top-1/2 -translate-y-1/2 bg-mainBlue text-white p-2 rounded-full shadow-md hover:bg-blue-800"
      > <ChevronRight size={24} /> </button>
 
-```
     <div className="text-center mb-4 text-mainBlue font-bold text-lg">
       Tuần {startOfWeek.format("DD/MM")} - {startOfWeek.add(5, "day").format("DD/MM/YYYY")}
     </div>
