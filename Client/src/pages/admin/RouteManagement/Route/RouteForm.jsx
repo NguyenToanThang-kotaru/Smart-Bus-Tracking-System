@@ -1,3 +1,5 @@
+import addStation from "@/assets/Icon/addStationYellow.png";
+
 export default function RouteForm({ onClose, mode, data }) {
   const isView = mode === "view";
   const title =
@@ -28,6 +30,25 @@ export default function RouteForm({ onClose, mode, data }) {
               defaultValue={data?.name || ""}
               readOnly={isView}
               className={`border-2 border-gray-300 rounded-[10px] px-3 py-2 w-full ${
+                isView ? "bg-gray-100" : "focus:outline-mainYellow"
+              }`}
+            />
+          </div>
+
+          <div className="flex flex-col gap-y-2">
+            <div className="flex items-center justify-between">
+              <label className="text-2xl text-mainBlue font-bold">Trạm thuộc tuyến</label>
+              <button
+                type="button"
+                className="cursor-pointer hover:scale-95 border-2 rounded-[10px] border-mainYellow text-mainYellow  font-semibold px-3 py-1 transition flex gap-x-[10px] items-center"
+              >
+                Chọn trạm
+                <img src={addStation} alt="addStation" className="w-5 h-5" />
+              </button>
+            </div>
+            <div 
+              readOnly={isView}
+              className={`border-2 h-[200px] border-gray-300 rounded-[10px] px-3 py-2 w-full ${
                 isView ? "bg-gray-100" : "focus:outline-mainYellow"
               }`}
             />

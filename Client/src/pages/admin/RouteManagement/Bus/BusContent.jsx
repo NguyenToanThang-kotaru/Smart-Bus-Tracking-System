@@ -9,9 +9,9 @@ import BusForm from "./BusForm";
 
 export default function BusContent() {
   const [bus, setBus] = useState([
-    { soXeBuyt: "Bus01", bienSoXe: "XX-XXXXXXX", sucChua: "30", trangThaiXe: "tốt" },
-    { soXeBuyt: "Bus02", bienSoXe: "XX-XXXXXXX", sucChua: "30", trangThaiXe: "tốt" },
-    { soXeBuyt: "Bus03", bienSoXe: "XX-XXXXXXX", sucChua: "30", trangThaiXe: "tốt" },
+    { soXeBuyt: "Bus01", bienSoXe: "XX-XXXXXXX", sucChua: "30", trangThaiXe: "Tốt" },
+    { soXeBuyt: "Bus02", bienSoXe: "XX-XXXXXXX", sucChua: "30", trangThaiXe: "Tốt" },
+    { soXeBuyt: "Bus03", bienSoXe: "XX-XXXXXXX", sucChua: "30", trangThaiXe: "Tốt" },
   ]);
 
   const [showForm, setShowForm] = useState(false);

@@ -35,24 +35,30 @@ export default function BusForm({ onClose, mode, data }) {
 
           <div className="flex flex-col gap-y-2">
             <label className="text-2xl text-mainBlue font-bold">Sức chứa</label>
-            <input type="text"
+            <select
               defaultValue={data?.sucChua || ""}
               readOnly={isView}
               className={`border-2 border-gray-300 rounded-[10px] px-3 py-2 w-full ${
                 isView ? "bg-gray-100" : "focus:outline-mainYellow"
               }`}
-            />
+            >
+              <option value="30">30</option>
+              <option value="35">35</option>
+            </select>
           </div>
 
           <div className="flex flex-col gap-y-2">
             <label className="text-2xl text-mainBlue font-bold">Trạng thái xe</label>
-            <input type="text"
+            <select
               defaultValue={data?.trangThaiXe || ""}
               readOnly={isView}
               className={`border-2 border-gray-300 rounded-[10px] px-3 py-2 w-full ${
                 isView ? "bg-gray-100" : "focus:outline-mainYellow"
               }`}
-            />
+            >
+              <option value="Đang bảo trì">Đang bảo trì</option>
+              <option value="Tốt">Tốt</option>
+            </select>
           </div>
         </div>
 

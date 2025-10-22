@@ -10,7 +10,7 @@ import StudentForm from "./StudentForm";
 export default function StudentContent() {
   const [Student, setStudent] = useState([
     { maHS: "ND000003", tenHS: "Phạm Đình Duy Thái", lop: "10A1", maPH: "PH000001", maTram: "TRAM000001"},
-    { maHS: "ND000003", tenHS: "Phạm Đình Duy Thái", lop: "11A3", maPH: "PH000001", maTram: "TRAM000001"},
+    { maHS: "ND000003", tenHS: "Phạm Đình Duy Thái", lop: "11A3", maPH: "PH000001", maTram: "TRAM000002"},
   ]);
 
   const [showForm, setShowForm] = useState(false);
