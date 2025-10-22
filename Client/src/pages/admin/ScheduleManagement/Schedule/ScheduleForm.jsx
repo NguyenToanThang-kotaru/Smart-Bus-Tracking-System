@@ -1,110 +1,175 @@
-import { Search, Bus, Route, Clock } from "lucide-react";
+import { useState } from "react";
+import view from "@/assets/Icon/viewYellow.png";
+import edit from "@/assets/Icon/editYellow.png";
+import del from "@/assets/Icon/deleteYellow.png";
 
 export default function ScheduleForm({ onClose, mode, data }) {
-const isView = mode === "view";
-const title =
-mode === "edit"
-? "Sửa Lịch Trình"
-: mode === "view"
-? "Xem Lịch Trình"
-: "Thêm Lịch Trình";
+    const [currentMode, setCurrentMode] = useState(mode);
+    const [selectedTrip, setSelectedTrip] = useState(null);
+    const [tripList, setTripList] = useState(data?.trips || []);
 
-return ( <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/40"> <form className="bg-white flex flex-col rounded-[50px] px-[50px] py-[30px] w-1/3 min-w-[450px] gap-y-[35px]"> <h2 className="text-4xl font-bold text-mainBlue">{title}</h2>
+    const isList = currentMode === "list";
+    const isView = currentMode === "view";
+    const isEdit = currentMode === "edit";
 
-    <div className="space-y-3">
-      <div className="flex flex-col gap-y-2">
-        <label className="text-2xl text-mainBlue font-bold">Ca làm việc</label>
-        <div className="relative">
-          <input
-            type="text"
-            defaultValue={data?.shift || ""}
-            readOnly={isView}
-            className={`border-2 border-gray-300 rounded-[10px] px-3 py-2 w-full ${
-              isView ? "bg-gray-100" : "focus:outline-mainYellow"
-            }`}
-          />
-          <Clock className="absolute right-2 top-2.5 text-yellow-500 w-5 h-5" />
+    const title = isEdit
+        ? "Sửa Lịch Trình"
+        : isView
+        ? "Xem Lịch Trình"
+        : isList
+        "Danh Sách Chuyến"
+        ;
+
+    const handleView = (trip) => {
+        setSelectedTrip(trip);
+        setCurrentMode("view");
+    };
+
+    const handleEdit = (trip) => {
+        setSelectedTrip(trip);
+        setCurrentMode("edit");
+    };
+
+    const handleDelete = (trip) => {
+        if (window.confirm(`Xóa chuyến của ${trip.driver}?`)) {
+        setTripList((prev) => prev.filter((t) => t !== trip));
+        }
+    };
+
+    const handleBackToList = () => {
+        setSelectedTrip(null);
+        setCurrentMode("list");
+    };
+
+    const handleSaveEdit = () => {
+        alert("Đã lưu thay đổi!");
+        setCurrentMode("list");
+    };
+
+    return ( 
+        <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/40"> 
+            <div className="bg-white flex flex-col rounded-[40px] px-[40px] py-[30px] w-[525px] max-h-[90vh] shadow-2xl overflow-hidden"> 
+                <h2 className="text-3xl font-bold text-mainBlue text-center ">{title}</h2>
+
+                {/* --- Danh sách chuyến --- */}
+                {isList && (
+                    <div className="flex-1 overflow-y-auto space-y-4 pr-2 scrollbar-thin scrollbar-thumb-gray-400 scrollbar-track-transparent hover:scrollbar-thumb-gray-500 rounded-lg">
+                        <div className="text-center text-lg font-semibold text-gray-700 mb-2 sticky top-0 bg-white py-2 z-10">
+                            <h3 className="text-center text-xl font-bold text-mainBlue ">
+                                Danh Sách Các Chuyến
+                            </h3>
+                            {data?.shift} – {data?.date}
+                        </div>
+
+                        {tripList.map((trip, i) => (
+                        <div
+                            key={i}
+                            className="flex items-center justify-between border border-gray-200 rounded-[15px] p-4 shadow-sm hover:shadow-md transition-all duration-200 bg-gray-50 hover:bg-white"
+                        >
+                            <div className="flex flex-col text-gray-700">
+                                <span className="font-semibold text-base">{trip.driver}</span>
+                                <span className="text-sm text-gray-500">{trip.bus}</span>
+                                <span className="text-sm text-gray-500">{trip.route}</span>
+                            </div>
+
+                            <div className="flex gap-4 items-center">
+                                <img
+                                    src={view}
+                                    alt="view"
+                                    className="w-5 h-5 cursor-pointer hover:scale-110 transition-transform"
+                                    onClick={() => handleView(trip)}
+                                />
+                                <img
+                                    src={edit}
+                                    alt="edit"
+                                    className="w-5 h-5 cursor-pointer hover:scale-110 transition-transform"
+                                    onClick={() => handleEdit(trip)}
+                                />
+                                <img
+                                    src={del}
+                                    alt="delete"
+                                    className="w-5 h-5 cursor-pointer hover:scale-110 transition-transform"
+                                    onClick={() => handleDelete(trip)}
+                                />
+                            </div>
+                        </div>
+                    ))}
+                        {tripList.length === 0 && (
+                            <p className="text-gray-400 italic text-center">Không có chuyến nào</p>
+                        )}
+                    </div>
+                )}
+
+                {/* --- Chế độ xem chi tiết --- */}
+                {isView && selectedTrip && (
+                    <div className="flex flex-col text-gray-700 gap-3 overflow-y-auto max-h-[60vh]">
+                        <div className="bg-gray-50 rounded-xl p-4 shadow-sm">
+                            <p className="font-semibold text-lg mb-2 text-center">Chi tiết chuyến</p>
+                            <p><strong>Tài xế:</strong> {selectedTrip.driver}</p>
+                            <p><strong>Xe buýt:</strong> {selectedTrip.bus}</p>
+                            <p><strong>Tuyến:</strong> {selectedTrip.route}</p>
+                        </div>
+                    </div>
+                )}
+
+                {/* --- Chế độ sửa --- */}
+                {isEdit && selectedTrip && (
+                    <form className="flex flex-col gap-3 overflow-y-auto max-h-[60vh]">
+                        <div>
+                            <label className="text-sm font-semibold text-gray-700">Tài xế</label>
+                            <input
+                                type="text"
+                                defaultValue={selectedTrip.driver}
+                                className="border border-gray-300 rounded-lg px-3 py-2 w-full focus:border-mainYellow focus:ring-mainYellow focus:ring-1"
+                            />
+                        </div>
+                        <div>
+                            <label className="text-sm font-semibold text-gray-700">Xe buýt</label>
+                            <input
+                                type="text"
+                                defaultValue={selectedTrip.bus}
+                                className="border border-gray-300 rounded-lg px-3 py-2 w-full focus:border-mainYellow focus:ring-mainYellow focus:ring-1"
+                            />
+                        </div>
+                        <div>
+                            <label className="text-sm font-semibold text-gray-700">Tuyến đường</label>
+                            <input
+                                type="text"
+                                defaultValue={selectedTrip.route}
+                                className="border border-gray-300 rounded-lg px-3 py-2 w-full focus:border-mainYellow focus:ring-mainYellow focus:ring-1"
+                            />
+                        </div>
+                    </form>
+                )}
+
+                {/* --- Nút điều hướng --- */}
+                <div className="flex justify-end mt-6 gap-4 sticky bottom-0 bg-white pt-3">
+                    {(isView || isEdit) && (
+                        <button
+                            onClick={handleBackToList}
+                            className="text-lg bg-gray-300 w-[130px] text-black font-bold py-2 rounded-[10px] hover:bg-gray-400"
+                        >
+                        Trở lại
+                        </button>
+                    )}
+
+                    {isEdit && (
+                        <button
+                            onClick={handleSaveEdit}
+                            className="text-lg bg-mainYellow w-[130px] text-black font-bold py-2 rounded-[10px] hover:bg-yellow-500"
+                        >
+                        Lưu
+                        </button>
+                    )}
+
+                    <button
+                        onClick={onClose}
+                        className="text-lg bg-mainBlue w-[130px] text-white font-bold py-2 rounded-[10px] hover:bg-blue-900"
+                    >
+                        Đóng
+                    </button>
+                </div>
+            </div>
         </div>
-      </div>
-
-      <div className="flex flex-col gap-y-2">
-        <label className="text-2xl text-mainBlue font-bold">Ngày</label>
-        <input
-          type="date"
-          defaultValue={data?.date || ""}
-          readOnly={isView}
-          className={`border-2 border-gray-300 rounded-[10px] px-3 py-2 w-full ${
-            isView ? "bg-gray-100" : "focus:outline-mainYellow"
-          }`}
-        />
-      </div>
-
-      <div className="flex flex-col gap-y-2">
-        <label className="text-2xl text-mainBlue font-bold">Tài xế</label>
-        <div className="relative">
-          <input
-            type="text"
-            defaultValue={data?.driver || ""}
-            readOnly={isView}
-            className={`border-2 border-gray-300 rounded-[10px] px-3 py-2 w-full ${
-              isView ? "bg-gray-100" : "focus:outline-mainYellow"
-            }`}
-          />
-          <Search className="absolute right-2 top-2.5 text-yellow-500 w-5 h-5" />
-        </div>
-      </div>
-
-      <div className="flex flex-col gap-y-2">
-        <label className="text-2xl text-mainBlue font-bold">Xe buýt</label>
-        <div className="relative">
-          <input
-            type="text"
-            defaultValue={data?.bus || ""}
-            readOnly={isView}
-            className={`border-2 border-gray-300 rounded-[10px] px-3 py-2 w-full ${
-              isView ? "bg-gray-100" : "focus:outline-mainYellow"
-            }`}
-          />
-          <Bus className="absolute right-2 top-2.5 text-yellow-500 w-5 h-5" />
-        </div>
-      </div>
-
-      <div className="flex flex-col gap-y-2">
-        <label className="text-2xl text-mainBlue font-bold">Tuyến đường</label>
-        <div className="relative">
-          <input
-            type="text"
-            defaultValue={data?.route || ""}
-            readOnly={isView}
-            className={`border-2 border-gray-300 rounded-[10px] px-3 py-2 w-full ${
-              isView ? "bg-gray-100" : "focus:outline-mainYellow"
-            }`}
-          />
-          <Route className="absolute right-2 top-2.5 text-yellow-500 w-5 h-5" />
-        </div>
-      </div>
-    </div>
-
-    <div className="flex justify-end mt-6 gap-x-[30px]">
-      {!isView && (
-        <button
-          type="submit"
-          className="text-xl bg-mainYellow w-[170px] text-black font-bold py-2 rounded-[10px] hover:bg-yellow-500"
-        >
-          XÁC NHẬN
-        </button>
-      )}
-      <button
-        type="button"
-        onClick={onClose}
-        className="text-xl bg-mainBlue w-[170px] text-white font-bold py-2 rounded-[10px] hover:bg-blue-900"
-      >
-        ĐÓNG
-      </button>
-    </div>
-  </form>
-</div>
-
-
-);
+    );
 }
