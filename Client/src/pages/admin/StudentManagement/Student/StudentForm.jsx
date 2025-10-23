@@ -57,13 +57,17 @@ export default function StudentForm({ onClose, mode, data }) {
 
           <div className="flex flex-col gap-y-2">
             <label className="text-2xl text-mainBlue font-bold">Trạm đăng ký</label>
-            <input type="text"
+            <select
               defaultValue={data?.maTram || ""}
-              readOnly
+              readOnly={isView}
               className={`border-2 border-gray-300 rounded-[10px] px-3 py-2 w-full ${
                 isView ? "bg-gray-100" : "focus:outline-mainYellow"
               }`}
-            />
+            >
+              <option value="TRAM000001">TRAM000001</option>
+              <option value="TRAM000002">TRAM000002</option>
+              <option value="TRAM000003">TRAM000003</option>
+            </select>
           </div>
         </div>
 

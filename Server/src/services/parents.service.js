@@ -1,0 +1,1 @@
+const parentsModel = require('../models/parents.model');

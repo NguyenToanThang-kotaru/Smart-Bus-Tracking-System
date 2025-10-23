@@ -1,6 +1,7 @@
 import { Tabs, TabsList, TabsTrigger, TabsContent } from "@/components/ui/tabs";
 import ContentTuyenDuong from "./Route/RouteContent"
 import ContentTram from "./Station/StationContent"
+import ContentXeBuyt from "./Bus/BusContent"
 
 export default function RouteManagement() {
   return (
@@ -10,6 +11,7 @@ export default function RouteManagement() {
           {[
             ["TuyenDuong", "Tuyến đường"],
             ["Tram", "Trạm"],
+            ["XeBuyt", "Xe buýt"],
           ].map(([value, label]) => (
             <TabsTrigger
               key={value}
@@ -34,6 +36,10 @@ export default function RouteManagement() {
 
         <TabsContent value="Tram">
           <ContentTram />
+        </TabsContent>
+
+        <TabsContent value="XeBuyt">
+          <ContentXeBuyt />
         </TabsContent>
       </Tabs>
     </div>

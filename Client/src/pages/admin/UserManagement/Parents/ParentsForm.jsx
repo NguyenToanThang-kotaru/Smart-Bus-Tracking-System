@@ -1,3 +1,6 @@
+import addStudent from "@/assets/Icon/addStudentYellow.png";
+//import ParentsSelectedStudent from "./ParentsSelectedStudent";
+
 export default function ParentsForm({ onClose, mode, data }) {
   const isView = mode === "view";
   const title =
@@ -73,11 +76,19 @@ export default function ParentsForm({ onClose, mode, data }) {
               </div>
 
               <div className="flex flex-col gap-y-2 h-full">
-                <label className="text-2xl text-mainBlue font-bold">Học sinh</label>
-                <input type="text"
-                  defaultValue={data?.sdt || ""}
+                <div className="flex items-center justify-between">
+                  <label className="text-2xl text-mainBlue font-bold">Học sinh</label>
+                  <button
+                    type="button"
+                    className="cursor-pointer hover:scale-95 border-2 rounded-[10px] border-mainYellow text-mainYellow  font-semibold px-3 py-1 transition flex gap-x-[10px]"
+                  >
+                    Chọn học sinh
+                    <img src={addStudent} alt="addStudent" className="w-5 h-5" />
+                  </button>
+                </div>
+                <div 
                   readOnly={isView}
-                  className={`border-2 border-gray-300 rounded-[10px] px-3 py-2 w-full ${
+                  className={`border-2 h-full border-gray-300 rounded-[10px] px-3 py-2 w-full ${
                     isView ? "bg-gray-100" : "focus:outline-mainYellow"
                   }`}
                 />

@@ -10,6 +10,7 @@ const authenticateToken = require('../middleware/authMiddleware');
 // router.post('/create',authenticateToken.authenticateToken, userController.createUser);
 
 // POST /api/users/login
+router.post('/admin/THEM_TAI_XE', userController.Adminlogin);
 router.post('/admin/login', userController.Adminlogin);
 router.post('/user/login', userController.Userlogin);
 module.exports = router;
