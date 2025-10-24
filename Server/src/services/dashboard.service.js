@@ -1,0 +1,1 @@
+const dashboardModel = require('../models/dashboard.model');
