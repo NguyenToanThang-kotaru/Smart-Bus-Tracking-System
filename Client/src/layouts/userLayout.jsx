@@ -9,7 +9,7 @@ export default function UserLayout() {
 
   useEffect(() => {
     const socket = io("http://localhost:5000");
-    const user = JSON.parse(sessionStorage.getItem("user"));
+    const user = JSON.parse(sessionStorage.getItem("isUser"));
 
     console.log("Phụ huynh là " + user.TenDangNhap);
     fetch("/api/routes/1")

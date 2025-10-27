@@ -24,7 +24,7 @@ export default function LoginPage() {
         toast.error("Sai tài khoản hoặc mật khẩu!");
       } else {
         toast.success("Đăng nhập thành công!");
-        sessionStorage.setItem("user", JSON.stringify(data.user));
+        sessionStorage.setItem("isUser", JSON.stringify(data.user));
         sessionStorage.setItem("accessToken", data.accessToken);
         setTimeout(() => (window.location.href = "/"), 1000);
       }

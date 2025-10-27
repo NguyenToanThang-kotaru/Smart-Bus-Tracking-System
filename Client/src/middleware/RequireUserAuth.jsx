@@ -4,8 +4,8 @@ export default function RequireAdminAuth() {
   const isLogined = sessionStorage.getItem("isUser");
   const accessToken = sessionStorage.getItem("accessToken");
 
-  // if (!isAdmin || !accessToken ) {
-  //   return <Navigate to="/admin/login" replace />;
-  // }
+  if (!isLogined || !accessToken ) {
+    return <Navigate to="/login" replace />;
+  }
   return <Outlet />;
 }

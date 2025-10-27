@@ -1,5 +1,6 @@
 import MapView from "@/components/MapView";
-
+import Marker from "@/assets/Icon/map-marker.png" 
+import busIcon from "@/assets/Icon/map-bus.png"
 export default function Dashboard() {
   // Dữ liệu tuyến (dùng cho bản đồ)
   const routePoints = [
@@ -14,12 +15,12 @@ export default function Dashboard() {
     {
       position: [10.762622, 106.660172],
       label: "Bắt đầu hành trình",
-      icon: "https://cdn-icons-png.flaticon.com/512/3448/3448339.png",
+      icon: busIcon,
     },
     {
       position: [10.768, 106.675],
       label: "Kết thúc hành trình",
-      icon: "https://cdn-icons-png.flaticon.com/512/190/190411.png",
+      icon: Marker,
     },
   ];
 
@@ -44,7 +45,7 @@ export default function Dashboard() {
         {trips.map((trip, idx) => (
           <div
             key={idx}
-            className="border-b border-gray-200 pb-3 mb-3 last:border-none last:pb-0 last:mb-0"
+            className="border-b hover:opacity-50 cursor-pointer border-gray-200 pb-3 mb-3 last:border-none last:pb-0 last:mb-0"
           >
             <p>
               Xe: <b>{trip.bus}</b>
