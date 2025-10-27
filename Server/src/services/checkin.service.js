@@ -1,1 +1,0 @@
-const checkinModel = require('../models/checkin.model');
