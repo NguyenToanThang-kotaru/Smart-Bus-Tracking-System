@@ -8,6 +8,7 @@ const bodyParser = require('body-parser');
 const userRoutes = require('./src/routes/user.routes');
 const authRoutes = require('./src/routes/auth.routes');
 const mapRoutes = require("./src/routes/route.routes");
+const studentRoutes = require('./src/routes/student.routes');
 
 const app = express();
 app.use(bodyParser.json());
@@ -23,6 +24,8 @@ app.use('/api/users', userRoutes);
 app.use('/api/auth', authRoutes);
 
 app.use('/api/routes', mapRoutes);
+
+app.use('/api/students', studentRoutes);
 
 // start server
 const PORT = 3700;
