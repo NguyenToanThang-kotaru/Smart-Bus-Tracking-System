@@ -14,7 +14,7 @@ export default function StudentForm({ onClose, mode, data }) {
           <div className="flex flex-col gap-y-2">
             <label className="text-2xl text-mainBlue font-bold">Mã học sinh</label>
             <input type="text"
-              defaultValue={data?.maHS || ""} 
+              defaultValue={data?.MaHS || ""} 
               readOnly
               className={`border-2 border-gray-300 rounded-[10px] px-3 py-2 w-full ${
                 isView ? "bg-gray-100" : "focus:outline-mainYellow"
@@ -25,7 +25,7 @@ export default function StudentForm({ onClose, mode, data }) {
           <div className="flex flex-col gap-y-2">
             <label className="text-2xl text-mainBlue font-bold">Tên học sinh</label>
             <input type="text"
-              defaultValue={data?.tenHS || ""}
+              defaultValue={data?.TenHS || ""}
               readOnly={isView}
               className={`border-2 border-gray-300 rounded-[10px] px-3 py-2 w-full ${
                 isView ? "bg-gray-100" : "focus:outline-mainYellow"
@@ -36,7 +36,7 @@ export default function StudentForm({ onClose, mode, data }) {
           <div className="flex flex-col gap-y-2">
             <label className="text-2xl text-mainBlue font-bold">Lớp</label>
             <input type="text"
-              defaultValue={data?.lop || ""}
+              defaultValue={data?.Lop || ""}
               readOnly={isView}
               className={`border-2 border-gray-300 rounded-[10px] px-3 py-2 w-full ${
                 isView ? "bg-gray-100" : "focus:outline-mainYellow"
@@ -47,7 +47,7 @@ export default function StudentForm({ onClose, mode, data }) {
           <div className="flex flex-col gap-y-2">
             <label className="text-2xl text-mainBlue font-bold">Phụ huynh</label>
             <input type="text"
-              defaultValue={data?.maPH || ""}
+              defaultValue={data?.MaPH || ""}
               readOnly
               className={`border-2 border-gray-300 rounded-[10px] px-3 py-2 w-full ${
                 isView ? "bg-gray-100" : "focus:outline-mainYellow"
@@ -58,7 +58,7 @@ export default function StudentForm({ onClose, mode, data }) {
           <div className="flex flex-col gap-y-2">
             <label className="text-2xl text-mainBlue font-bold">Trạm đăng ký</label>
             <select
-              defaultValue={data?.maTram || ""}
+              defaultValue={data?.MaTram || ""}
               readOnly={isView}
               className={`border-2 border-gray-300 rounded-[10px] px-3 py-2 w-full ${
                 isView ? "bg-gray-100" : "focus:outline-mainYellow"
