@@ -8,6 +8,7 @@ const authenticateToken = require('../middleware/authMiddleware');
 
 // // POST /api/users/create
 // router.post('/create',authenticateToken.authenticateToken, userController.createUser);
+router.post('/phuhuynh/create', userController.createParent);
 
 // POST /api/users/login
 router.post('/admin/THEM_TAI_XE', userController.Adminlogin);

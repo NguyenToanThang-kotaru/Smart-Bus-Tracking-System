@@ -47,3 +47,14 @@ exports.Adminlogin = (username, password, callback) => {
   
   userModel.Adminlogin(username, password, callback);
 }
+exports.createParent = (data, callback) => {
+  if (!data.TenDangNhap || !data.MatKhau || !data.TenPH || !data.SdtPH) {
+    return callback('Thiếu thông tin phụ huynh');
+  }
+
+  if (data.MatKhau.length < 6) {
+    return callback('Mật khẩu phải ít nhất 6 ký tự');
+  }
+
+  userModel.createParent(data, callback);
+};

@@ -22,3 +22,7 @@ exports.Userlogin = (username, password, callback) => {
     callback(null, results[0]);
   });
 }
+exports.createParent = (data, callback) => {
+  const sql = 'INSERT INTO phuhuynh (TenDangNhap, SdtPH, TenPH, MatKhau, TrangThaiXoa) VALUES (?, ?, ?, ?, 0)';
+  db.query(sql, [data.TenDangNhap, data.SdtPH, data.TenPH, data.MatKhau], callback);
+};

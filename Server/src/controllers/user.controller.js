@@ -103,3 +103,11 @@ exports.createUser = (req, res) => {
     res.json({ message: "User created!", id: result.insertId });
   });
 };
+exports.createParent = (req, res) => {
+  const newParent = req.body;
+
+  userService.createParent(newParent, (err, result) => {
+    if (err) return res.status(400).json({ error: err });
+    res.json({ message: "Thêm phụ huynh thành công!", id: result.insertId });
+  });
+};
