@@ -15,6 +15,7 @@ const tripRoutes = require("./src/routes/trip.routes");
 // socket
 const socketHandler = require("./src/socket");
 const studentRoutes = require('./src/routes/student.routes');
+const scheduleRoutes = require("./src/routes/schedule.routes");
 
 const app = express();
 
@@ -32,6 +33,7 @@ app.use('/api/auth', authRoutes);
 app.use('/api/routes', mapRoutes);
 app.use('/api/trips', tripRoutes);
 app.use('/api/students', studentRoutes);
+app.use('/api/schedule', scheduleRoutes);
 
 // tạo HTTP server từ Express app
 const server = http.createServer(app);
