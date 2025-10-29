@@ -1,4 +1,6 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
+import axiosClient from "@/middleware/axiosClient";
+import "react-toastify/dist/ReactToastify.css";
 import Table from "@/Components/tableComponent";
 import view from "@/assets/Icon/viewYellow.png";
 import del from "@/assets/Icon/deleteYellow.png";
@@ -6,35 +8,62 @@ import edit from "@/assets/Icon/editYellow.png";
 import SearchBar from "@/Components/searchBarComponent";
 import AddButton from "@/Components/buttonComponent";
 import StudentForm from "./StudentForm";
+import { toast } from "react-toastify";
 
 export default function StudentContent() {
-  const [Student, setStudent] = useState([
-    { maHS: "ND000003", tenHS: "Phạm Đình Duy Thái", lop: "10A1", maPH: "PH000001", maTram: "TRAM000001"},
-    { maHS: "ND000003", tenHS: "Phạm Đình Duy Thái", lop: "11A3", maPH: "PH000001", maTram: "TRAM000002"},
-  ]);
-
+  const [Student, setStudent] = useState([]);
   const [showForm, setShowForm] = useState(false);
   const [selected, setSelected] = useState(null);
   const [mode, setMode] = useState("add");
-  
+
+  useEffect(() => {
+    loadTableDataStudents();
+  }, []);
+
+  const loadTableDataStudents = async () => {
+    try {
+      const res = await axiosClient.get("students/admin");
+      console.log(res.data);
+      setStudent(res.data);
+    } catch (err) {
+      toast.error("Lỗi lấy danh sách học sinh!");
+    }
+  };
+
   const handleAdd = () => {
     setMode("add");
     setSelected(null);
     setShowForm(true);
   };
-  const handleEdit = (item) => {
+
+  const handleEdit = (obj) => {
     setMode("edit");
-    setSelected(item);
+    setSelected(obj);
     setShowForm(true);
   };
-  const handleView = (item) => {
+
+  const handleView = (obj) => {
     setMode("view");
-    setSelected(item);
+    setSelected(obj);
     setShowForm(true);
   };
-  const handleDelete = (id) => {
+
+
+//   const handleDelete = (id) => {
+//     if (window.confirm("Bạn có chắc muốn xóa người dùng này?")) {
+//       setStudent(Student.filter((obj) => obj.MaHS !== id));
+//     }
+//   };
+
+  const handleDelete = async (id) => {
     if (window.confirm("Bạn có chắc muốn xóa người dùng này?")) {
-      setStudent(routes.filter((obj) => obj.id !== id));
+      try {
+        await axiosClient.put(`students/admin/delete/${id}`);
+        await loadTableDataStudents();
+        toast.success("Xóa học sinh thành công!");
+      } catch (err) {
+        toast.error("Lỗi xoá học sinh!");
+      }
     }
   };
 
@@ -48,16 +77,16 @@ export default function StudentContent() {
       <div className="mt-10 ">
         <Table
           data={Student.map((obj) => ({
-            "Mã học sinh": obj.maHS,
-            "Tên học sinh": obj.tenHS,
-            "Lớp": obj.lop,
-            "Phụ huynh": obj.maPH,
-            "Trạm đăng ký": obj.maTram,
+            "Mã học sinh": obj.MaHS,
+            "Tên học sinh": obj.TenHS,
+            "Lớp": obj.Lop,
+            "Phụ huynh": obj.MaPH,
+            "Trạm đăng ký": obj.MaTram,
             "Chức năng": (
               <div className="flex gap-[30px]">
                 <img src={edit} alt="edit" className="w-6 h-6" onClick={() => handleEdit(obj)} />
                 <img src={view} alt="view" className="w-6 h-6" onClick={() => handleView(obj)} />
-                <img src={del} alt="delete" className="w-6 h-6" onClick={() => handleDelete(obj.maND)}/>
+                <img src={del} alt="delete" className="w-6 h-6" onClick={() => handleDelete(obj.MaHS)}/>
               </div>
             ),
           }))}
