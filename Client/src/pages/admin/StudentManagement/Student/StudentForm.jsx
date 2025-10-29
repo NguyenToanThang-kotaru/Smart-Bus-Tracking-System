@@ -64,9 +64,9 @@ export default function StudentForm({ onClose, mode, data }) {
                 isView ? "bg-gray-100" : "focus:outline-mainYellow"
               }`}
             >
-              <option value="TRAM000001">TRAM000001</option>
-              <option value="TRAM000002">TRAM000002</option>
-              <option value="TRAM000003">TRAM000003</option>
+              <option value="TR000001">TR000001</option>
+              <option value="TR000002">TR000002</option>
+              <option value="TR000003">TR000003</option>
             </select>
           </div>
         </div>

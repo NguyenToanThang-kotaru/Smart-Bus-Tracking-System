@@ -49,3 +49,17 @@ exports.deleteStudent = (id, callback) => {
     callback(null, result);
   });
 };
+
+exports.getNextStudentId = (callback) => {
+  studentModel.getLastStudentId((err, lastId) => {
+    if (err) return callback(err);
+
+    let newId = "HS000001";
+    if (lastId) {
+      const num = parseInt(lastId.replace("HS", "")) + 1;
+      newId = "HS" + num.toString().padStart(6, "0");
+    }
+    callback(null, newId);
+  });
+};
+

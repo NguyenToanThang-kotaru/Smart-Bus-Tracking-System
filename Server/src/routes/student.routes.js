@@ -13,4 +13,6 @@ router.put('/admin/update/:id', studentController.updateStudent);
 
 router.put('/admin/delete/:id', studentController.deleteStudent);
 
+router.get('/nextid', studentController.getNextStudentId);
+
 module.exports = router;  

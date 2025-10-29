@@ -8,16 +8,21 @@ import edit from "@/assets/Icon/editYellow.png";
 import SearchBar from "@/Components/searchBarComponent";
 import AddButton from "@/Components/buttonComponent";
 import StudentForm from "./StudentForm";
+import { toast } from "react-toastify";
 
 export default function StudentContent() {
   const [Student, setStudent] = useState([]);
   const [showForm, setShowForm] = useState(false);
   const [selected, setSelected] = useState(null);
   const [mode, setMode] = useState("add");
-  
-  const fetchStudents = async () => {
+
+  useEffect(() => {
+    loadTableDataStudents();
+  }, []);
+
+  const loadTableDataStudents = async () => {
     try {
-      const res = await axiosClient.get("/students/admin");
+      const res = await axiosClient.get("students/admin");
       console.log(res.data);
       setStudent(res.data);
     } catch (err) {
@@ -25,28 +30,40 @@ export default function StudentContent() {
     }
   };
 
-  useEffect(() => {
-    fetchStudents();
-  }, []);
-
   const handleAdd = () => {
     setMode("add");
     setSelected(null);
     setShowForm(true);
   };
-  const handleEdit = (item) => {
+
+  const handleEdit = (obj) => {
     setMode("edit");
-    setSelected(item);
+    setSelected(obj);
     setShowForm(true);
   };
-  const handleView = (item) => {
+
+  const handleView = (obj) => {
     setMode("view");
-    setSelected(item);
+    setSelected(obj);
     setShowForm(true);
   };
-  const handleDelete = (id) => {
+
+
+//   const handleDelete = (id) => {
+//     if (window.confirm("Bạn có chắc muốn xóa người dùng này?")) {
+//       setStudent(Student.filter((obj) => obj.MaHS !== id));
+//     }
+//   };
+
+  const handleDelete = async (id) => {
     if (window.confirm("Bạn có chắc muốn xóa người dùng này?")) {
-      setStudent(Student.filter((obj) => obj.MaHS !== id));
+      try {
+        await axiosClient.put(`students/admin/delete/${id}`);
+        await loadTableDataStudents();
+        toast.success("Xóa học sinh thành công!");
+      } catch (err) {
+        toast.error("Lỗi xoá học sinh!");
+      }
     }
   };
 

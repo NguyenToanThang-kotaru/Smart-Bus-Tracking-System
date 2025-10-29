@@ -54,3 +54,10 @@ exports.deleteStudent = (req, res) => {
     res.status(200).json(result);
   });
 };
+
+exports.getNextStudentId = (req, res) => {
+  studentService.getNextStudentId((err, nextId) => {
+    if (err) return res.status(500).json({ error: err.message || err });
+    res.json({ nextId });
+  });
+};
