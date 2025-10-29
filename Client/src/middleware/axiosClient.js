@@ -1,5 +1,6 @@
 // axiosClient.js
 import axios from "axios";
+import { Navigate } from "react-router-dom";
 
 const axiosClient = axios.create({
   // baseURL: "http://172.20.10.2:3700/api",
@@ -38,6 +39,7 @@ axiosClient.interceptors.response.use(
       } catch (err) {
         console.log(err)
         sessionStorage.clear();
+        window.location.href = "/admin/login";
         return Promise.reject(err);
       }
     }

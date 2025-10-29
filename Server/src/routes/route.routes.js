@@ -4,5 +4,6 @@ const routeController = require('../controllers/route.controller');
 const authenticateToken = require('../middleware/authMiddleware');
 
 // POST /api/routes/get-polyline
-router.post("/get-polyline", routeController.getPolyLineByORM);
+router.post("/get-polyline",authenticateToken.authenticateToken ,routeController.getPolyLineByORM);
+
 module.exports = router;
