@@ -50,10 +50,10 @@ export default function StudentContent() {
 
 
 //   const handleDelete = (id) => {
-//     if (window.confirm("Bạn có chắc muốn xóa người dùng này?")) {
-//       setStudent(Student.filter((obj) => obj.MaHS !== id));
-//     }
-//   };
+//  if (window.confirm("Bạn có chắc muốn xóa người dùng này?")) {
+// setStudent(Student.filter((obj) => obj.MaHS !== id));
+// }
+// };
 
   const handleDelete = async (id) => {
     if (window.confirm("Bạn có chắc muốn xóa người dùng này?")) {
