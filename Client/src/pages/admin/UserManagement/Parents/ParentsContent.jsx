@@ -90,67 +90,68 @@ export default function ParentsContent() {
   const [selected, setSelected] = useState(null);
   const [mode, setMode] = useState("add");
 
-  // 📦 Lấy dữ liệu phụ huynh từ API
+  // Lấy dữ liệu phụ huynh từ API
   const loadParentsData = async () => {
     try {
-      // 🚀 Sử dụng endpoint "phuhuynh/admin" tương tự như "students/admin"
-      const res = await axiosClient.get("phuhuynh"); 
+      
+      const res = await axiosClient.get("users/phuhuynh"); 
       console.log(res.data);
       setParents(res.data);
     } catch (err) {
       // Log lỗi chi tiết hơn nếu cần
-      // console.error("Lỗi lấy danh sách phụ huynh:", err);
+      console.error("Lỗi lấy danh sách phụ huynh:", err);
       toast.error("Lỗi lấy danh sách phụ huynh!");
     }
   };
 
-  // 🚀 Load danh sách phụ huynh khi component được render
+  //Load danh sách phụ huynh khi component được render
   useEffect(() => {
     loadParentsData();
   }, []);
 
   // 🔄 Hàm xử lý đóng form và tải lại dữ liệu sau khi thêm/sửa
-  const handleFormClose = async (reload = false) => {
-    setShowForm(false);
-    setSelected(null);
-    if (reload) {
-      await loadParentsData();
-      // Thông báo thành công dựa trên mode trước đó (Lưu ý: mode có thể cần được xử lý lại nếu form cần biết mode sau khi đóng)
-      // Hiện tại chỉ thông báo chung chung
-      toast.success(mode === "add" ? "Thêm phụ huynh thành công!" : "Cập nhật phụ huynh thành công!");
-    }
-  };
+  // const handleFormClose = async (reload = false) => {
+  //   setShowForm(false);
+  //   setSelected(null);
+  //   if (reload) {
+  //     await loadParentsData();
+  //     // Thông báo thành công dựa trên mode trước đó (Lưu ý: mode có thể cần được xử lý lại nếu form cần biết mode sau khi đóng)
+  //     // Hiện tại chỉ thông báo chung chung
+  //     toast.success(mode === "add" ? "Thêm phụ huynh thành công!" : "Cập nhật phụ huynh thành công!");
+  //   }
+  // };
 
-  // ➕ Thêm phụ huynh
+  // Thêm phụ huynh
   const handleAdd = () => {
     setMode("add");
     setSelected(null);
     setShowForm(true);
   };
 
-  // ✏️ Sửa phụ huynh
+  //  Sửa phụ huynh
   const handleEdit = (obj) => {
     setMode("edit");
     setSelected(obj);
     setShowForm(true);
   };
 
-  // 👁️ Xem phụ huynh
+  // Xem phụ huynh
   const handleView = (obj) => {
     setMode("view");
     setSelected(obj);
     setShowForm(true);
   };
 
-  // ❌ Xóa phụ huynh (Sử dụng PUT /delete/ như StudentContent)
+  // Xóa phụ huynh (Sử dụng PUT /delete/ như StudentContent)
   const handleDelete = async (TenDangNhap) => {
     if (window.confirm("Bạn có chắc muốn xóa phụ huynh này?")) {
       try {
         // Sử dụng endpoint tương tự Students: /resource/admin/delete/:id
-        await axiosClient.put(`phuhuynh/delete/${TenDangNhap}`);
+        await axiosClient.put(`users/phuhuynh/delete/${TenDangNhap}`);
         await loadParentsData();
         toast.success("Xóa phụ huynh thành công!");
       } catch (err) {
+        console.error("Lỗi lấy danh sách phụ huynh:", err);
         toast.error("Lỗi xoá phụ huynh!");
       }
     }
@@ -202,12 +203,8 @@ export default function ParentsContent() {
 
         {/* Form thêm/sửa/xem phụ huynh */}
         {showForm && (
-          <ParentsForm
-            onClose={handleFormClose} // Truyền hàm xử lý đóng form
-            mode={mode}
-            data={selected}
-          />
-        )}
+                 <ParentsForm onClose={() => setShowForm(false)} mode={mode} data={selected} />
+               )}
       </div>
     </div>
   );
