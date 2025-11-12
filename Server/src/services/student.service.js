@@ -13,10 +13,10 @@ exports.addStudent = (data, callback) => {
   if (!data.MaHS || !data.TenHS || !data.Lop) {
     return callback(new Error('Thiếu dữ liệu cần thiết'), null);
   }
-  if (!validate.validateName(data.TenHS)) {
+  if (validate.validateName(data.TenHS)) {
     return callback(new Error('Tên học sinh chỉ được chứa chữ cái'), null);
   }
-  if (!validate.validateClass(data.Lop)) {
+  if (validate.validateClass(data.Lop)) {
     return callback(new Error('Lớp không hợp lệ'), null);
   }
 
@@ -27,13 +27,13 @@ exports.addStudent = (data, callback) => {
 }
 
 exports.updateStudent = (id, data, callback) => {
-  if (!data.MaHS || !data.TenHS || !data.Lop) {
+  if (!data.TenHS || !data.Lop) {
     return callback(new Error('Thiếu dữ liệu cần thiết'), null);
   }
-  if (!validate.validateName(data.TenHS)) {
+  if (validate.validateName(data.TenHS)) {
     return callback(new Error('Tên học sinh chỉ được chứa chữ cái'), null);
   }
-  if (!validate.validateClass(data.Lop)) {
+  if (validate.validateClass(data.Lop)) {
     return callback(new Error('Lớp không hợp lệ'), null);
   }
 
@@ -57,7 +57,7 @@ exports.getNextStudentId = (callback) => {
     let newId = "HS000001";
     if (lastId) {
       const num = parseInt(lastId.replace("HS", "")) + 1;
-      newId = "HS" + num.toString().padStart(6, "0");
+      newId = "HS" + num.toString().padStart(6, "0"); 
     }
     callback(null, newId);
   });

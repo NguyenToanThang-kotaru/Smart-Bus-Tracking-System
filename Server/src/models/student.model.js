@@ -39,8 +39,8 @@ exports.deleteStudent = (id, callback) => {
 
 exports.getLastStudentId = (callback) => {
   db.query('SELECT MaHS FROM hocsinh ORDER BY MaHS DESC LIMIT 1', (err, result) => {
-      if (err) return callback(err, null);
-      const lastId = result[0] ? result[0].MaHS : null;
-      callback(null, lastId);
-    });
+    if (err) return callback(err, null);
+    const lastId = result[0] ? result[0].MaHS : null;
+    callback(null, lastId);
+  });
 };

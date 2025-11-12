@@ -1,6 +1,6 @@
 function validateName(name) {
-  const nameRegex = /^[\p{L}\s]+$/u;   // Chỉ cho phép chữ + khoảng trắng (có dấu tiếng Việt)
-  if (!nameRegex.test(name)) {
+  const nameRegex = /^[A-Za-zÀ-Ỹà-ỹ\s]+$/;
+  if (!nameRegex.test(name.trim())) {
     return "Tên chỉ được chứa chữ cái và khoảng trắng";
   }
   if (name.length > 100) {
