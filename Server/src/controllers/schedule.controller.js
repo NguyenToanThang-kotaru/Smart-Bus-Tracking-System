@@ -100,3 +100,86 @@ exports.deleteSchedule = (req, res) => {
     res.json({ message: "Xóa lịch thành công" });
   });
 };
+
+// Lấy mã phân công tiếp theo
+exports.getNextAssignmentId = (req, res) => {
+  scheduleService.getNextAssignmentId((err, nextId) => {
+    if (err) return res.status(500).json({ error: err });
+    res.json({ nextId });
+  });
+};
+
+// Lấy tất cả phân công
+exports.getAllAssignments = (req, res) => {
+  scheduleService.getAllAssignments((err, results) => {
+    if (err) return res.status(500).json({ error: err });
+    res.json(results);
+  });
+};
+
+// Lấy phân công theo ID
+exports.getAssignmentById = (req, res) => {
+  const id = req.params.id;
+
+  scheduleService.getAssignmentById(id, (err, result) => {
+    if (err) return res.status(500).json({ error: err });
+    if (!result) return res.status(404).json({ message: "Không tìm thấy phân công" });
+    res.json(result);
+  });
+};
+
+// Tìm kiếm phân công theo từ khóa
+exports.searchAssignment = (req, res) => {
+  const keyword = req.query.keyword || '';
+  scheduleService.searchAssignment(keyword, (err, results) => {
+    if (err) return res.status(500).json({ error: err });
+    res.json(results);
+  });
+};
+
+// Thêm mới phân công
+exports.addAssignment = (req, res) => {
+  const assignmentData = req.body;
+
+  scheduleService.addAssignment(assignmentData, (err, result) => {
+    if (err) {
+      if (err.status === 400) {
+        return res.json({ success: false, message: err.message });
+      }
+      const status = err.status || 500;
+      return res.status(status).json({ error: { message: err.message } });
+    }
+
+    res.status(201).json({ success: true, message: "Thêm phân công thành công", assignment: result });
+  });
+};
+
+// Cập nhật phân công
+exports.updateAssignment = (req, res) => {
+  const id = req.params.id;
+  const assignmentData = req.body;
+
+  scheduleService.updateAssignment(id, assignmentData, (err, result) => {
+    if (err) {
+      if (err.status === 400) {
+        return res.json({ success: false, message: err.message });
+      }
+      const status = err.status || 500;
+      return res.status(status).json({ error: { message: err.message } });
+    }
+
+    res.status(200).json({ success: true, message: "Cập nhật phân công thành công", assignment: result });
+  });
+};
+
+// Xóa phân công
+exports.deleteAssignment = (req, res) => {
+  const id = req.params.id;
+
+  scheduleService.deleteAssignment(id, (err, result) => {
+    if (err) return res.status(500).json({ error: err });
+    if (!result) return res.status(404).json({ message: "Không tìm thấy phân công" });
+
+    res.json({ message: "Xóa phân công thành công" });
+  });
+};
