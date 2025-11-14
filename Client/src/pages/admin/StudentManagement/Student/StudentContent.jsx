@@ -22,8 +22,7 @@ export default function StudentContent() {
 
   const loadTableDataStudents = async () => {
     try {
-      const res = await axiosClient.get("students/admin");
-      console.log(res.data);
+      const res = await axiosClient.get("students/admin");    
       setStudent(res.data);
     } catch (err) {
       toast.error("Lỗi lấy danh sách học sinh!");
@@ -48,15 +47,8 @@ export default function StudentContent() {
     setShowForm(true);
   };
 
-
-//   const handleDelete = (id) => {
-//     if (window.confirm("Bạn có chắc muốn xóa người dùng này?")) {
-//       setStudent(Student.filter((obj) => obj.MaHS !== id));
-//     }
-//   };
-
   const handleDelete = async (id) => {
-    if (window.confirm("Bạn có chắc muốn xóa người dùng này?")) {
+    if (window.confirm("Bạn có chắc muốn xóa học sinh này?")) {
       try {
         await axiosClient.put(`students/admin/delete/${id}`);
         await loadTableDataStudents();
@@ -93,7 +85,7 @@ export default function StudentContent() {
         />
 
         {showForm && (
-          <StudentForm onClose={() => setShowForm(false)} mode={mode} data={selected} />
+          <StudentForm onClose={() => setShowForm(false)} mode={mode} data={selected} reload={loadTableDataStudents} />
         )}
       </div>
     </div>
