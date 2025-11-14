@@ -1,6 +1,5 @@
 const { fetchPolyline } = require("../services/osrm.service");
 require('dotenv').config();
-const axios = require("axios");
 const routeService = require("../services/route.service");
 
 exports.getPolyLineByORM = async (req, res) => {
@@ -24,13 +23,21 @@ exports.getAllRoutes = (req, res) => {
 };
 
 exports.getRouteById = (req, res) => {
-  const MaTuyen = req.params.MaTuyen;
+  const MaTuyen = req.params.MaTD;
   routeService.getRouteById(MaTuyen, (err, route) => {
     if (err) return res.status(500).json({ error: err.message });
     if (!route) return res.status(404).json({ message: "Không tìm thấy tuyến đường" });
     res.status(200).json(route);
   });
 };
+
+exports.getNextRouteCode = (req, res) => {
+  routeService.getNextRouteCode((err, newCode) => {
+    if (err) return res.status(500).json({ error: err.message });
+    res.json({ newCode }); 
+  });
+};
+
 
 exports.addRoute = (req, res) => {
   const data = req.body;
@@ -41,7 +48,7 @@ exports.addRoute = (req, res) => {
 };
 
 exports.updateRoute = (req, res) => {
-  const MaTuyen = req.params.MaTuyen;
+  const MaTuyen = req.params.MaTD;
   const data = req.body;
   routeService.updateRoute(MaTuyen, data, (err, result) => {
     if (err) return res.status(400).json({ error: err.message });
@@ -50,7 +57,7 @@ exports.updateRoute = (req, res) => {
 };
 
 exports.deleteRoute = (req, res) => {
-  const MaTuyen = req.params.MaTuyen;
+  const MaTuyen = req.params.MaTD;
   routeService.deleteRoute(MaTuyen, (err, result) => {
     if (err) return res.status(500).json({ error: err.message });
     res.status(200).json({ message: "Xóa tuyến đường thành công", result });
@@ -74,6 +81,15 @@ exports.getBusById = (req, res) => {
     res.status(200).json(bus);
   });
 };
+
+
+exports.getNextBusCode = (req, res) => {
+  routeService.getNextBusCode((err, newCode) => {
+    if (err) return res.status(500).json({ error: err.message });
+    res.json({ newCode }); 
+  });
+};
+
 
 exports.addBus = (req, res) => {
   const data = req.body;
@@ -117,6 +133,14 @@ exports.getStationById = (req, res) => {
     res.status(200).json(station);
   });
 };
+
+exports.getNextStationCode = (req, res) => {
+  routeService.getNextStationCode((err, newCode) => {
+    if (err) return res.status(500).json({ error: err.message });
+    res.json({ newCode });
+  });
+};
+
 
 exports.addStation = (req, res) => {
   const data = req.body;
