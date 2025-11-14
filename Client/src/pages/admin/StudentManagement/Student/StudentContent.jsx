@@ -47,6 +47,13 @@ export default function StudentContent() {
     setShowForm(true);
   };
 
+
+//   const handleDelete = (id) => {
+//  if (window.confirm("Bạn có chắc muốn xóa người dùng này?")) {
+// setStudent(Student.filter((obj) => obj.MaHS !== id));
+// }
+// };
+
   const handleDelete = async (id) => {
     if (window.confirm("Bạn có chắc muốn xóa học sinh này?")) {
       try {
