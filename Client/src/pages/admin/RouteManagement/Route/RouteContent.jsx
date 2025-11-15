@@ -75,36 +75,16 @@ export default function RouteContent() {
             "Tên tuyến": obj.TenTD,
             "Chức năng": (
               <div className="flex gap-[30px]">
-                <img
-                  src={edit}
-                  alt="edit"
-                  className="w-6 h-6 cursor-pointer"
-                  onClick={() => handleEdit(obj)}
-                />
-                <img
-                  src={view}
-                  alt="view"
-                  className="w-6 h-6 cursor-pointer"
-                  onClick={() => handleView(obj)}
-                />
-                <img
-                  src={del}
-                  alt="delete"
-                  className="w-6 h-6 cursor-pointer"
-                  onClick={() => handleDelete(obj.MaTD)}
-                />
+                <img src={edit} alt="edit" className="w-4 h-4 cursor-pointer" onClick={() => handleEdit(obj)} />
+                <img src={view} alt="view" className="w-4 h-4 cursor-pointer" onClick={() => handleView(obj)} />
+                <img src={del} alt="delete" className="w-4 h-4 cursor-pointer" onClick={() => handleDelete(obj.MaTD)} />
               </div>
             ),
           }))}
         />
 
         {showForm && (
-          <RouteForm
-            onClose={() => setShowForm(false)}
-            mode={mode}
-            data={selected}
-            reload={loadTableDataRoutes}
-          />
+          <RouteForm  onClose={() => setShowForm(false)} mode={mode} data={selected}reload={loadTableDataRoutes} />
         )}
       </div>
     </div>

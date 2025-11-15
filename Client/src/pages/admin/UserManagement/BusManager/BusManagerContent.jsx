@@ -1,4 +1,6 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
+import axiosClient from "@/middleware/axiosClient";
+import "react-toastify/dist/ReactToastify.css";
 import Table from "@/Components/tableComponent";
 import view from "@/assets/Icon/viewYellow.png";
 import del from "@/assets/Icon/deleteYellow.png";
@@ -6,17 +8,27 @@ import edit from "@/assets/Icon/editYellow.png";
 import SearchBar from "@/Components/searchBarComponent";
 import AddButton from "@/Components/buttonComponent";
 import BusManagerForm from "./BusManagerForm";
+import { toast } from "react-toastify";
 
 export default function BusManagerContent() {
-  const [BusManager, setBusManager] = useState([
-    { maND: "ND000003", tenND: "Phạm Đình Duy Thái", tenDangNhap: "quanly01", matKhau: "123456"},
-    { maND: "ND000004", tenND: "Phạm Đình Duy Thài", tenDangNhap: "quanly02", matKhau: "123456"},
-  ]);
-
+  const [busManager, setBusManager] = useState([]);
   const [showForm, setShowForm] = useState(false);
   const [selected, setSelected] = useState(null);
   const [mode, setMode] = useState("add");
   
+  const loadTableDataBusManager = async () => {
+    try {
+      const res = await axiosClient.get("users/admin/busManager");
+      setBusManager(res.data);
+    } catch (err) {
+      toast.error("Lỗi lấy danh sách quản lý xe buýt!");
+    }
+  };
+
+  useEffect(() => {
+    loadTableDataBusManager();
+  }, []);
+
   const handleAdd = () => {
     setMode("add");
     setSelected(null);
@@ -47,16 +59,16 @@ export default function BusManagerContent() {
 
       <div className="mt-10 ">
         <Table
-          data={BusManager.map((obj) => ({
-            "Mã người dùng": obj.maND,
-            "Tên người dùng": obj.tenND,
-            "Tên đăng nhập": obj.tenDangNhap,
-            "Mật khẩu": obj.matKhau,
+          data={busManager.map((obj) => ({
+            "Mã người dùng": obj.MaND,
+            "Tên người dùng": obj.TenND,
+            "Tên đăng nhập": obj.TenDangNhap,
+            "Mật khẩu": obj.MatKhau,
             "Chức năng": (
               <div className="flex gap-[30px]">
-                <img src={edit} alt="edit" className="w-6 h-6" onClick={() => handleEdit(obj)} />
-                <img src={view} alt="view" className="w-6 h-6" onClick={() => handleView(obj)} />
-                <img src={del} alt="delete" className="w-6 h-6" onClick={() => handleDelete(obj.maND)}/>
+                <img src={edit} alt="edit" className="w-4 h-4" onClick={() => handleEdit(obj)} />
+                <img src={view} alt="view" className="w-4 h-4" onClick={() => handleView(obj)} />
+                <img src={del} alt="delete" className="w-4 h-4" onClick={() => handleDelete(obj.maND)}/>
               </div>
             ),
           }))}

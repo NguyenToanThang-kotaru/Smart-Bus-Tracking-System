@@ -52,7 +52,7 @@ exports.Userlogin = (req, res) => {
 exports.Adminlogin = (req, res) => {
   const { username, password } = req.body;
 
-  userService.Adminlogin(username, password, (err, user) => {
+  userService.Administratorlogin(username, password, (err, user) => {
     if (err) {
       // err có thể là string (lỗi validate) hoặc object (lỗi DB)
       if (typeof err === "string") {
@@ -104,135 +104,140 @@ exports.createUser = (req, res) => {
   });
 };
 
-/* ========= PHỤ HUYNH ========= */
+
+/* ===================== PHỤ HUYNH ===================== */
 
 exports.getAllParents = (req, res) => {
   userService.getAllParents((err, result) => {
     if (err) return res.status(500).json({ error: err.message });
-    res.status(200).json(result);
+    res.json(result);
   });
 };
 
 exports.getParentById = (req, res) => {
-  const { TenDangNhap } = req.params;
-  userService.getParentById(TenDangNhap, (err, parent) => {
+  const username = req.params.username;
+
+  userService.getParentById(username, (err, parent) => {
     if (err) return res.status(500).json({ error: err.message });
     if (!parent || parent.length === 0)
       return res.status(404).json({ message: "Không tìm thấy phụ huynh" });
-    res.status(200).json(parent[0]);
+
+    res.json(parent[0]);
   });
 };
 
 exports.addParent = (req, res) => {
-  const data = req.body;
-  userService.addParent(data, (err, result) => {
-    if (err) return res.status(400).json({ error: err.message || err });
+  userService.addParent(req.body, (err, result) => {
+    if (err) return res.status(400).json({ error: err.message });
     res.status(201).json({ message: "Thêm phụ huynh thành công", result });
   });
 };
 
 exports.updateParent = (req, res) => {
-  const { TenDangNhap } = req.params;
-  const data = req.body;
-  userService.updateParent(TenDangNhap, data, (err, result) => {
-    if (err) return res.status(400).json({ error: err.message || err });
-    res.status(200).json({ message: "Cập nhật phụ huynh thành công", result });
+  const username = req.params.username;
+
+  userService.updateParent(username, req.body, (err, result) => {
+    if (err) return res.status(400).json({ error: err.message });
+    res.json({ message: "Cập nhật phụ huynh thành công", result });
   });
 };
 
 exports.deleteParent = (req, res) => {
-  const { TenDangNhap } = req.params;
-  userService.deleteParent(TenDangNhap, (err, result) => {
-    if (err) return res.status(500).json({ error: err.message || err });
-    res.status(200).json({ message: "Xóa phụ huynh thành công", result });
-  });
-};
+  const username = req.params.username;
 
-/* ========= QUẢN LÝ TÀI XẾ ========= */
-
-exports.getAllManagerDrivers = (req, res) => {
-  userService.getAllManagerDrivers((err, result) => {
+  userService.deleteParent(username, (err, result) => {
     if (err) return res.status(500).json({ error: err.message });
-    res.status(200).json(result);
+    res.json({ message: "Xóa phụ huynh thành công", result });
   });
 };
 
-exports.getManagerDriverById = (req, res) => {
-  const { MaND } = req.params;
-  userService.getManagerDriverById(MaND, (err, manager) => {
+/* ===================== QUẢN LÝ XE BUÝT ===================== */
+
+exports.getAllBusManagers = (req, res) => {
+  userService.getAllBusManagers((err, result) => {
+    if (err) return res.status(500).json({ error: err.message });
+    res.json(result);
+  });
+};
+
+exports.getBusManagerById = (req, res) => {
+  const id = req.params.id;
+
+  userService.getBusManagerById(id, (err, manager) => {
     if (err) return res.status(500).json({ error: err.message });
     if (!manager || manager.length === 0)
-      return res.status(404).json({ message: "Không tìm thấy quản lý tài xế" });
-    res.status(200).json(manager[0]);
+      return res.status(404).json({ message: "Không tìm thấy quản lý xe buýt" });
+    res.json(manager[0]);
   });
 };
 
-exports.addManagerDriver = (req, res) => {
-  const data = req.body;
-  userService.addManagerDriver(data, (err, result) => {
-    if (err) return res.status(400).json({ error: err.message || err });
-    res.status(201).json({ message: "Thêm Quản lý tài xế thành công", result });
+exports.addBusManager = (req, res) => {
+  userService.addBusManager(req.body, (err, result) => {
+    if (err) return res.status(400).json({ error: err.message });
+    res.status(201).json({ message: "Thêm Quản lý xe buýt thành công", result });
   });
 };
 
-exports.updateManagerDriver = (req, res) => {
-  const { MaND } = req.params;
-  const data = req.body;
-  userService.updateManagerDriver(MaND, data, (err, result) => {
-    if (err) return res.status(400).json({ error: err.message || err });
-    res.status(200).json({ message: "Cập nhật Quản lý tài xế thành công", result });
+exports.updateBusManager = (req, res) => {
+  const id = req.params.id;
+
+  userService.updateBusManager(id, req.body, (err, result) => {
+    if (err) return res.status(400).json({ error: err.message });
+    res.json({ message: "Cập nhật Quản lý xe buýt thành công", result });
   });
 };
 
-exports.deleteManagerDriver = (req, res) => {
-  const { MaND } = req.params;
-  userService.deleteManagerDriver(MaND, (err, result) => {
-    if (err) return res.status(500).json({ error: err.message || err });
-    res.status(200).json({ message: "Xóa Quản lý tài xế thành công", result });
-  });
-};
+exports.deleteBusManager = (req, res) => {
+  const id = req.params.id;
 
-/* ========= QUẢN TRỊ VIÊN ========= */
-
-exports.getAllAdmins = (req, res) => {
-  userService.getAllAdmins((err, result) => {
+  userService.deleteBusManager(id, (err, result) => {
     if (err) return res.status(500).json({ error: err.message });
-    res.status(200).json(result);
+    res.json({ message: "Xóa Quản lý xe buýt thành công", result });
   });
 };
 
-exports.getAdminById = (req, res) => {
-  const { MaND } = req.params;
-  userService.getAdminById(MaND, (err, admin) => {
+/* ===================== QUẢN TRỊ VIÊN ===================== */
+
+exports.getAllAdministrators = (req, res) => {
+  userService.getAllAdministrators((err, result) => {
     if (err) return res.status(500).json({ error: err.message });
-    if (!admin || admin.length === 0)
+    res.json(result);
+  });
+};
+
+exports.getAdministratorById = (req, res) => {
+  const id = req.params.id;
+
+  userService.getAdministratorById(id, (err, administrator) => {
+    if (err) return res.status(500).json({ error: err.message });
+    if (!administrator || administrator.length === 0)
       return res.status(404).json({ message: "Không tìm thấy quản trị viên" });
-    res.status(200).json(admin[0]);
+    res.json(administrator[0]);
   });
 };
 
-exports.addAdmin = (req, res) => {
-  const data = req.body;
-  userService.addAdmin(data, (err, result) => {
-    if (err) return res.status(400).json({ error: err.message || err });
-    res.status(201).json({ message: "Thêm Quản trị viên thành công", result });
+exports.addAdministrator = (req, res) => {
+  userService.addAdministrator(req.body, (err, result) => {
+    if (err) return res.status(400).json({ error: err.message });
+    res.status(201).json({ message: "Thêm quản trị viên thành công", result });
   });
 };
 
-exports.updateAdmin = (req, res) => {
-  const { MaND } = req.params;
-  const data = req.body;
-  userService.updateAdmin(MaND, data, (err, result) => {
-    if (err) return res.status(400).json({ error: err.message || err });
-    res.status(200).json({ message: "Cập nhật Quản trị viên thành công", result });
+exports.updateAdministrator = (req, res) => {
+  const id = req.params.id;
+
+  userService.updateAdministrator(id, req.body, (err, result) => {
+    if (err) return res.status(400).json({ error: err.message });
+    res.json({ message: "Cập nhật quản trị viên thành công", result });
   });
 };
 
-exports.deleteAdmin = (req, res) => {
-  const { MaND } = req.params;
-  userService.deleteAdmin(MaND, (err, result) => {
-    if (err) return res.status(500).json({ error: err.message || err });
-    res.status(200).json({ message: "Xóa Quản trị viên thành công", result });
+exports.deleteAdministrator = (req, res) => {
+  const id = req.params.id;
+
+  userService.deleteAdministrator(id, (err, result) => {
+    if (err) return res.status(500).json({ error: err.message });
+    res.json({ message: "Xóa quản trị viên thành công", result });
   });
 };
 
@@ -241,50 +246,42 @@ exports.deleteAdmin = (req, res) => {
 exports.getAllDrivers = (req, res) => {
   userService.getAllDrivers((err, result) => {
     if (err) return res.status(500).json({ error: err.message });
-    res.status(200).json(result);
+    res.json(result);
   });
 };
 
 exports.getDriverById = (req, res) => {
-  const MaTX = req.params.MaTX;
+  const id = req.params.id;
 
-  userService.getDriverById(MaTX, (err, driver) => {
+  userService.getDriverById(id, (err, driver) => {
     if (err) return res.status(500).json({ error: err.message });
-    if (!driver || driver.length === 0) {
+    if (!driver || driver.length === 0)
       return res.status(404).json({ message: "Không tìm thấy tài xế" });
-    }
-    res.status(200).json(driver);
+    res.json(driver[0]);
   });
 };
 
 exports.addDriver = (req, res) => {
-  const data = req.body;
-
-  userService.addDriver(data, (err, result) => {
+  userService.addDriver(req.body, (err, result) => {
     if (err) return res.status(400).json({ error: err.message });
-    res.status(201).json({
-      message: "Thêm tài xế thành công",
-      result
-    });
+    res.status(201).json({ message: "Thêm tài xế thành công", result });
   });
 };
 
 exports.updateDriver = (req, res) => {
-  const MaTX = req.params.MaTX;
-  const data = req.body;
+  const id = req.params.id;
 
-  userService.updateDriver(MaTX, data, (err, result) => {
+  userService.updateDriver(id, req.body, (err, result) => {
     if (err) return res.status(400).json({ error: err.message });
-    res.status(200).json({ message: "Cập nhật tài xế thành công", result });
+    res.json({ message: "Cập nhật tài xế thành công", result });
   });
 };
 
 exports.deleteDriver = (req, res) => {
-  const MaTX = req.params.MaTX;
-  const MaND = req.params.MaND;
+  const id = req.params.id;
 
-  userService.deleteDriver(MaTX, MaND, (err, result) => {
+  userService.deleteDriver(id, (err, result) => {
     if (err) return res.status(500).json({ error: err.message });
-    res.status(200).json({ message: "Xóa tài xế thành công", result });
+    res.json({ message: "Xóa tài xế thành công", result });
   });
 };

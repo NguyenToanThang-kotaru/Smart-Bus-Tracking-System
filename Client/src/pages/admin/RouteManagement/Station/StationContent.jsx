@@ -78,24 +78,9 @@ export default function StationContent() {
             "Tọa độ Y": obj.y || "",
             "Chức năng": (
               <div className="flex gap-[30px]">
-                <img
-                  src={edit}
-                  alt="edit"
-                  className="w-6 h-6 cursor-pointer"
-                  onClick={() => handleEdit(obj)}
-                />
-                <img
-                  src={view}
-                  alt="view"
-                  className="w-6 h-6 cursor-pointer"
-                  onClick={() => handleView(obj)}
-                />
-                <img
-                  src={del}
-                  alt="delete"
-                  className="w-6 h-6 cursor-pointer"
-                  onClick={() => handleDelete(obj.MaTram)}
-                />
+                <img src={edit} alt="edit" className="w-4 h-4 cursor-pointer" onClick={() => handleEdit(obj)}/>
+                <img src={view} alt="view" className="w-4 h-4 cursor-pointer" onClick={() => handleView(obj)}/>
+                <img src={del} alt="delete" className="w-4 h-4 cursor-pointer" onClick={() => handleDelete(obj.MaTram)} />
               </div>
             ),
           }))}

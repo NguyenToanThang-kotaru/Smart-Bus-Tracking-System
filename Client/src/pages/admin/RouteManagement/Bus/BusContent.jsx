@@ -63,7 +63,7 @@ export default function BusContent() {
 
   return (
     <div>
-      <div className="px-10 pt-5 flex w-full justify-between gap-10">
+      <div className="px-10 pt-5 flex w-full justify-between gap-x-10">
         <SearchBar />
         <AddButton onClick={handleAdd} />
       </div>
@@ -77,9 +77,9 @@ export default function BusContent() {
             "Trạng thái xe": obj.TrangThaiXe,
             "Chức năng": (
               <div className="flex gap-[30px]">
-                <img src={edit} alt="edit" className="w-6 h-6 cursor-pointer" onClick={() => handleEdit(obj)}/>
-                <img src={view} alt="view" className="w-6 h-6 cursor-pointer" onClick={() => handleView(obj)}/>
-                <img src={del} alt="delete" className="w-6 h-6 cursor-pointer" onClick={() => handleDelete(obj.SoXeBuyt)}/>
+                <img src={edit} alt="edit" className="w-4 h-4 cursor-pointer" onClick={() => handleEdit(obj)}/>
+                <img src={view} alt="view" className="w-4 h-4 cursor-pointer" onClick={() => handleView(obj)}/>
+                <img src={del} alt="delete" className="w-4 h-4 cursor-pointer" onClick={() => handleDelete(obj.SoXeBuyt)}/>
               </div>
             ),
           }))}

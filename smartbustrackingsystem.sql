@@ -102,7 +102,7 @@ CREATE TABLE `phancong` (
 CREATE TABLE `phuhuynh` (
   `TenDangNhap` varchar(10) NOT NULL,
   `SdtPH` varchar(10) NOT NULL,
-  `TenPH` varchar(10) NOT NULL,
+  `TenPH` varchar(100) NOT NULL,
   `MatKhau` varchar(255) NOT NULL,
   `TrangThaiXoa` varchar(1) NOT NULL DEFAULT '0'
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
@@ -115,7 +115,7 @@ CREATE TABLE `phuhuynh` (
 
 CREATE TABLE `taixe` (
   `MaTX` varchar(10) NOT NULL,
-  `SoCccd` varchar(10) NOT NULL,
+  `SoCccd` varchar(12) NOT NULL,
   `SdtTX` varchar(10) NOT NULL,
   `BacBangLai` varchar(10) NOT NULL,
   `TrangThaiXoa` varchar(1) NOT NULL DEFAULT '0'
@@ -261,17 +261,16 @@ COMMIT;
 -- Bảng vai trò
 INSERT INTO `vaitro` (`MaVT`, `TenVT`) VALUES
 ('VT000001', 'Quản trị viên'),
-('VT000002', 'Quản lý Tài xế'),
+('VT000002', 'Quản lý xe buýt'),
 ('VT000003', 'Tài xế'),
 ('VT000004', 'Phụ huynh');
 
 -- Bảng người dùng
 INSERT INTO `nguoidung` (`MaND`, `MaVT`, `TenND`, `TenDangNhap`, `MatKhau`, `TrangThaiXoa`) VALUES
 ('ND000001', 'VT000001', 'Administrator', 'admin', '123456', '0'),
-('ND000002', 'VT000002', 'Lê Quốc Vinh', 'quanlytx', '123456', '0'),
+('ND000002', 'VT000002', 'Lê Quốc Vinh', 'quanlyxebuyt', '123456', '0'),
 ('ND000003', 'VT000003', 'Trần Văn Tài', 'taixetv', '123456', '0'),
-('ND000004', 'VT000004', 'Nguyễn Thị Lan', 'lanph', '123456', '0'),
-('ND000005', 'VT000004', 'Trần Văn Hùng', 'hungph', '123456', '0');
+('ND000004', 'VT000003', 'Trần Văn Thái', 'taixetv', '123456', '0');
 
 -- Bảng phụ huynh
 INSERT INTO `phuhuynh` (`TenDangNhap`, `SdtPH`, `TenPH`, `MatKhau`, `TrangThaiXoa`) VALUES
@@ -297,8 +296,8 @@ INSERT INTO `phuhuynh` (`TenDangNhap`, `SdtPH`, `TenPH`, `MatKhau`, `TrangThaiXo
 ('PH000020', '0905000020', 'Đặng Minh Tân', '123456', '0');
 -- Bảng tài xế
 INSERT INTO `taixe` (`MaTX`, `SoCccd`, `SdtTX`, `BacBangLai`, `TrangThaiXoa`) VALUES
-('TX000001', '0123456789', '0909123123', 'B2', '0'),
-('TX000002', '0123456788', '0988123456', 'C', '0');
+('ND000003', '012345678911', '0909123123', 'B2', '0'),
+('ND000004', '012345678811', '0988123456', 'C', '0');
 
 -- Bảng tuyến đường
 INSERT INTO `tuyenduong` (`MaTD`, `TenTD`, `TrangThaiXoa`) VALUES
@@ -325,22 +324,22 @@ INSERT INTO `phancong` (`MaPC`, `MaTX`, `SoXeBuyt`, `MaTD`, `TrangThaiXoa`) VALU
 INSERT INTO `hocsinh` (`MaHS`, `MaPH`, `MaTram`, `TenHS`, `Lop`, `TrangThaiXoa`) VALUES
 ('HS000001', 'PH000001', 'TR000001', 'Nguyễn Minh Khang', '6A1', '0'),
 ('HS000002', 'PH000002', 'TR000002', 'Nguyễn Ngọc Anh', '7A2', '0'),
-('HS000003', 'PH000003', 'TR000003', 'Lê Trọng Tín', '8B1', '0'),
+('HS000003', 'PH000003', 'TR000003', 'Lê Trọng Tín', '8A1', '0'),
 ('HS000004', 'PH000004', 'TR000001', 'Nguyễn Hoàng Long', '6A2', '0'),
 ('HS000005', 'PH000005', 'TR000002', 'Nguyễn Khánh Vy', '6A3', '0'),
-('HS000006', 'PH000006', 'TR000003', 'Lê Gia Bảo', '7B1', '0'),
+('HS000006', 'PH000006', 'TR000003', 'Lê Gia Bảo', '7A1', '0'),
 ('HS000007', 'PH000007', 'TR000001', 'Nguyễn Minh Anh', '8A1', '0'),
 ('HS000008', 'PH000008', 'TR000002', 'Nguyễn Quốc Duy', '9A1', '0'),
-('HS000009', 'PH000009', 'TR000003', 'Lê Ngọc Hà', '6B2', '0'),
+('HS000009', 'PH000009', 'TR000003', 'Lê Ngọc Hà', '7A2', '0'),
 ('HS000010', 'PH000010', 'TR000001', 'Nguyễn Khánh Duy', '7A3', '0'),
-('HS000011', 'PH000011', 'TR000002', 'Lê Hoàng Phúc', '8B2', '0'),
+('HS000011', 'PH000011', 'TR000002', 'Lê Hoàng Phúc', '8A2', '0'),
 ('HS000012', 'PH000012', 'TR000003', 'Nguyễn Mỹ Duyên', '6A4', '0'),
 ('HS000013', 'PH000013', 'TR000001', 'Nguyễn Hữu Tài', '7A4', '0'),
-('HS000014', 'PH000014', 'TR000002', 'Lê Minh Thư', '8B3', '0'),
+('HS000014', 'PH000014', 'TR000002', 'Lê Minh Thư', '8A3', '0'),
 ('HS000015', 'PH000015', 'TR000003', 'Nguyễn Thanh Bình', '9A2', '0'),
 ('HS000016', 'PH000016', 'TR000001', 'Lê Văn Nam', '6A5', '0'),
 ('HS000017', 'PH000017', 'TR000002', 'Nguyễn Thùy Trang', '7A5', '0'),
-('HS000018', 'PH000018', 'TR000003', 'Lê Quốc Huy', '8B4', '0'),
+('HS000018', 'PH000018', 'TR000003', 'Lê Quốc Huy', '8A4', '0'),
 ('HS000019', 'PH000019', 'TR000001', 'Nguyễn Phương Nhi', '9A3', '0'),
 ('HS000020', 'PH000020', 'TR000002', 'Lê Anh Khoa', '6A6', '0');
 
