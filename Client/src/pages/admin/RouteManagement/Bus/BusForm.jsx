@@ -61,20 +61,20 @@ export default function BusForm({ onClose, mode, data, reload }) {
     <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/40">
       <form
         onSubmit={handleSubmit}
-        className="bg-white flex flex-col rounded-[50px] px-[50px] py-[30px] w-[600px] gap-y-[35px]"
+        className="bg-white flex flex-col rounded-[50px] px-[50px] py-[30px] w-[600px] gap-y-[20px]"
       >
-        <h2 className="text-4xl font-bold text-mainBlue">{title}</h2>
+        <h2 className="text-3xl font-bold text-mainBlue">{title}</h2>
 
         <div className="flex flex-col gap-4">
           {/* Số xe buýt */}
           <div className="flex flex-col gap-y-2">
-            <label className="text-2xl text-mainBlue font-bold">Số xe buýt</label>
+            <label className="text-xl text-mainBlue font-bold">Số xe buýt</label>
             <input
               type="text"
               value={SoXeBuyt}
               onChange={(e) => setSoXeBuyt(e.target.value)}
               readOnly
-              className={`border-2 border-gray-300 rounded-[10px] px-3 py-2 w-full ${
+              className={`border-2 border-gray-300 rounded-[10px] px-3 py-2 w-full h-[35px] ${
                 isView ? "bg-gray-100" : "focus:outline-mainYellow"
               }`}
             />
@@ -82,13 +82,13 @@ export default function BusForm({ onClose, mode, data, reload }) {
 
           {/* Biển số xe */}
           <div className="flex flex-col gap-y-2">
-            <label className="text-2xl text-mainBlue font-bold">Biển số xe</label>
+            <label className="text-xl text-mainBlue font-bold">Biển số xe</label>
             <input
               type="text"
               value={BienSoXe}
               onChange={(e) => setBienSoXe(e.target.value)}
               readOnly={isView}
-              className={`border-2 border-gray-300 rounded-[10px] px-3 py-2 w-full ${
+              className={`border-2 border-gray-300 rounded-[10px] px-3 py-2 w-full h-[35px] ${
                 isView ? "bg-gray-100" : "focus:outline-mainYellow"
               }`}
             />
@@ -96,16 +96,16 @@ export default function BusForm({ onClose, mode, data, reload }) {
 
           {/* Sức chứa */}
           <div className="flex flex-col gap-y-2">
-            <label className="text-2xl text-mainBlue font-bold">Sức chứa</label>
+            <label className="text-xl text-mainBlue font-bold">Sức chứa</label>
             <select
               value={SucChua}
               onChange={(e) => setSucChua(e.target.value)}
               disabled={isView}
-              className={`border-2 border-gray-300 rounded-[10px] px-3 py-2 w-full ${
+              className={`border-2 border-gray-300 rounded-[10px] px-3 w-full h-[35px] ${
                 isView ? "bg-gray-100" : "focus:outline-mainYellow"
               }`}
             >
-              <option value="">-- Chọn sức chứa --</option>
+              <option value="">Chọn sức chứa</option>
               <option value="30">30</option>
               <option value="35">35</option>
               <option value="40">40</option>
@@ -114,16 +114,16 @@ export default function BusForm({ onClose, mode, data, reload }) {
 
           {/* Trạng thái xe */}
           <div className="flex flex-col gap-y-2">
-            <label className="text-2xl text-mainBlue font-bold">Trạng thái xe</label>
+            <label className="text-xl text-mainBlue font-bold">Trạng thái xe</label>
             <select
               value={TrangThaiXe}
               onChange={(e) => setTrangThaiXe(e.target.value)}
               disabled={isView}
-              className={`border-2 border-gray-300 rounded-[10px] px-3 py-2 w-full ${
+              className={`border-2 border-gray-300 rounded-[10px] px-3 w-full h-[35px] ${
                 isView ? "bg-gray-100" : "focus:outline-mainYellow"
               }`}
             >
-              <option value="">-- Chọn trạng thái --</option>
+              <option value="">Chọn trạng thái</option>
               <option value="Đang hoạt động">Đang hoạt động</option>
               <option value="Đang bảo trì">Đang bảo trì</option>
             </select>
@@ -134,7 +134,7 @@ export default function BusForm({ onClose, mode, data, reload }) {
           {!isView && (
             <button
               type="submit"
-              className="text-xl bg-mainYellow w-[170px] text-black font-bold py-2 rounded-[10px] hover:bg-yellow-500"
+              className="text-[15px] bg-mainYellow w-[130px] text-black font-bold py-2 rounded-[10px] hover:bg-yellow-500"
             >
               XÁC NHẬN
             </button>
@@ -142,7 +142,7 @@ export default function BusForm({ onClose, mode, data, reload }) {
           <button
             type="button"
             onClick={onClose}
-            className="text-xl bg-mainBlue w-[170px] text-white font-bold py-2 rounded-[10px] hover:bg-blue-900"
+            className="text-[15px] bg-mainBlue w-[130px] text-white font-bold py-2 rounded-[10px] hover:bg-blue-900"
           >
             ĐÓNG
           </button>
