@@ -16,7 +16,7 @@ export default function DriverContent() {
   const [selected, setSelected] = useState(null);
   const [mode, setMode] = useState("add");
 
-  const loadDriversData = async () => {
+  const loadTableDataDriver = async () => {
     try {
       const res = await axiosClient.get("users/admin/driver");
       setDrivers(res.data);
@@ -26,7 +26,7 @@ export default function DriverContent() {
   };
 
   useEffect(() => {
-    loadDriversData();
+    loadTableDataDriver();
   }, []);
 
   const handleAdd = () => {
@@ -47,14 +47,13 @@ export default function DriverContent() {
     setShowForm(true);
   };
 
-  const handleDelete = async (MaTX) => {
+  const handleDelete = async (id) => {
     if (window.confirm("Bạn có chắc muốn xóa tài xế này?")) {
       try {
-        await axiosClient.put(`users/taixe/delete/${MaTX}`);
-        await loadDriversData();
+        await axiosClient.delete(`users/admin/driver/${id}`);
+        await loadTableDataDriver();
         toast.success("Xóa tài xế thành công!");
       } catch (err) {
-        console.error("Lỗi xoá tài xế:", err.response?.data || err);
         toast.error("Lỗi xoá tài xế!");
       }
     }
@@ -75,7 +74,6 @@ export default function DriverContent() {
             "Số CCCD": obj.SoCccd,
             "Số điện thoại": obj.SdtTX,
             "Biển số xe": obj.BacBangLai,
-           
             "Chức năng": (
               <div className="flex gap-[30px]">
                 <img src={edit} alt="edit" className="w-4 h-4 cursor-pointer" onClick={() => handleEdit(obj)} />
@@ -87,7 +85,7 @@ export default function DriverContent() {
         />
 
         {showForm && (
-          <DriverForm onClose={() => setShowForm(false)} mode={mode} data={selected} />
+          <DriverForm onClose={() => setShowForm(false)} mode={mode} data={selected} reload={loadTableDataDriver}/>
         )}
       </div>
     </div>

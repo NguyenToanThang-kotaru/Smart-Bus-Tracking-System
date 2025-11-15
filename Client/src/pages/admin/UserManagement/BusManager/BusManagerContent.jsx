@@ -34,19 +34,28 @@ export default function BusManagerContent() {
     setSelected(null);
     setShowForm(true);
   };
+
   const handleEdit = (item) => {
     setMode("edit");
     setSelected(item);
     setShowForm(true);
   };
+
   const handleView = (item) => {
     setMode("view");
     setSelected(item);
     setShowForm(true);
   };
-  const handleDelete = (id) => {
-    if (window.confirm("Bạn có chắc muốn xóa người dùng này?")) {
-      setBusManager(routes.filter((obj) => obj.id !== id));
+
+  const handleDelete = async (id) => {
+    if (window.confirm("Bạn có chắc muốn xóa quản lý xe buýt này?")) {
+      try {
+        await axiosClient.delete(`users/admin/busManager/${id}`);
+        await loadTableDataBusManager();
+        toast.success("Xóa quản lý xe buýt thành công!");
+      } catch (err) {
+        toast.error("Lỗi xoá quản lý xe buýt!");
+      }
     }
   };
 
@@ -68,14 +77,14 @@ export default function BusManagerContent() {
               <div className="flex gap-[30px]">
                 <img src={edit} alt="edit" className="w-4 h-4" onClick={() => handleEdit(obj)} />
                 <img src={view} alt="view" className="w-4 h-4" onClick={() => handleView(obj)} />
-                <img src={del} alt="delete" className="w-4 h-4" onClick={() => handleDelete(obj.maND)}/>
+                <img src={del} alt="delete" className="w-4 h-4" onClick={() => handleDelete(obj.MaND)}/>
               </div>
             ),
           }))}
         />
 
         {showForm && (
-          <BusManagerForm onClose={() => setShowForm(false)} mode={mode} data={selected} />
+          <BusManagerForm onClose={() => setShowForm(false)} mode={mode} data={selected} reload={loadTableDataBusManager}/>
         )}
       </div>
     </div>

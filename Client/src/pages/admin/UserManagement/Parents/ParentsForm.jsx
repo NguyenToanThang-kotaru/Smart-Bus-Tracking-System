@@ -1,14 +1,38 @@
 import addStudent from "@/assets/Icon/addStudentYellow.png";
-//import ParentsSelectedStudent from "./ParentsSelectedStudent";
+import { useState, useEffect } from "react";
+import axiosClient from "@/middleware/axiosClient";
+import { toast } from "react-toastify";
 
-export default function ParentsForm({ onClose, mode, data }) {
+export default function ParentsForm({ onClose, mode, data, reload }) {
   const isView = mode === "view";
   const title =
     mode === "edit" ? "Sửa Phụ Huynh" : mode === "view" ? "Xem Phụ Huynh" : "Thêm Phụ Huynh";
 
+  const [TenDangNhap, setTenDangNhap] = useState(data?.TenDangNhap || "");
+  const [MatKhau, setMatKhau] = useState(data?.MatKhau || "");
+  const [TenPH, setTenPH] = useState(data?.TenPH || "");
+  const [SdtPH, setSdtPH] = useState(data?.SdtPH || "");
+
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+    try {
+      if (mode === "add") {
+        await axiosClient.post("users/admin/parents", { TenDangNhap, SdtPH, TenPH, MatKhau });
+        toast.success("Thêm phụ huynh thành công!");
+      } else if (mode === "edit") {
+        await axiosClient.put(`users/admin/parents/${TenDangNhap}`, { TenDangNhap, SdtPH, TenPH, MatKhau });
+        toast.success("Sửa thông tin phụ huynh thành công!");
+      }
+      if (reload) await reload();
+      onClose();
+    } catch (err) {
+      toast.error("Lỗi xử lý dữ liệu phụ huynh!");
+    }
+  };
+
   return (
     <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/40">
-      <form className="bg-white flex flex-col rounded-[50px] px-[50px] py-[30px] w-1/2 min-w-[600px] gap-y-[20px]">
+      <form onSubmit={handleSubmit} className="bg-white flex flex-col rounded-[50px] px-[50px] py-[30px] w-1/2 min-w-[600px] gap-y-[20px]">
         <h2 className="text-3xl font-bold text-mainBlue">
           {title}
         </h2>
@@ -17,10 +41,19 @@ export default function ParentsForm({ onClose, mode, data }) {
           <div className="flex gap-x-[50px]">
             <div className="flex flex-col w-full gap-y-2">
               <div className="flex flex-col gap-y-2">
-                <label className="text-xl text-mainBlue font-bold">Mã phụ huynh</label>
-                <input type="text"
-                  defaultValue={data?.maPH || ""} 
-                  readOnly
+                <label className="text-xl text-mainBlue font-bold">Tên đăng nhập</label>
+                <input type="text" value={TenDangNhap} onChange={e => setTenDangNhap(e.target.value)}
+                  readOnly={isView}
+                  className={`border-2 border-gray-300 rounded-[10px] px-3 py-2 w-full h-[35px] ${
+                    isView ? "bg-gray-100" : "focus:outline-mainYellow"
+                  }`}
+                />
+              </div>
+              
+              <div className="flex flex-col gap-y-2">
+                <label className="text-xl text-mainBlue font-bold">Mật khẩu</label>
+                <input type="text" value={MatKhau} onChange={e => setMatKhau(e.target.value)}
+                  readOnly={isView}
                   className={`border-2 border-gray-300 rounded-[10px] px-3 py-2 w-full h-[35px] ${
                     isView ? "bg-gray-100" : "focus:outline-mainYellow"
                   }`}
@@ -29,30 +62,7 @@ export default function ParentsForm({ onClose, mode, data }) {
 
               <div className="flex flex-col gap-y-2">
                 <label className="text-xl text-mainBlue font-bold">Tên phụ huynh</label>
-                <input type="text"
-                  defaultValue={data?.tenPH || ""}
-                  readOnly={isView}
-                  className={`border-2 border-gray-300 rounded-[10px] px-3 py-2 w-full h-[35px] ${
-                    isView ? "bg-gray-100" : "focus:outline-mainYellow"
-                  }`}
-                />
-              </div>
-
-              <div className="flex flex-col gap-y-2">
-                <label className="text-xl text-mainBlue font-bold">Tên đăng nhập</label>
-                <input type="text"
-                  defaultValue={data?.tenDangNhap || ""}
-                  readOnly={isView}
-                  className={`border-2 border-gray-300 rounded-[10px] px-3 py-2 w-full h-[35px] ${
-                    isView ? "bg-gray-100" : "focus:outline-mainYellow"
-                  }`}
-                />
-              </div>
-
-              <div className="flex flex-col gap-y-2">
-                <label className="text-xl text-mainBlue font-bold">Mật khẩu</label>
-                <input type="text"
-                  defaultValue={data?.matKhau || ""}
+                <input type="text" value={TenPH} onChange={e => setTenPH(e.target.value)}
                   readOnly={isView}
                   className={`border-2 border-gray-300 rounded-[10px] px-3 py-2 w-full h-[35px] ${
                     isView ? "bg-gray-100" : "focus:outline-mainYellow"
@@ -64,8 +74,7 @@ export default function ParentsForm({ onClose, mode, data }) {
             <div className="flex flex-col w-full gap-y-2">
               <div className="flex flex-col gap-y-2">
                 <label className="text-xl text-mainBlue font-bold">Số điện thoại</label>
-                <input type="text"
-                  defaultValue={data?.sdt || ""}
+                <input type="text" value={SdtPH} onChange={e => setSdtPH(e.target.value)}
                   readOnly={isView}
                   className={`border-2 border-gray-300 rounded-[10px] px-3 py-2 w-full h-[35px] ${
                     isView ? "bg-gray-100" : "focus:outline-mainYellow"
@@ -100,7 +109,7 @@ export default function ParentsForm({ onClose, mode, data }) {
 
         <div className="flex justify-end mt-6 gap-x-[30px]">
           {!isView && (
-            <button className="text-[15px] bg-mainYellow w-[130px] text-black font-bold py-2 rounded-[10px] hover:bg-yellow-500">
+            <button type="submit" className="text-[15px] bg-mainYellow w-[130px] text-black font-bold py-2 rounded-[10px] hover:bg-yellow-500">
               XÁC NHẬN
             </button>
           )}

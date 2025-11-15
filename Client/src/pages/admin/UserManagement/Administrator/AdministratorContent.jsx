@@ -48,10 +48,10 @@ export default function AdminManagerContent() {
     setShowForm(true);
   };
 
-  const handleDelete = async (MaND) => {
+  const handleDelete = async (id) => {
     if (window.confirm("Bạn có chắc muốn xóa quản trị viên này?")) {
       try {
-        await axiosClient.put(`users/admin/delete/${MaND}`);//////////////////
+        await axiosClient.delete(`users/admin/administrator/${id}`);
         await loadTableDataAdminisitrator();
         toast.success("Xóa quản trị viên thành công!");
       } catch (err) {
@@ -85,7 +85,7 @@ export default function AdminManagerContent() {
         />
 
         {showForm && (
-          <AdministratorForm onClose={() => setShowForm(false)} mode={mode} data={selected} />
+          <AdministratorForm onClose={() => setShowForm(false)} mode={mode} data={selected} reload={loadTableDataAdminisitrator}/>
         )}
       </div>
     </div>

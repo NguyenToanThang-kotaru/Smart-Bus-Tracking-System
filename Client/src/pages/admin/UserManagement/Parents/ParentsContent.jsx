@@ -16,7 +16,7 @@ export default function ParentsContent() {
   const [selected, setSelected] = useState(null);
   const [mode, setMode] = useState("add");
 
-  const loadParentsData = async () => {
+  const loadTableDataParents = async () => {
     try {
       const res = await axiosClient.get("users/admin/parents"); 
       setParents(res.data);
@@ -26,7 +26,7 @@ export default function ParentsContent() {
   };
 
   useEffect(() => {
-    loadParentsData();
+    loadTableDataParents();
   }, []);
 
   const handleAdd = () => {
@@ -47,14 +47,13 @@ export default function ParentsContent() {
     setShowForm(true);
   };
 
-  const handleDelete = async (TenDangNhap) => {
+  const handleDelete = async (username) => {
     if (window.confirm("Bạn có chắc muốn xóa phụ huynh này?")) {
       try {
-        await axiosClient.put(`users/phuhuynh/delete/${TenDangNhap}`);
-        await loadParentsData();
+        await axiosClient.delete(`users/admin/parents/${username}`);
+        await loadTableDataParents();
         toast.success("Xóa phụ huynh thành công!");
       } catch (err) {
-        console.error("Lỗi lấy danh sách phụ huynh:", err);
         toast.error("Lỗi xoá phụ huynh!");
       }
     }
@@ -74,7 +73,6 @@ export default function ParentsContent() {
             "Tên phụ huynh": obj.TenPH,
             "Số điện thoại": obj.SdtPH,
             "Mật khẩu": obj.MatKhau, 
-            
             "Chức năng": (
               <div className="flex gap-[30px]">
                 <img src={edit} alt="edit" className="w-4 h-4 cursor-pointer" onClick={() => handleEdit(obj)}/>
@@ -86,7 +84,7 @@ export default function ParentsContent() {
         />
 
         {showForm && (
-          <ParentsForm onClose={() => setShowForm(false)} mode={mode} data={selected} />
+          <ParentsForm onClose={() => setShowForm(false)} mode={mode} data={selected} reload={loadTableDataParents}/>
         )}
       </div>
     </div>

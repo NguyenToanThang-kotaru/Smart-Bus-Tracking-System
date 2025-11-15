@@ -32,10 +32,10 @@ export default function StudentForm({ onClose, mode, data, reload }) {
     e.preventDefault();
     try {
       if (mode === "add") {
-        await axiosClient.post("students/admin", { MaHS, TenHS, Lop, MaPH, MaTram, TrangThaiXoa: "0"});
+        await axiosClient.post("students/admin", { MaHS, TenHS, Lop, MaPH, MaTram });
         toast.success("Thêm học sinh thành công!");
       } else if (mode === "edit") {
-        await axiosClient.put(`students/admin/update/${MaHS}`, { TenHS, Lop, MaPH, MaTram, });
+        await axiosClient.put(`students/admin/update/${MaHS}`, { TenHS, Lop, MaPH, MaTram });
         toast.success("Sửa thông tin học sinh thành công!");
       }
       if (reload) await reload();
