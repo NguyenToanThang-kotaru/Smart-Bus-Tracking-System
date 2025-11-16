@@ -15,7 +15,7 @@ export default function SearchBar({
   };
 
   return (
-    <div className="flex items-center w-full max-w-full bg-[#F5F5F5] rounded-full px-4 py-2 transition-all duration-200">
+    <div className="flex items-center w-full max-w-full bg-[#F5F5F5] rounded-full pl-5 pr-3 py-2 transition-all duration-200">
       {/* Input bên trái */}
       <input
         type="text"

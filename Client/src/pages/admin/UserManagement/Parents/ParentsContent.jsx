@@ -1,4 +1,6 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
+import axiosClient from "@/middleware/axiosClient";
+import "react-toastify/dist/ReactToastify.css";
 import Table from "@/Components/tableComponent";
 import view from "@/assets/Icon/viewYellow.png";
 import del from "@/assets/Icon/deleteYellow.png";
@@ -6,36 +8,54 @@ import edit from "@/assets/Icon/editYellow.png";
 import SearchBar from "@/Components/searchBarComponent";
 import AddButton from "@/Components/buttonComponent";
 import ParentsForm from "./ParentsForm";
+import { toast } from "react-toastify";
 
 export default function ParentsContent() {
-  const [Parents, setParents] = useState([
-    { maPH: "ND000007", tenPH: "Lê Văn Nhất", tenDangNhap: "phuhuynh01", matKhau: "123456", sdt: "0123456789"},
-    { maPH: "ND000008", tenPH: "Nguyễn Phát Tín", tenDangNhap: "phuhuynh02", matKhau: "123456", sdt: "0123456789"},
-    { maPH: "ND000009", tenPH: "Hồ Minh Tiến", tenDangNhap: "phuhuynh03", matKhau: "123456", sdt: "0123456789"},
-  ]);
-
+  const [parents, setParents] = useState([]);
   const [showForm, setShowForm] = useState(false);
   const [selected, setSelected] = useState(null);
   const [mode, setMode] = useState("add");
-  
+
+  const loadTableDataParents = async () => {
+    try {
+      const res = await axiosClient.get("users/admin/parents"); 
+      setParents(res.data);
+    } catch (err) {
+      toast.error("Lỗi lấy danh sách phụ huynh!");
+    }
+  };
+
+  useEffect(() => {
+    loadTableDataParents();
+  }, []);
+
   const handleAdd = () => {
     setMode("add");
     setSelected(null);
     setShowForm(true);
   };
-  const handleEdit = (item) => {
+
+  const handleEdit = (obj) => {
     setMode("edit");
-    setSelected(item);
+    setSelected(obj);
     setShowForm(true);
   };
-  const handleView = (item) => {
+
+  const handleView = (obj) => {
     setMode("view");
-    setSelected(item);
+    setSelected(obj);
     setShowForm(true);
   };
-  const handleDelete = (id) => {
-    if (window.confirm("Bạn có chắc muốn xóa người dùng này?")) {
-      setParents(routes.filter((obj) => obj.id !== id));
+
+  const handleDelete = async (username) => {
+    if (window.confirm("Bạn có chắc muốn xóa phụ huynh này?")) {
+      try {
+        await axiosClient.delete(`users/admin/parents/${username}`);
+        await loadTableDataParents();
+        toast.success("Xóa phụ huynh thành công!");
+      } catch (err) {
+        toast.error("Lỗi xoá phụ huynh!");
+      }
     }
   };
 
@@ -46,28 +66,28 @@ export default function ParentsContent() {
         <AddButton onClick={handleAdd} />
       </div>
 
-      <div className="mt-10 ">
+      <div className="mt-10">
         <Table
-          data={Parents.map((obj) => ({
-            "Mã phụ huynh": obj.maPH,
-            "Tên phụ huynh": obj.tenPH,
-            "Tên đăng nhập": obj.tenDangNhap,
-            "Mật khẩu": obj.matKhau,
-            "Số điện thoại": obj.sdt,
+          data={parents.map((obj) => ({
+            "Tên đăng nhập": obj.TenDangNhap,
+            "Tên phụ huynh": obj.TenPH,
+            "Số điện thoại": obj.SdtPH,
+            "Mật khẩu": obj.MatKhau, 
             "Chức năng": (
               <div className="flex gap-[30px]">
-                <img src={edit} alt="edit" className="w-6 h-6" onClick={() => handleEdit(obj)} />
-                <img src={view} alt="view" className="w-6 h-6" onClick={() => handleView(obj)} />
-                <img src={del} alt="delete" className="w-6 h-6" onClick={() => handleDelete(obj.maND)}/>
+                <img src={edit} alt="edit" className="w-4 h-4 cursor-pointer" onClick={() => handleEdit(obj)}/>
+                <img src={view} alt="view" className="w-4 h-4 cursor-pointer" onClick={() => handleView(obj)}/>
+                <img src={del} alt="delete" className="w-4 h-4 cursor-pointer" onClick={() => handleDelete(obj.TenDangNhap)}/>
               </div>
             ),
           }))}
         />
 
         {showForm && (
-          <ParentsForm onClose={() => setShowForm(false)} mode={mode} data={selected} />
+          <ParentsForm onClose={() => setShowForm(false)} mode={mode} data={selected} reload={loadTableDataParents}/>
         )}
       </div>
     </div>
   );
 }
+

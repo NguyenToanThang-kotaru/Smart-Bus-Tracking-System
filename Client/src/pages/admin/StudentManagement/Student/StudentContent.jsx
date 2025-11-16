@@ -11,7 +11,7 @@ import StudentForm from "./StudentForm";
 import { toast } from "react-toastify";
 
 export default function StudentContent() {
-  const [Student, setStudent] = useState([]);
+  const [student, setStudent] = useState([]);
   const [showForm, setShowForm] = useState(false);
   const [selected, setSelected] = useState(null);
   const [mode, setMode] = useState("add");
@@ -22,8 +22,7 @@ export default function StudentContent() {
 
   const loadTableDataStudents = async () => {
     try {
-      const res = await axiosClient.get("students/admin");
-      console.log(res.data);
+      const res = await axiosClient.get("students/admin");    
       setStudent(res.data);
     } catch (err) {
       toast.error("Lỗi lấy danh sách học sinh!");
@@ -48,15 +47,8 @@ export default function StudentContent() {
     setShowForm(true);
   };
 
-
-//   const handleDelete = (id) => {
-//     if (window.confirm("Bạn có chắc muốn xóa người dùng này?")) {
-//       setStudent(Student.filter((obj) => obj.MaHS !== id));
-//     }
-//   };
-
   const handleDelete = async (id) => {
-    if (window.confirm("Bạn có chắc muốn xóa người dùng này?")) {
+    if (window.confirm("Bạn có chắc muốn xóa học sinh này?")) {
       try {
         await axiosClient.put(`students/admin/delete/${id}`);
         await loadTableDataStudents();
@@ -76,7 +68,7 @@ export default function StudentContent() {
 
       <div className="mt-10 ">
         <Table
-          data={Student.map((obj) => ({
+          data={student.map((obj) => ({
             "Mã học sinh": obj.MaHS,
             "Tên học sinh": obj.TenHS,
             "Lớp": obj.Lop,
@@ -84,16 +76,16 @@ export default function StudentContent() {
             "Trạm đăng ký": obj.MaTram,
             "Chức năng": (
               <div className="flex gap-[30px]">
-                <img src={edit} alt="edit" className="w-6 h-6" onClick={() => handleEdit(obj)} />
-                <img src={view} alt="view" className="w-6 h-6" onClick={() => handleView(obj)} />
-                <img src={del} alt="delete" className="w-6 h-6" onClick={() => handleDelete(obj.MaHS)}/>
+                <img src={edit} alt="edit" className="w-4 h-4" onClick={() => handleEdit(obj)} />
+                <img src={view} alt="view" className="w-4 h-4" onClick={() => handleView(obj)} />
+                <img src={del} alt="delete" className="w-4 h-4" onClick={() => handleDelete(obj.MaHS)}/>
               </div>
             ),
           }))}
         />
 
         {showForm && (
-          <StudentForm onClose={() => setShowForm(false)} mode={mode} data={selected} />
+          <StudentForm onClose={() => setShowForm(false)} mode={mode} data={selected} reload={loadTableDataStudents} />
         )}
       </div>
     </div>

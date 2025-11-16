@@ -54,9 +54,9 @@ export default function AssignmentContent() {
             "Tuyến đường": obj.MaTD,
             "Hành động": (
               <div className="flex gap-[30px]">
-                <img src={edit} alt="edit" className="w-6 h-6" onClick={() => handleEdit(obj)}/>
-                <img src={view} alt="view" className="w-6 h-6" onClick={() => handleView(obj)}/>
-                <img src={del} alt="del" className="w-6 h-6" onClick={() => handleDelete(obj.MaPC)}/>
+                <img src={edit} alt="edit" className="w-4 h-4" onClick={() => handleEdit(obj)}/>
+                <img src={view} alt="view" className="w-4 h-4" onClick={() => handleView(obj)}/>
+                <img src={del} alt="del" className="w-4 h-4" onClick={() => handleDelete(obj.MaPC)}/>
               </div>
             ),          
           }))}  

@@ -10,37 +10,53 @@ const authenticateToken = require('../middleware/authMiddleware');
 // router.post('/create',authenticateToken.authenticateToken, userController.createUser);
 
 /* ========= PHỤ HUYNH ========= */
-router.get("/phuhuynh", userController.getAllParents);
-router.get("/phuhuynh/:TenDangNhap", userController.getParentById);
-router.post("/phuhuynh", userController.addParent);
-router.put("/phuhuynh/:TenDangNhap", userController.updateParent);
-router.delete("/phuhuynh/:TenDangNhap", userController.deleteParent);
+router.get("/admin/parents", userController.getAllParents);
 
+router.get("/admin/parents/:username", userController.getParentById);
 
-/* ========= QUẢN LÝ TÀI XẾ ========= */
-router.get("/quanlytaixe", userController.getAllManagerDrivers);
-router.get("/quanlytaixe/:MaND", userController.getManagerDriverById);
-router.post("/quanlytaixe", userController.addManagerDriver);
-router.put("/quanlytaixe/:MaND", userController.updateManagerDriver);
-router.delete("/quanlytaixe/:MaND", userController.deleteManagerDriver);
+router.post("/admin/parents", userController.addParent);
 
+router.put("/admin/parents/:username", userController.updateParent);
+
+router.delete("/admin/parents/:username", userController.deleteParent);
+
+/* ========= QUẢN LÝ XE BUYT ========= */
+router.get("/admin/busManager", userController.getAllBusManagers);
+
+router.get("/admin/busManager/:id", userController.getBusManagerById);
+
+router.post("/admin/busManager", userController.addBusManager);
+
+router.put("/admin/busManager/:id", userController.updateBusManager);
+
+router.delete("/admin/busManager/:id", userController.deleteBusManager);
 
 /* ========= QUẢN TRỊ VIÊN ========= */
-router.get("/admin", userController.getAllAdmins);
-router.get("/admin/:MaND", userController.getAdminById);
-router.post("/admin", userController.addAdmin);
-router.put("/admin/:MaND", userController.updateAdmin);
-router.delete("/admin/:MaND", userController.deleteAdmin);
+router.get("/admin/administrator", userController.getAllAdministrators);
+
+router.get("/admin/administrator/:id", userController.getAdministratorById);
+
+router.post("/admin/administrator", userController.addAdministrator);
+
+router.put("/admin/administrator/:id", userController.updateAdministrator);
+
+router.delete("/admin/administrator/:id", userController.deleteAdministrator);
 
 // ==================== TÀI XẾ ====================
-router.get("/taixe", userController.getAllDrivers);
-router.get("/taixe/:MaTX", userController.getDriverById);
-router.post("/taixe", userController.addDriver);
-router.put("/taixe/:MaTX", userController.updateDriver);
-router.delete("/taixe/:MaTX/:MaND", userController.deleteDriver);
+router.get("/admin/driver", userController.getAllDrivers);
+
+router.get("/admin/driver/:id", userController.getDriverById);
+
+router.post("/admin/driver", userController.addDriver);
+
+router.put("/admin/driver/:id", userController.updateDriver);
+
+router.delete("/admin/driver/:id", userController.deleteDriver);
+
 
 // POST /api/users/login
-router.post('/admin/THEM_TAI_XE', userController.Adminlogin);
 router.post('/admin/login', userController.Adminlogin);
+
 router.post('/user/login', userController.Userlogin);
+
 module.exports = router;

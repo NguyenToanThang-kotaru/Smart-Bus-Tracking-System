@@ -4,10 +4,10 @@ export default function AddButton({ text = "Thêm mới", onClick }) {
   return (
     <button
       onClick={onClick}
-      className="flex items-center max-h-15 min-w-45 gap-4 bg-mainBlue text-white text-xl font-semibold px-5 py-2 rounded-md
+      className="inline-flex items-center justify-center w-fit bg-mainBlue text-white text-base font-semibold px-5 py-2 rounded-[15px] whitespace-nowrap gap-2 
         hover:bg-mainYellow hover:text-mainBlue transition-colors duration-200"
     >
-      <img src={add} className="w-6 h-6" />
+      <img src={add} className="w-5 h-5" alt="Thêm mới" />
       {text}
     </button>
   );

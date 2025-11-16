@@ -28,7 +28,7 @@ exports.Userlogin = (username, password, callback) => {
   userModel.Userlogin(username, password, callback);
 }
 
-exports.Adminlogin = (username, password, callback) => {
+exports.Administratorlogin = (username, password, callback) => {
   var regexUsername = /^[a-zA-Z0-9_]{3,30}$/;
   var regexPassword = /^(?=.*[A-Za-z])(?=.*\d)[A-Za-z\d]{5,}$/;
   if(!regexUsername.test(username)) {
@@ -45,10 +45,10 @@ exports.Adminlogin = (username, password, callback) => {
     return callback('Password must be at least 6 characters long');
   }
   
-  userModel.Adminlogin(username, password, callback);
+  userModel.Administratorlogin(username, password, callback);
 }
 
-/* ====== PHỤ HUYNH ====== */
+/* ===================== PHỤ HUYNH ===================== */
 
 exports.getAllParents = (callback) => {
   
@@ -60,37 +60,37 @@ exports.getParentById = (TenDangNhap, callback) => {
 };
 
 exports.addParent = (data, callback) => {
-  if (!data.MatKhau || !data.TenPH || !data.SdtPH) {
-    return callback(new Error('Thiếu thông tin phụ huynh cần thiết'), null);
-  }
+  if (!data.MatKhau || !data.TenPH || !data.SdtPH)
+    return callback(new Error("Thiếu dữ liệu phụ huynh"));
 
-  userModel.getLastParentCode((err, result) => {
+  userModel.getLastParentId((err, result) => {
     if (err) return callback(err);
 
-    let newCode = "PH000001";
+    let newId = "PH000001";
+
     if (result && result.length > 0 && result[0].TenDangNhap) {
-      const num = parseInt(result[0].TenDangNhap.replace("PH", ""), 10) + 1;
-      newCode = "PH" + num.toString().padStart(6, "0");
+      const num = parseInt(result[0].TenDangNhap.replace("PH", "")) + 1;
+      newId = "PH" + num.toString().padStart(6, "0");
     }
 
-    const newParent = {
-      TenDangNhap: newCode,
+    const parentObj = {
+      TenDangNhap: newId,
       SdtPH: data.SdtPH,
       TenPH: data.TenPH,
       MatKhau: data.MatKhau,
     };
 
-    userModel.addParent(newParent, (err) => {
-      if (err) return callback(err);
-      callback(null, { message: `Thêm phụ huynh thành công` });
+    userModel.addParent(parentObj, (err2) => {
+      if (err2) return callback(err2);
+      callback(null, { message: "Thêm phụ huynh thành công" });
     });
   });
 };
 
 exports.updateParent = (TenDangNhap, data, callback) => {
-  if (!data.TenPH || !data.MatKhau || !data.SdtPH) {
-    return callback(new Error('Thiếu dữ liệu để cập nhật phụ huynh'), null);
-  }
+  if (!data.TenPH || !data.MatKhau || !data.SdtPH)
+    return callback(new Error("Thiếu dữ liệu để cập nhật phụ huynh"));
+
   userModel.updateParent(TenDangNhap, data, callback);
 };
 
@@ -98,111 +98,111 @@ exports.deleteParent = (TenDangNhap, callback) => {
   userModel.deleteParent(TenDangNhap, callback);
 };
 
-/* ====== QUẢN LÝ TÀI XẾ ====== */
 
-exports.getAllManagerDrivers = (callback) => {
-  userModel.getAllManagerDrivers(callback);
+
+/* ===================== QUẢN LÝ TÀI XẾ ===================== */
+
+exports.getAllBusManagers = (callback) => {
+  userModel.getAllBusManagers(callback);
 };
 
-exports.getManagerDriverById = (MaND, callback) => {
-  userModel.getManagerDriverById(MaND, callback);
+exports.getBusManagerById = (MaND, callback) => {
+  userModel.getBusManagerById(MaND, callback);
 };
 
-exports.addManagerDriver = (data, callback) => {
-  if (!data.TenND || !data.TenDangNhap || !data.MatKhau) {
-    return callback(new Error('Thiếu thông tin Quản lý tài xế cần thiết'), null);
-  }
+exports.addBusManager = (data, callback) => {
+  if (!data.TenND || !data.TenDangNhap || !data.MatKhau)
+    return callback(new Error("Thiếu dữ liệu quản lý tài xế"));
 
-  userModel.getLastManagerDriverCode((err, result) => {
+  userModel.getLastBusManagerId((err, result) => {
     if (err) return callback(err);
 
-    let newCode = "ND000001";
-    if (result && result.length > 0 && result[0].MaND) {
-      const num = parseInt(result[0].MaND.replace("ND", ""), 10) + 1;
-      newCode = "ND" + num.toString().padStart(6, "0");
+    let newId = "ND000001";
+    if (result && result[0]?.MaND) {
+      const num = parseInt(result[0].MaND.replace("ND", "")) + 1;
+      newId = "ND" + num.toString().padStart(6, "0");
     }
 
-    const newManager = {
-      MaND: newCode,
-      MaVT: 'VT000002',
+    const managerObj = {
+      MaND: newId,
+      MaVT: "VT000002",
       TenND: data.TenND,
       TenDangNhap: data.TenDangNhap,
       MatKhau: data.MatKhau,
     };
 
-    userModel.addManagerDriver(newManager, (err) => {
-      if (err) return callback(err);
-      callback(null, { message: `Thêm Quản lý tài xế thành công` });
+    userModel.addBusManager(managerObj, (err2) => {
+      if (err2) return callback(err2);
+      callback(null, { message: "Thêm Quản lý tài xế thành công" });
     });
   });
 };
 
-exports.updateManagerDriver = (MaND, data, callback) => {
-  if (!data.TenND || !data.TenDangNhap || !data.MatKhau) {
-    return callback(new Error('Thiếu dữ liệu để cập nhật Quản lý tài xế'), null);
-  }
-  userModel.updateManagerDriver(MaND, data, callback);
+exports.updateBusManager = (MaND, data, callback) => {
+  if (!data.TenND || !data.TenDangNhap || !data.MatKhau)
+    return callback(new Error("Thiếu dữ liệu cập nhật"));
+
+  userModel.updateBusManager(MaND, data, callback);
 };
 
-exports.deleteManagerDriver = (MaND, callback) => {
-  userModel.deleteManagerDriver(MaND, callback);
+exports.deleteBusManager = (MaND, callback) => {
+  userModel.deleteBusManager(MaND, callback);
 };
 
-/* ====== QUẢN TRỊ VIÊN ====== */
 
-exports.getAllAdmins = (callback) => {
-  userModel.getAllAdmins(callback);
+
+/* ===================== QUẢN TRỊ VIÊN ===================== */
+
+exports.getAllAdministrators = (callback) => {
+  userModel.getAllAdministrators(callback);
 };
 
-exports.getAdminById = (MaND, callback) => {
-  userModel.getAdminById(MaND, callback);
+exports.getAdministratorById = (MaND, callback) => {
+  userModel.getAdministratorById(MaND, callback);
 };
 
-exports.addAdmin = (data, callback) => {
-  if (!data.TenND || !data.TenDangNhap || !data.MatKhau) {
-    return callback(new Error('Thiếu thông tin Quản trị viên cần thiết'), null);
-  }
+exports.addAdministrator = (data, callback) => {
+  if (!data.TenND || !data.TenDangNhap || !data.MatKhau)
+    return callback(new Error("Thiếu dữ liệu quản trị viên"));
 
-  userModel.getLastAdminCode((err, result) => {
+  userModel.getLastAdministratorId((err, result) => {
     if (err) return callback(err);
 
-    let newCode = "ND000001";
-    if (result && result.length > 0 && result[0].MaND) {
-      const num = parseInt(result[0].MaND.replace("ND", ""), 10) + 1;
-      newCode = "ND" + num.toString().padStart(6, "0");
+    let newId = "ND000001";
+    if (result && result[0]?.MaND) {
+      const num = parseInt(result[0].MaND.replace("ND", "")) + 1;
+      newId = "ND" + num.toString().padStart(6, "0");
     }
 
-    const newAdmin = {
-      MaND: newCode,
-      MaVT: 'VT000001',
+    const adminObj = {
+      MaND: newId,
+      MaVT: "VT000001",
       TenND: data.TenND,
       TenDangNhap: data.TenDangNhap,
       MatKhau: data.MatKhau,
     };
 
-    userModel.addAdmin(newAdmin, (err) => {
-      if (err) return callback(err);
-      callback(null, { message: `Thêm Quản trị viên thành công` });
+    userModel.addAdministrator(adminObj, (err2) => {
+      if (err2) return callback(err2);
+      callback(null, { message: "Thêm Quản trị viên thành công" });
     });
   });
 };
 
-exports.updateAdmin = (MaND, data, callback) => {
-  if (!data.TenND || !data.TenDangNhap || !data.MatKhau) {
-    return callback(new Error('Thiếu dữ liệu để cập nhật Quản trị viên'), null);
-  }
-  userModel.updateAdmin(MaND, data, callback);
+exports.updateAdministrator = (MaND, data, callback) => {
+  if (!data.TenND || !data.TenDangNhap || !data.MatKhau)
+    return callback(new Error("Thiếu dữ liệu cập nhật"));
+
+  userModel.updateAdministrator(MaND, data, callback);
 };
 
-exports.deleteAdmin = (MaND, callback) => {
-  userModel.deleteAdmin(MaND, (err) => {
-    if (err) return callback(err);
-    callback(null, { message: 'Xóa Quản trị viên thành công' });
-  });
+exports.deleteAdministrator = (MaND, callback) => {
+  userModel.deleteAdministrator(MaND, callback);
 };
 
 
-/* ====== TÀI XẾ ====== */
+
+/* ===================== TÀI XẾ ===================== */
 
 exports.getAllDrivers = (callback) => {
   userModel.getAllDrivers(callback);
@@ -214,36 +214,37 @@ exports.getDriverById = (MaTX, callback) => {
 
 exports.addDriver = (data, callback) => {
   if (!data.TenND || !data.TenDangNhap || !data.MatKhau ||
-      !data.SoCccd || !data.SdtTX || !data.BacBangLai) {
-    return callback(new Error('Thiếu thông tin tài xế'), null);
-  }
+      !data.SoCccd || !data.SdtTX || !data.BacBangLai)
+    return callback(new Error("Thiếu thông tin tài xế"));
 
-  userModel.getLastDriverAccountCode((err, resultND) => {
+  // Tạo tài khoản ND trước
+  userModel.getLastDriverAccountId((err, resultND) => {
     if (err) return callback(err);
 
     let newMaND = "ND000001";
-    if (resultND && resultND.length > 0 && resultND[0].MaND) {
-      const numND = parseInt(resultND[0].MaND.replace("ND", ""), 10) + 1;
-      newMaND = "ND" + numND.toString().padStart(6, "0");
+    if (resultND && resultND[0]?.MaND) {
+      const num = parseInt(resultND[0].MaND.replace("ND", "")) + 1;
+      newMaND = "ND" + num.toString().padStart(6, "0");
     }
 
-    const driverAccount = {
+    const accountObj = {
       MaND: newMaND,
-      MaVT: 'VT000003', 
+      MaVT: "VT000003",
       TenND: data.TenND,
       TenDangNhap: data.TenDangNhap,
-      MatKhau: data.MatKhau,
+      MatKhau: data.MatKhau
     };
 
-    userModel.addDriverAccount(driverAccount, (err) => {
-      if (err) return callback(err);
+    userModel.addDriverAccount(accountObj, (err2) => {
+      if (err2) return callback(err2);
 
-      userModel.getLastDriverInfoCode((err2, resultTX) => {
-        if (err2) return callback(err2);
+      // Tiếp theo tạo thông tin tài xế TX
+      userModel.getLastDriverInfoId((err3, resultTX) => {
+        if (err3) return callback(err3);
 
         let newMaTX = "TX000001";
-        if (resultTX && resultTX.length > 0 && resultTX[0].MaTX) {
-          const numTX = parseInt(resultTX[0].MaTX.replace("TX", ""), 10) + 1;
+        if (resultTX && resultTX[0]?.MaTX) {
+          const numTX = parseInt(resultTX[0].MaTX.replace("TX", "")) + 1;
           newMaTX = "TX" + numTX.toString().padStart(6, "0");
         }
 
@@ -254,29 +255,23 @@ exports.addDriver = (data, callback) => {
           BacBangLai: data.BacBangLai
         };
 
-        userModel.addDriverInfo(driverInfo, (err3) => {
-          if (err3) return callback(err3);
+        userModel.addDriverInfo(driverInfo, (err4) => {
+          if (err4) return callback(err4);
 
-          callback(null, {
-            message: "Thêm tài xế thành công",
-          });
+          callback(null, { message: "Thêm tài xế thành công" });
         });
       });
     });
   });
 };
 
-
 exports.updateDriver = (MaTX, data, callback) => {
-  if (!data.SoCccd || !data.SdtTX || !data.BacBangLai) {
-    return callback(new Error('Thiếu dữ liệu để cập nhật tài xế'), null);
-  }
+  if (!data.SoCccd || !data.SdtTX || !data.BacBangLai)
+    return callback(new Error("Thiếu dữ liệu cập nhật"));
+
   userModel.updateDriver(MaTX, data, callback);
 };
 
-exports.deleteDriver = (MaTX, MaND, callback) => {
-  userModel.deleteDriver(MaTX, MaND, (err) => {
-    if (err) return callback(err);
-    callback(null, { message: 'Xóa tài xế thành công' });
-  });
+exports.deleteDriver = (MaTX, callback) => {
+  userModel.deleteDriver(MaTX, callback);
 };

@@ -16,8 +16,8 @@ exports.getStudentById = (id, callback) => {
 };
 
 exports.addStudent = (data, callback) => {
-  const { MaHS, MaPH, MaTram, TenHS, Lop, TrangThaiXoa } = data;
-  db.query(`INSERT INTO hocsinh (MaHS, MaPH, MaTram, TenHS, Lop, TrangThaiXoa) VALUES (?, ?, ?, ?, ?, ?)`, [MaHS, MaPH, MaTram, TenHS, Lop, TrangThaiXoa], (err, result) => {
+  const { MaHS, MaPH, MaTram, TenHS, Lop } = data;
+  db.query(`INSERT INTO hocsinh (MaHS, MaPH, MaTram, TenHS, Lop, TrangThaiXoa) VALUES (?, ?, ?, ?, ?, 0)`, [MaHS, MaPH, MaTram, TenHS, Lop], (err, result) => {
     if (err) return callback(err, null);
     callback(null, result);
   });
@@ -39,8 +39,8 @@ exports.deleteStudent = (id, callback) => {
 
 exports.getLastStudentId = (callback) => {
   db.query('SELECT MaHS FROM hocsinh ORDER BY MaHS DESC LIMIT 1', (err, result) => {
-      if (err) return callback(err, null);
-      const lastId = result[0] ? result[0].MaHS : null;
-      callback(null, lastId);
-    });
+    if (err) return callback(err, null);
+    const lastId = result[0] ? result[0].MaHS : null;
+    callback(null, lastId);
+  });
 };

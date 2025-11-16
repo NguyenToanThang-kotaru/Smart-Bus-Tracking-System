@@ -1,68 +1,90 @@
-import { useState } from "react";
-import TableComponent from "@/Components/tableComponent";
-import SearchBarComponent from "@/Components/searchBarComponent";
+import { useState, useEffect } from "react";
+import axiosClient from "@/middleware/axiosClient";
+import "react-toastify/dist/ReactToastify.css";
+import Table from "@/Components/tableComponent";
+import SearchBar from "@/Components/searchBarComponent";
 import AddButton from "@/Components/buttonComponent";
 import view from "@/assets/Icon/viewYellow.png";
 import del from "@/assets/Icon/deleteYellow.png";
 import edit from "@/assets/Icon/editYellow.png";
 import RouteForm from "./RouteForm";
+import { toast } from "react-toastify";
 
 export default function RouteContent() {
-  const [routes, setRoutes] = useState([
-    { id: "TD001", name: "Tuyến số 1: Bến Thành - Bến xe buýt Chợ Lớn"},
-    { id: "TD002", name: "Tuyến số 2: Bến xe buýt Chợ Lớn - Chợ Tân Nhựt"},
-    { id: "TD003", name: "Tuyến số 3: Đại học Quốc Gia - Bến xe Miền Tây"},
-  ]);
-
+  const [routes, setRoutes] = useState([]);
   const [showForm, setShowForm] = useState(false);
   const [selected, setSelected] = useState(null);
   const [mode, setMode] = useState("add");
+
+  useEffect(() => {
+    loadTableDataRoutes();
+  }, []);
+
+  const loadTableDataRoutes = async () => {
+    try {
+      const res = await axiosClient.get("routes/tuyenduong");
+      setRoutes(res.data);
+    } catch (err) {
+      console.error(err);
+      toast.error("Lỗi khi lấy danh sách tuyến đường!");
+    }
+  };
 
   const handleAdd = () => {
     setMode("add");
     setSelected(null);
     setShowForm(true);
   };
-  const handleEdit = (item) => {
+
+  const handleEdit = (obj) => {
     setMode("edit");
-    setSelected(item);
+    setSelected(obj);
     setShowForm(true);
   };
-  const handleView = (item) => {
+
+  const handleView = (obj) => {
     setMode("view");
-    setSelected(item);
+    setSelected(obj);
     setShowForm(true);
   };
-  const handleDelete = (id) => {
+
+  const handleDelete = async (MaTD) => {
     if (window.confirm("Bạn có chắc muốn xóa tuyến đường này?")) {
-      setRoutes(routes.filter((obj) => obj.id !== id));
+      try {
+        await axiosClient.delete(`routes/tuyenduong/${MaTD}`);
+        await loadTableDataRoutes();
+        toast.success("Xóa tuyến đường thành công!");
+      } catch (err) {
+        console.error(err);
+        toast.error("Lỗi khi xóa tuyến đường!");
+      }
     }
   };
 
   return (
     <div>
       <div className="px-10 pt-5 flex w-full justify-between gap-10">
-        <SearchBarComponent />
+        <SearchBar />
         <AddButton onClick={handleAdd} />
       </div>
 
       <div className="mt-10">
-        <TableComponent
+        <Table
           data={routes.map((obj) => ({
-            "Mã tuyến": obj.id,
-            "Tên tuyến": obj.name,
+            "Mã tuyến": obj.MaTD,
+            "Tên tuyến": obj.TenTD,
             "Chức năng": (
               <div className="flex gap-[30px]">
-                <img src={edit} alt="edit" className="w-6 h-6" onClick={() => handleEdit(obj)}/>
-                <img src={view} alt="view" className="w-6 h-6" onClick={() => handleView(obj)}/>
-                <img src={del} alt="del" className="w-6 h-6" onClick={() => handleDelete(obj.id)}/>
+                <img src={edit} alt="edit" className="w-4 h-4 cursor-pointer" onClick={() => handleEdit(obj)} />
+                <img src={view} alt="view" className="w-4 h-4 cursor-pointer" onClick={() => handleView(obj)} />
+                <img src={del} alt="delete" className="w-4 h-4 cursor-pointer" onClick={() => handleDelete(obj.MaTD)} />
               </div>
             ),
           }))}
         />
 
         {showForm && (
-          <RouteForm onClose={() => setShowForm(false)} mode={mode} data={selected}/>
+          <RouteForm  onClose={() => setShowForm(false)} mode={mode} data={selected}reload={loadTableDataRoutes} />
         )}
       </div>
     </div>

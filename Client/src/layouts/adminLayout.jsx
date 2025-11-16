@@ -31,12 +31,12 @@ export default function AdminLayout() {
     <div className="admin-layout flex h-screen bg-theme ">
       {/* Sidebar */}
       <div
-        className={`fixed top-0 left-0 h-full w-74 bg-mainBlue text-white transform
+        className={`fixed top-0 left-0 h-full w-62 bg-mainBlue text-white transform
         ${isOpen ? "translate-x-0" : "-translate-x-full"}
         transition-transform duration-300 ease-in-out z-50`}
       >
-        <div className="p-4 font-bold text-2xl border-b flex justify-between cursor-pointer border-white">
-          <h1 className="text-2xl"
+        <div className="p-4 font-bold border-b flex justify-between items-center cursor-pointer border-white h-1/14">
+          <h1 className="text-[18px]"
             onClick={() => { setIsOpen(false); window.location.href = "/admin" }}
           >
             Administrator
@@ -45,7 +45,7 @@ export default function AdminLayout() {
             <img
               src={closeMenu}
               alt="CloseSideBar"
-              className="w-10 h-10 cursor-pointer hover:scale-105 active:scale-95"
+              className="w-7 h-7 cursor-pointer hover:scale-105 active:scale-95"
               onClick={() => setIsOpen(!isOpen)}
             />
           </button>
@@ -54,7 +54,7 @@ export default function AdminLayout() {
           <li>
             <Link
               to="/admin/dashboard"
-              className="flex gap-1 items-center hover:bg-mainYellow align-middle hover:text-mainBlue text-white text-xl font-bold p-2 rounded"
+              className="flex gap-1 items-center hover:bg-mainYellow align-middle hover:text-mainBlue text-white text-[16px] font-bold p-2 rounded"
               onClick={() => { setIsOpen(false) }}
             >
               <svg
@@ -77,7 +77,7 @@ export default function AdminLayout() {
           <li>
             <Link
               to="/admin/usermanagement"
-              className="flex gap-1 items-center hover:bg-mainYellow align-middle hover:text-mainBlue text-white text-xl font-bold p-2 rounded"
+              className="flex gap-1 items-center hover:bg-mainYellow align-middle hover:text-mainBlue text-white text-[16px] font-bold p-2 rounded"
               onClick={() => { setIsOpen(false) }}
             >
               <svg
@@ -99,7 +99,7 @@ export default function AdminLayout() {
           <li>
             <Link
               to="/admin/studentmanagement"
-              className="flex gap-1 items-center hover:bg-mainYellow align-middle hover:text-mainBlue text-white text-xl font-bold p-2 rounded"
+              className="flex gap-1 items-center hover:bg-mainYellow align-middle hover:text-mainBlue text-white text-[16px] font-bold p-2 rounded"
               onClick={() => { setIsOpen(false) }}
             >
               <svg
@@ -121,7 +121,7 @@ export default function AdminLayout() {
           <li>
             <Link
               to="/admin/routemanagement"
-              className="flex gap-1 items-center hover:bg-mainYellow align-middle hover:text-mainBlue text-white text-xl font-bold p-2 rounded"
+              className="flex gap-1 items-center hover:bg-mainYellow align-middle hover:text-mainBlue text-white text-[16px] font-bold p-2 rounded"
               onClick={() => { setIsOpen(false) }}
             >
               <svg
@@ -141,7 +141,7 @@ export default function AdminLayout() {
           <li>
             <Link
               to="/admin/schedulemanagement"
-              className="flex gap-1 items-center hover:bg-mainYellow align-middle hover:text-mainBlue text-white text-xl font-bold p-2 rounded"
+              className="flex gap-1 items-center hover:bg-mainYellow align-middle hover:text-mainBlue text-white text-[16px] font-bold p-2 rounded"
               onClick={() => { setIsOpen(false) }}
             >
               <svg
@@ -166,7 +166,7 @@ export default function AdminLayout() {
           <li>
             <Link
               to="/admin/tripmanagement"
-              className="flex gap-1 items-center hover:bg-mainYellow align-middle hover:text-mainBlue text-white text-xl font-bold p-2 rounded"
+              className="flex gap-1 items-center hover:bg-mainYellow align-middle hover:text-mainBlue text-white text-[16px] font-bold p-2 rounded"
               onClick={() => { setIsOpen(false) }}
             >
               <svg
@@ -186,7 +186,7 @@ export default function AdminLayout() {
           <li>
             <Link
               to="/admin/driverschedule"
-              className="flex gap-1 items-center hover:bg-mainYellow align-middle hover:text-mainBlue text-white text-xl font-bold p-2 rounded"
+              className="flex gap-1 items-center hover:bg-mainYellow align-middle hover:text-mainBlue text-white text-[16px] font-bold p-2 rounded"
               onClick={() => { setIsOpen(false) }}
             >
               <svg
@@ -224,21 +224,21 @@ export default function AdminLayout() {
               <img
                 src={menu}
                 alt="Menu"
-                className="hover:scale-105 active:scale-95 cursor-pointer w-8 h-8"
+                className="hover:scale-105 active:scale-95 cursor-pointer w-6 h-6"
               />
             </button>
             <h1 className="text-2xl text-mainYellow font-semibold">{title}</h1>
           </div>
 
-          <h1 className="text-3xl w-1/3 text-center text-mainYellow font-bold select-none">
+          <h1 className="text-2xl w-1/3 text-center text-mainYellow font-bold select-none">
             Smart Bus Tracking System
           </h1>
 
           <div className="flex-1 flex gap-5 justify-end items-center">
             <button onClick={handleLogout} className="hover:scale-105 cursor-pointer active:scale-95 flex gap-x-3 bg-mainBlue items-center 
-              border-2 border-mainYellow rounded-[10px] px-[10px] py-[4px] font-semibold text-mainYellow">
+              border-2 border-mainYellow rounded-[10px] px-[10px] py-[3px] font-semibold text-mainYellow text-[12px]">
               Logout
-              <img src={logout} alt="Logout" className="w-6 h-6" />
+              <img src={logout} alt="Logout" className="w-4 h-4" />
             </button>
           </div>
         </header>
