@@ -73,7 +73,7 @@ export default function DriverContent() {
             "Mã tài xế": obj.MaTX,
             "Số CCCD": obj.SoCccd,
             "Số điện thoại": obj.SdtTX,
-            "Biển số xe": obj.BacBangLai,
+            "Bậc bằng lái": obj.BacBangLai,
             "Chức năng": (
               <div className="flex gap-[30px]">
                 <img src={edit} alt="edit" className="w-4 h-4 cursor-pointer" onClick={() => handleEdit(obj)} />
