@@ -51,6 +51,7 @@ exports.Adminlogin = (username, password, callback) => {
 /* ====== PHỤ HUYNH ====== */
 
 exports.getAllParents = (callback) => {
+  
   userModel.getAllParents(callback);
 };
 
