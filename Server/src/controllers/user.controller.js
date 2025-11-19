@@ -282,6 +282,13 @@ exports.getDriverById = (req, res) => {
   });
 };
 
+exports.getNextDriverId = (req, res) => {
+  userService.getNextDriverId((err, nextId) => {
+    if (err) return res.status(500).json({ error: err.message || err });
+    res.json({ nextId });
+  });
+};
+
 exports.addDriver = (req, res) => {
   userService.addDriver(req.body, (err, result) => {
     if (err) return res.status(400).json({ error: err.message });

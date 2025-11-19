@@ -49,6 +49,8 @@ router.put("/admin/administrator/:id", userController.updateAdministrator);
 router.delete("/admin/administrator/:id", userController.deleteAdministrator);
 
 // ==================== TÀI XẾ ====================
+router.get("/admin/driver/nextId", userController.getNextDriverId);
+
 router.get("/admin/driver", userController.getAllDrivers);
 
 router.get("/admin/driver/:id", userController.getDriverById);
