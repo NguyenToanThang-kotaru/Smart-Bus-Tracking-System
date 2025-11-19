@@ -10,6 +10,8 @@ const authenticateToken = require('../middleware/authMiddleware');
 // router.post('/create',authenticateToken.authenticateToken, userController.createUser);
 
 /* ========= PHỤ HUYNH ========= */
+router.get("/admin/parents/nextId", userController.getNextParentId);
+
 router.get("/admin/parents", userController.getAllParents);
 
 router.get("/admin/parents/:username", userController.getParentById);
@@ -21,6 +23,8 @@ router.put("/admin/parents/:username", userController.updateParent);
 router.delete("/admin/parents/:username", userController.deleteParent);
 
 /* ========= QUẢN LÝ XE BUYT ========= */
+router.get("/admin/busManager/nextId", userController.getNextBusManagerId);
+
 router.get("/admin/busManager", userController.getAllBusManagers);
 
 router.get("/admin/busManager/:id", userController.getBusManagerById);
@@ -32,6 +36,8 @@ router.put("/admin/busManager/:id", userController.updateBusManager);
 router.delete("/admin/busManager/:id", userController.deleteBusManager);
 
 /* ========= QUẢN TRỊ VIÊN ========= */
+router.get("/admin/administrator/nextId", userController.getNextAdministratorId);
+
 router.get("/admin/administrator", userController.getAllAdministrators);
 
 router.get("/admin/administrator/:id", userController.getAdministratorById);

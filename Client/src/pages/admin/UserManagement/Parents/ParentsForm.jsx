@@ -13,6 +13,20 @@ export default function ParentsForm({ onClose, mode, data, reload }) {
   const [TenPH, setTenPH] = useState(data?.TenPH || "");
   const [SdtPH, setSdtPH] = useState(data?.SdtPH || "");
 
+  useEffect(() => {
+    const getNextId = async () => {
+      if (mode === "add") {
+        try {
+          const res = await axiosClient.get("users/admin/parents/nextId"); //getNextUserId
+          setTenDangNhap(res.data.nextId);
+        } catch (err) {
+          toast.error("Lỗi khi lấy tên đăng nhập dùng tiếp theo!");
+        }
+      }
+    };
+    getNextId();
+  }, [mode]);
+
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {

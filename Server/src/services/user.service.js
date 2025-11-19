@@ -58,6 +58,23 @@ exports.getParentById = (TenDangNhap, callback) => {
   userModel.getParentById(TenDangNhap, callback);
 };
 
+exports.getNextParentId = (callback) => {
+  userModel.getLastParentId((err, result) => {
+    if (err) return callback(err);
+
+    const lastId = result && result[0] ? result[0].TenDangNhap : null;
+
+    let newId = "PH000001";
+
+    if (lastId) {
+      const num = parseInt(lastId.replace("PH", "")) + 1;
+      newId = "PH" + num.toString().padStart(6, "0");
+    }
+
+    callback(null, newId);
+  });
+};
+
 exports.addParent = (data, callback) => {
   if (!data.MatKhau || !data.TenPH || !data.SdtPH)
     return callback(new Error("Thiếu dữ liệu phụ huynh"));
@@ -109,6 +126,22 @@ exports.getBusManagerById = (MaND, callback) => {
   userModel.getBusManagerById(MaND, callback);
 };
 
+exports.getNextBusManagerId = (callback) => {
+  userModel.getLastBusManagerId((err, result) => {
+    if (err) return callback(err);
+
+    let lastId = result && result[0] ? result[0].MaND : null;
+
+    let newId = "ND000001";
+    if (lastId) {
+      const num = parseInt(lastId.replace("ND", "")) + 1;
+      newId = "ND" + num.toString().padStart(6, "0");
+    }
+
+    callback(null, newId);
+  });
+};
+
 exports.addBusManager = (data, callback) => {
   if (!data.TenND || !data.TenDangNhap || !data.MatKhau)
     return callback(new Error("Thiếu dữ liệu quản lý tài xế"));
@@ -158,6 +191,22 @@ exports.getAllAdministrators = (callback) => {
 
 exports.getAdministratorById = (MaND, callback) => {
   userModel.getAdministratorById(MaND, callback);
+};
+
+exports.getNextAdministratorId = (callback) => {
+  userModel.getLastAdministratorId((err, result) => {
+    if (err) return callback(err);
+
+    let lastId = result && result[0] ? result[0].MaND : null;
+
+    let newId = "ND000001";
+    if (lastId) {
+      const num = parseInt(lastId.replace("ND", "")) + 1;
+      newId = "ND" + num.toString().padStart(6, "0");
+    }
+
+    callback(null, newId);
+  });
 };
 
 exports.addAdministrator = (data, callback) => {
