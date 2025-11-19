@@ -13,6 +13,7 @@ export default function Dashboard() {
   const [selectedBus, setSelectedBus] = useState(null);
   const [busRoutes, setBusRoutes] = useState([]);
   const [routePoints, setRoutePoints] = useState([])
+  const [busPosition, setBusPosition] = useState(null);
 
   // ====== FETCH API ======
   useEffect(() => {
@@ -71,43 +72,33 @@ export default function Dashboard() {
 
 
   useEffect(() => {
-    //  Khúc này lấy api tĩnh từ Server thay vì socket
-    // coordsReady = selectedBus.coords.map(toado => [
-    //   parseFloat(toado.ViDo),
-    //   parseFloat(toado.KinhDo),
-    // ])
-
-    console.log("xe bus: ",selectedBus)
-    // const fetchPolyLine = () => {
-    //   const res = axiosClient.post('routes/get-polyline',selectedBus.coords)
-    //   let data = res.data
-    //   console.log("data: ", data)
-    // }
-    // fetchPolyLine()
     if (!selectedBus) return;
-    // Emit lên server
+
     socket.emit("join_bus", {
       busId: selectedBus.bus,
       stations: selectedBus.stations,
     });
-    
-    // Khi server gửi polyline về
+
     socket.on("bus_polyline", (data) => {
-      console.log("📦 Nhận polyline từ server:", data);
       if (data.polyline) {
         const points = data.polyline.map(([lon, lat]) => [lat, lon]);
         setRoutePoints(points);
       }
     });
 
+    socket.on("bus_position", (pos) => {
+      console.log("Nhận vị trí xe:", pos);
+      setBusPosition([pos.lat, pos.lon]); // <- DÒNG QUAN TRỌNG
+    });
+
     socket.on("bus_error", (err) => {
       console.error("Lỗi bus:", err);
     });
 
-    // Rời khỏi room khi đổi bus hoặc unmount
     return () => {
       socket.emit("leave_bus", selectedBus.bus);
       socket.off("bus_polyline");
+      socket.off("bus_position");  // <- OFF LUÔN ĐÂY
       socket.off("bus_error");
     };
   }, [selectedBus]);
@@ -135,7 +126,7 @@ export default function Dashboard() {
     <div className="flex h-full gap-4 p-4 select-none">
       {/* BẢN ĐỒ BÊN TRÁI */}
       <div className="flex-1 z-0">
-        <MapView routePoints={routePoints} markers={markers} />
+        <MapView routePoints={routePoints} markers={markers} busPosition={busPosition} />
       </div>
 
       {/* THANH THÔNG TIN BÊN PHẢI */}
