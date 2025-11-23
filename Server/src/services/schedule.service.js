@@ -133,7 +133,7 @@ exports.addAssignment = (data, callback) => {
   }
 
   const assignmentData = { MaPC, MaTX, SoXeBuyt, MaTD };
-  scheduleModel.addSchedule(assignmentData, (err, result) => {
+  scheduleModel.addAssignment(assignmentData, (err, result) => {
     if (err) return callback({ status: 500, message: err.message });
     callback(null, assignmentData);
   });
