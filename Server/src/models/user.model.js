@@ -131,12 +131,8 @@ exports.getDriverById = (MaTX, callback) => {
   db.query(sql, [MaTX], callback);
 };
 
-exports.getLastDriverAccountId = (callback) => {
+exports.getLastDriverId = (callback) => {
   db.query("SELECT MaND FROM nguoidung ORDER BY MaND DESC LIMIT 1", callback);
-};
-
-exports.getLastDriverInfoId = (callback) => {
-  db.query("SELECT MaTX FROM taixe ORDER BY MaTX DESC LIMIT 1", callback);
 };
 
 exports.addDriverAccount = (data, callback) => {

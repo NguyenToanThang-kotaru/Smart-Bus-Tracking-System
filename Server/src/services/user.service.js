@@ -58,6 +58,23 @@ exports.getParentById = (TenDangNhap, callback) => {
   userModel.getParentById(TenDangNhap, callback);
 };
 
+exports.getNextParentId = (callback) => {
+  userModel.getLastParentId((err, result) => {
+    if (err) return callback(err);
+
+    const lastId = result && result[0] ? result[0].TenDangNhap : null;
+
+    let newId = "PH000001";
+
+    if (lastId) {
+      const num = parseInt(lastId.replace("PH", "")) + 1;
+      newId = "PH" + num.toString().padStart(6, "0");
+    }
+
+    callback(null, newId);
+  });
+};
+
 exports.addParent = (data, callback) => {
   if (!data.MatKhau || !data.TenPH || !data.SdtPH)
     return callback(new Error("Thiếu dữ liệu phụ huynh"));
@@ -107,6 +124,22 @@ exports.getAllBusManagers = (callback) => {
 
 exports.getBusManagerById = (MaND, callback) => {
   userModel.getBusManagerById(MaND, callback);
+};
+
+exports.getNextBusManagerId = (callback) => {
+  userModel.getLastBusManagerId((err, result) => {
+    if (err) return callback(err);
+
+    let lastId = result && result[0] ? result[0].MaND : null;
+
+    let newId = "ND000001";
+    if (lastId) {
+      const num = parseInt(lastId.replace("ND", "")) + 1;
+      newId = "ND" + num.toString().padStart(6, "0");
+    }
+
+    callback(null, newId);
+  });
 };
 
 exports.addBusManager = (data, callback) => {
@@ -160,6 +193,22 @@ exports.getAdministratorById = (MaND, callback) => {
   userModel.getAdministratorById(MaND, callback);
 };
 
+exports.getNextAdministratorId = (callback) => {
+  userModel.getLastAdministratorId((err, result) => {
+    if (err) return callback(err);
+
+    let lastId = result && result[0] ? result[0].MaND : null;
+
+    let newId = "ND000001";
+    if (lastId) {
+      const num = parseInt(lastId.replace("ND", "")) + 1;
+      newId = "ND" + num.toString().padStart(6, "0");
+    }
+
+    callback(null, newId);
+  });
+};
+
 exports.addAdministrator = (data, callback) => {
   if (!data.TenND || !data.TenDangNhap || !data.MatKhau)
     return callback(new Error("Thiếu dữ liệu quản trị viên"));
@@ -211,13 +260,29 @@ exports.getDriverById = (MaTX, callback) => {
   userModel.getDriverById(MaTX, callback);
 };
 
+exports.getNextDriverId = (callback) => {
+  userModel.getLastDriverId((err, result) => {
+    if (err) return callback(err);
+
+    let lastId = result && result[0] ? result[0].MaND : null;
+
+    let newId = "ND000001";
+    if (lastId) {
+      const num = parseInt(lastId.replace("ND", "")) + 1;
+      newId = "ND" + num.toString().padStart(6, "0");
+    }
+
+    callback(null, newId);
+  });
+};
+
 exports.addDriver = (data, callback) => {
   if (!data.TenND || !data.TenDangNhap || !data.MatKhau ||
       !data.SoCccd || !data.SdtTX || !data.BacBangLai)
     return callback(new Error("Thiếu thông tin tài xế"));
 
   // Tạo tài khoản ND trước
-  userModel.getLastDriverAccountId((err, resultND) => {
+  userModel.getLastDriverId((err, resultND) => {
     if (err) return callback(err);
 
     let newMaND = "ND000001";
@@ -236,33 +301,22 @@ exports.addDriver = (data, callback) => {
 
     userModel.addDriverAccount(accountObj, (err2) => {
       if (err2) return callback(err2);
+      const driverInfo = {
+        MaTX: newMaND,
+        SoCccd: data.SoCccd,
+        SdtTX: data.SdtTX,
+        BacBangLai: data.BacBangLai
+      };
 
-      // Tiếp theo tạo thông tin tài xế TX
-      userModel.getLastDriverInfoId((err3, resultTX) => {
-        if (err3) return callback(err3);
+      userModel.addDriverInfo(driverInfo, (err4) => {
+        if (err4) return callback(err4);
 
-        let newMaTX = "TX000001";
-        if (resultTX && resultTX[0]?.MaTX) {
-          const numTX = parseInt(resultTX[0].MaTX.replace("TX", "")) + 1;
-          newMaTX = "TX" + numTX.toString().padStart(6, "0");
-        }
-
-        const driverInfo = {
-          MaTX: newMaTX,
-          SoCccd: data.SoCccd,
-          SdtTX: data.SdtTX,
-          BacBangLai: data.BacBangLai
-        };
-
-        userModel.addDriverInfo(driverInfo, (err4) => {
-          if (err4) return callback(err4);
-
-          callback(null, { message: "Thêm tài xế thành công" });
-        });
+        callback(null, { message: "Thêm tài xế thành công" });
       });
     });
   });
 };
+
 
 exports.updateDriver = (MaTX, data, callback) => {
   if (!data.SoCccd || !data.SdtTX || !data.BacBangLai)

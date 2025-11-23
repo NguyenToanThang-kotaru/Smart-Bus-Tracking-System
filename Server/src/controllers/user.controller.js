@@ -126,6 +126,13 @@ exports.getParentById = (req, res) => {
   });
 };
 
+exports.getNextParentId = (req, res) => {
+  userService.getNextParentId((err, nextId) => {
+    if (err) return res.status(500).json({ error: err.message || err });
+    res.json({ nextId });
+  });
+};
+
 exports.addParent = (req, res) => {
   userService.addParent(req.body, (err, result) => {
     if (err) return res.status(400).json({ error: err.message });
@@ -168,6 +175,13 @@ exports.getBusManagerById = (req, res) => {
     if (!manager || manager.length === 0)
       return res.status(404).json({ message: "Không tìm thấy quản lý xe buýt" });
     res.json(manager[0]);
+  });
+};
+
+exports.getNextBusManagerId = (req, res) => {
+  userService.getNextBusManagerId((err, nextId) => {
+    if (err) return res.status(500).json({ error: err.message || err });
+    res.json({ nextId });
   });
 };
 
@@ -216,6 +230,13 @@ exports.getAdministratorById = (req, res) => {
   });
 };
 
+exports.getNextAdministratorId = (req, res) => {
+  userService.getNextAdministratorId((err, nextId) => {
+    if (err) return res.status(500).json({ error: err.message || err });
+    res.json({ nextId });
+  });
+};
+
 exports.addAdministrator = (req, res) => {
   userService.addAdministrator(req.body, (err, result) => {
     if (err) return res.status(400).json({ error: err.message });
@@ -258,6 +279,13 @@ exports.getDriverById = (req, res) => {
     if (!driver || driver.length === 0)
       return res.status(404).json({ message: "Không tìm thấy tài xế" });
     res.json(driver[0]);
+  });
+};
+
+exports.getNextDriverId = (req, res) => {
+  userService.getNextDriverId((err, nextId) => {
+    if (err) return res.status(500).json({ error: err.message || err });
+    res.json({ nextId });
   });
 };
 
