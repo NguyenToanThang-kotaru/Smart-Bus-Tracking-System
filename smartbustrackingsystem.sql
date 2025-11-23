@@ -317,8 +317,8 @@ INSERT INTO `xebuyt` (`SoXeBuyt`, `BienSoXe`, `SucChua`, `TrangThaiXe`, `TrangTh
 
 -- Bảng phân công
 INSERT INTO `phancong` (`MaPC`, `MaTX`, `SoXeBuyt`, `MaTD`, `TrangThaiXoa`) VALUES
-('PC000001', 'TX000001', 'BUS01', 'TD000001', '0'),
-('PC000002', 'TX000002', 'BUS02', 'TD000002', '0');
+('PC000001', 'ND000003', 'BUS01', 'TD000001', '0'),
+('PC000002', 'ND000004', 'BUS02', 'TD000002', '0');
 
 -- Bảng học sinh
 INSERT INTO `hocsinh` (`MaHS`, `MaPH`, `MaTram`, `TenHS`, `Lop`, `TrangThaiXoa`) VALUES
@@ -343,4 +343,28 @@ INSERT INTO `hocsinh` (`MaHS`, `MaPH`, `MaTram`, `TenHS`, `Lop`, `TrangThaiXoa`)
 ('HS000019', 'PH000019', 'TR000001', 'Nguyễn Phương Nhi', '9A3', '0'),
 ('HS000020', 'PH000020', 'TR000002', 'Lê Anh Khoa', '6A6', '0');
 
+-- Bảng lich trình 
+INSERT INTO `lichtrinh` (`MaLT`, `MaTX`, `NgayHanhTrinh`, `CaHanhTrinh`, `TrangThai`, `TrangThaiXoa`) VALUES
+('LT000001', 'ND000003', '2025-10-08', 'Sáng (6:30 - 7:30)', '0', '0');
 
+-- Bảng trạm lịch trình
+INSERT INTO `tramlichtrinh` (`MaLT`, `MaTram`, `TrangThai`) VALUES
+('LT000001', 'TR000001', '0'), 
+('LT000001', 'TR000002', '0');  
+
+-- Bảng điểm danh
+INSERT INTO `diemdanh` (`MaLT`, `MaHS`, `TrangThai`, `TrangThaiXoa`) VALUES
+('LT000001', 'HS000001', '0', '0'),
+('LT000001', 'HS000004', '0', '0'),
+('LT000001', 'HS000007', '0', '0'),
+('LT000001', 'HS000010', '0', '0'),
+('LT000001', 'HS000013', '0', '0'),
+('LT000001', 'HS000016', '0', '0'),
+('LT000001', 'HS000019', '0', '0'),
+('LT000001', 'HS000002', '0', '0'),
+('LT000001', 'HS000005', '0', '0'),
+('LT000001', 'HS000008', '0', '0'),
+('LT000001', 'HS000011', '0', '0'),
+('LT000001', 'HS000014', '0', '0'),
+('LT000001', 'HS000017', '0', '0'),
+('LT000001', 'HS000020', '0', '0');
