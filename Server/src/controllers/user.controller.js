@@ -134,18 +134,19 @@ exports.getNextParentId = (req, res) => {
 };
 
 exports.addParent = (req, res) => {
-  userService.addParent(req.body, (err, result) => {
+  const data = req.body;
+  userService.addParent(data, (err, result) => {
     if (err) return res.status(400).json({ error: err.message });
     res.status(201).json({ message: "Thêm phụ huynh thành công", result });
   });
 };
 
 exports.updateParent = (req, res) => {
-  const username = req.params.username;
-
-  userService.updateParent(username, req.body, (err, result) => {
+  const TenDangNhap = req.params.username;
+  const data = req.body;
+  userService.updateParent(TenDangNhap, data, (err, result) => {
     if (err) return res.status(400).json({ error: err.message });
-    res.json({ message: "Cập nhật phụ huynh thành công", result });
+    res.status(200).json({ message: "Cập nhật phụ huynh thành công", result });
   });
 };
 

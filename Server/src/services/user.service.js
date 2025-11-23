@@ -75,39 +75,37 @@ exports.getNextParentId = (callback) => {
   });
 };
 
-exports.addParent = (data, callback) => {
-  if (!data.MatKhau || !data.TenPH || !data.SdtPH)
-    return callback(new Error("Thiếu dữ liệu phụ huynh"));
+// parent.service.js
 
-  userModel.getLastParentId((err, result) => {
+exports.addParent = (data, callback) => {
+  if (!data.TenDangNhap) return callback(new Error("Thiếu tên đăng nhập phụ huynh"), null);
+  if (!data.TenPH) return callback(new Error("Thiếu tên phụ huynh"), null);
+
+  // Thêm phụ huynh vào bảng phuhuynh
+  userModel.addParent({
+    TenDangNhap: data.TenDangNhap,
+    TenPH: data.TenPH,
+    MatKhau: data.MatKhau,
+    SdtPH: data.SdtPH
+  }, (err) => {
     if (err) return callback(err);
 
-    let newId = "PH000001";
-
-    if (result && result.length > 0 && result[0].TenDangNhap) {
-      const num = parseInt(result[0].TenDangNhap.replace("PH", "")) + 1;
-      newId = "PH" + num.toString().padStart(6, "0");
-    }
-
-    const parentObj = {
-      TenDangNhap: newId,
-      SdtPH: data.SdtPH,
-      TenPH: data.TenPH,
-      MatKhau: data.MatKhau,
-    };
-
-    userModel.addParent(parentObj, (err2) => {
+    // Gán các học sinh được chọn
+    userModel.assignStudentsToParent(data.TenDangNhap, data.students || [], (err2) => {
       if (err2) return callback(err2);
-      callback(null, { message: "Thêm phụ huynh thành công" });
+      callback(null, { TenDangNhap: data.TenDangNhap });
     });
   });
 };
 
 exports.updateParent = (TenDangNhap, data, callback) => {
-  if (!data.TenPH || !data.MatKhau || !data.SdtPH)
-    return callback(new Error("Thiếu dữ liệu để cập nhật phụ huynh"));
+  if (!data.TenPH) return callback(new Error("Thiếu dữ liệu để cập nhật phụ huynh"), null);
 
-  userModel.updateParent(TenDangNhap, data, callback);
+  userModel.updateParent(TenDangNhap, {TenPH: data.TenPH, MatKhau: data.MatKhau, SdtPH: data.SdtPH}, (err) => {
+    if (err) return callback(err);
+
+    userModel.updateStudentsForParent(TenDangNhap, data.students || [], callback);
+  });
 };
 
 exports.deleteParent = (TenDangNhap, callback) => {

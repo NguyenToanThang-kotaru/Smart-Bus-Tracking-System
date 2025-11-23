@@ -52,9 +52,40 @@ exports.updateParent = (TenDangNhap, data, callback) => {
 };
 
 exports.deleteParent = (TenDangNhap, callback) => {
-  const sql = 'UPDATE phuhuynh SET TrangThaiXoa = 1 WHERE TenDangNhap = ?';
-  db.query(sql, [TenDangNhap], callback);
+  const sqlDeleteParent = 'UPDATE phuhuynh SET TrangThaiXoa = 1 WHERE TenDangNhap = ?';
+  
+  db.query(sqlDeleteParent, [TenDangNhap], (err) => {
+    if (err) return callback(err);
+
+    const sqlResetStudents = 'UPDATE hocsinh SET MaPH = NULL WHERE MaPH = ?';
+    db.query(sqlResetStudents, [TenDangNhap], callback);
+  });
 };
+
+
+// Gán học sinh cho phụ huynh
+exports.assignStudentsToParent = (TenDangNhap, parents, callback) => {
+  const sql = `UPDATE hocsinh SET MaPH = ? WHERE MaHS IN (${parents.map(() => "?").join(",")})`;
+  db.query(sql, [TenDangNhap, ...parents], callback);
+};
+
+exports.updateStudentsForParent = (TenDangNhap, newStudents, callback) => {
+  // 1. Xóa phụ huynh khỏi tất cả học sinh hiện tại
+  const sqlReset = `UPDATE hocsinh SET MaPH = NULL WHERE MaPH = ?`;
+  db.query(sqlReset, [TenDangNhap], (err) => {
+    if (err) return callback(err);
+
+    if (newStudents.length === 0) return callback(null);
+
+    // 2. Gán phụ huynh cho các học sinh mới
+    const sqlSet = `UPDATE hocsinh SET MaPH = ? WHERE MaHS IN (${newStudents.map(() => "?").join(",")})`;
+    db.query(sqlSet, [TenDangNhap, ...newStudents], callback);
+  });
+};
+
+
+
+
 
 /* ===================== QUẢN LÝ TÀI XẾ ===================== */
 
