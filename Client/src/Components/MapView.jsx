@@ -22,7 +22,7 @@ function RecenterMap({ position }) {
   return null;
 }
 
-export default function MapView({ routePoints, markers, busPosition }) {
+export default function MapView({  routePoints = [], markers = [], busPosition = null }) {
   const defaultCenter = routePoints?.[0] || [10.762622, 106.660172];
 
   return (
@@ -53,7 +53,7 @@ export default function MapView({ routePoints, markers, busPosition }) {
           </Marker>
         ))}
 
-      {/* 👇 Marker động của xe buýt */}
+      {/*  Marker động của xe buýt */}
       {busPosition && (
         <Marker
           position={busPosition}

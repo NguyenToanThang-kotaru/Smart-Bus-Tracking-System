@@ -84,6 +84,7 @@ export default function Dashboard() {
     socket.on("bus_polyline", (data) => {
       if (data.polyline) {
         const points = data.polyline.map(([lon, lat]) => [lat, lon]);
+        console.log(points)
         setRoutePoints(points);
       }
     });
