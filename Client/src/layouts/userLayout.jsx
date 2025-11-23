@@ -1,5 +1,6 @@
 import { useEffect, useState } from "react";
-import MapView from "../Components/MapView";
+import MapView from "@/components/MapView";
+
 import io from "socket.io-client";
 
 export default function UserLayout() {
@@ -8,35 +9,25 @@ export default function UserLayout() {
   const [busPosition, setBusPosition] = useState(null);
 
   useEffect(() => {
-    const socket = io("http://localhost:5000");
+    // const socket = io("http://localhost:5000");
     const user = JSON.parse(sessionStorage.getItem("isUser"));
 
     console.log("Phụ huynh là " + user.TenDangNhap);
-    fetch("/api/routes/1")
-      .then((res) => res.json())
-      .then((data) => {
-        const coords = data.route.map(([lng, lat]) => [lat, lng]);
-        const markersData = data.stops.map((t) => ({
-          position: [t.x, t.y],
-          label: t.TenTram,
-          icon: "https://cdn-icons-png.flaticon.com/512/149/149060.png",
-        }));
 
-        setRoutePoints(coords);
-        setMarkers(markersData);
-      });
 
-    socket.on("bus-location", (data) => {
-      setBusPosition([data.lat, data.lng]);
-    });
+    // socket.on("bus-location", (data) => {
+    //   setBusPosition([data.lat, data.lng]);
+    // });
 
-    return () => socket.disconnect();
+    // return () => socket.disconnect();
   }, []);
+
+  
 
   return (
     <div className="flex flex-col items-center bg-white min-h-screen px-4 sm:px-6 lg:px-8">
       {/* Bản đồ */}
-      <div className="w-full max-w-6xl mt-6 shadow-md rounded-xl overflow-hidden">
+      <div className="w-full h-full max-w-6xl mt-6 shadow-md rounded-xl ">
         <MapView
           routePoints={routePoints}
           markers={markers}

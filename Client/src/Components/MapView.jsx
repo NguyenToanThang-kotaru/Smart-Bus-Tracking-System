@@ -3,6 +3,7 @@ import L from "leaflet";
 import "leaflet/dist/leaflet.css";
 import { useMap } from "react-leaflet";
 import { useEffect } from "react";
+import busIcon from "@/assets/Icon/map-bus.png";
 
 // Icon tuỳ chỉnh
 const createIcon = (iconUrl) =>
@@ -56,7 +57,7 @@ export default function MapView({ routePoints, markers, busPosition }) {
       {busPosition && (
         <Marker
           position={busPosition}
-          icon={createIcon("https://cdn-icons-png.flaticon.com/512/61/61231.png")}
+          icon={createIcon(busIcon)}
         >
           <Popup>Xe buýt đang di chuyển</Popup>
         </Marker>

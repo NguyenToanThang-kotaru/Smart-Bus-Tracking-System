@@ -45,3 +45,23 @@ exports.getAllTrip = async (req, res) => {
         res.json(Object.values(grouped));
     });
 };
+
+exports.updateStatus = (req, res) => {
+    const { MaLT, TrangThai } = req.body;
+
+    if (!MaLT || !TrangThai) {
+        return res.status(400).json({ message: "Thiếu dữ liệu MaLT hoặc TrangThai" });
+    }
+
+    tripService.updateStatus(MaLT, TrangThai, (err, result) => {
+        if (err) {
+            console.error(" Lỗi updateStatus:", err);
+            return res.status(500).json({ message: "Lỗi cập nhật trạng thái" });
+        }
+
+        return res.status(200).json({
+            message: "Cập nhật trạng thái thành công",
+            result,
+        });
+    });
+};

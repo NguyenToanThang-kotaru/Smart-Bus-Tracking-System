@@ -7,4 +7,7 @@ router.get("/getAllTrip",authenticateToken.authenticateToken,tripController.getA
 
 router.get("/GETALLTRIPs", tripController.getAllTrip)
 
+router.post("/updatestatus", tripController.updateStatus)
+
+
 module.exports = router;
