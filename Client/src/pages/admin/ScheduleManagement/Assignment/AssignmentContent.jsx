@@ -1,4 +1,7 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
+import axiosClient from "@/middleware/axiosClient";
+import "react-toastify/dist/ReactToastify.css";
+import { toast } from "react-toastify";
 import Table from "@/Components/tableComponent";
 import SearchBar from "@/Components/searchBarComponent";
 import AddButton from "@/Components/buttonComponent";
@@ -8,62 +11,100 @@ import edit from "@/assets/Icon/editYellow.png";
 import AssignmentForm from "./AssignmentForm";
 
 export default function AssignmentContent() {
-  const [assignment, setAssignment] = useState([
-    { MaPC: "PC000001", MaTX: "Nguyễn Văn A", MaXe: "Xe1", MaTD: "Tuyến 01"},
-    { MaPC: "PC000002", MaTX: "Nguyễn Văn A", MaXe: "Xe2", MaTD: "Tuyến 02"},
-    { MaPC: "PC000003", MaTX: "Nguyễn Văn A", MaXe: "Xe3", MaTD: "Tuyến 03"},
-  ]);
+  const [assignments, setAssignments] = useState([]);
   const [showForm, setShowForm] = useState(false);
   const [selected, setSelected] = useState(null);
   const [mode, setMode] = useState("add");
+
+  const loadTableDataAssignment = async () => {
+    try {
+      const res = await axiosClient.get("schedule/assignment");
+      setAssignments(res.data);
+    } catch (err) {
+      toast.error("Lỗi lấy danh sách phân công!");
+      console.error(err);
+    }
+  };
+
+  useEffect(() => {
+    loadTableDataAssignment();
+  }, []);
 
   const handleAdd = () => {
     setMode("add");
     setSelected(null);
     setShowForm(true);
   };
-  const handleEdit = (item) => {
+
+  const handleEdit = (obj) => {
     setMode("edit");
-    setSelected(item);
+    setSelected(obj);
     setShowForm(true);
   };
-  const handleView = (item) => {
+
+  const handleView = (obj) => {
     setMode("view");
-    setSelected(item);
+    setSelected(obj);
     setShowForm(true);
   };
-  const handleDelete = (MaPC) => {
-    if (window.confirm("Bạn có chắc muốn xóa phân công này?")) {
-      setAssignment(routes.filter((obj) => obj.MaPC !== MaPC));
+
+  const handleDelete = async (MaPC) => {
+    if (!window.confirm("Bạn có chắc muốn xóa phân công này?")) return;
+    try {
+      await axiosClient.put(`schedule/assignment/delete/${MaPC}`);
+      await loadTableDataAssignment();
+      toast.success("Xóa phân công thành công!");
+    } catch (err) {
+      toast.error("Lỗi xoá phân công!");
+      console.error(err);
     }
   };
-  
+
+  const handleSearch = async (keyword) => {
+    if (!keyword || keyword.trim() === "") {
+      loadTableDataAssignment();
+      return;
+    }
+    try {
+      const res = await axiosClient.get(`schedule/assignment/search?keyword=${encodeURIComponent(keyword)}`);
+      setAssignments(res.data);
+    } catch (err) {
+      toast.error("Lỗi tìm kiếm phân công!");
+      console.error(err);
+    }
+  };
+
   return (
     <div>
       <div className="px-10 pt-5 flex w-full justify-between gap-10">
-        <SearchBar/>
+        <SearchBar onSearch={handleSearch} />
         <AddButton onClick={handleAdd} />
       </div>
-                
+
       <div className="mt-10">
         <Table
-          data={assignment.map((obj) => ({
+          data={assignments.map((obj) => ({
             "Mã phân công": obj.MaPC,
             "Tài xế": obj.MaTX,
-            "Xe Buýt": obj.MaXe,
+            "Xe Buýt": obj.SoXeBuyt,
             "Tuyến đường": obj.MaTD,
             "Hành động": (
               <div className="flex gap-[30px]">
-                <img src={edit} alt="edit" className="w-4 h-4" onClick={() => handleEdit(obj)}/>
-                <img src={view} alt="view" className="w-4 h-4" onClick={() => handleView(obj)}/>
-                <img src={del} alt="del" className="w-4 h-4" onClick={() => handleDelete(obj.MaPC)}/>
+                <img src={edit} alt="edit" className="w-4 h-4 cursor-pointer" onClick={() => handleEdit(obj)} />
+                <img src={view} alt="view" className="w-4 h-4 cursor-pointer" onClick={() => handleView(obj)} />
+                <img src={del} alt="delete" className="w-4 h-4 cursor-pointer" onClick={() => handleDelete(obj.MaPC)} />
               </div>
-            ),          
-          }))}  
+            ),
+          }))}
         />
 
         {showForm && (
-          <AssignmentForm onClose={() => setShowForm(false)} mode={mode} data={selected}/>
+          <AssignmentForm
+            onClose={() => setShowForm(false)}
+            mode={mode}
+            data={selected}
+            reload={loadTableDataAssignment}
+          />
         )}
       </div>
     </div>

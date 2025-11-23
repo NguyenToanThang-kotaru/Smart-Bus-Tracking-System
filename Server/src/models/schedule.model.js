@@ -124,7 +124,7 @@ exports.addSchedule = (data, callback) => {
 };
 
 exports.addAssignment = (data, callback) => {
-  const { MaPC, MaTX, SoXeBuyt, MaTD, TrangThaiXoa } = data;
+  const { MaPC, MaTX, SoXeBuyt, MaTD} = data;
   const sql = `
     INSERT INTO phancong (MaPC, MaTX, SoXeBuyt, MaTD, TrangThaiXoa)
     VALUES (?, ?, ?, ?, 0)
