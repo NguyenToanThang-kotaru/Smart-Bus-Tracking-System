@@ -13,9 +13,14 @@ export default function UserLayout() {
   const [busPosition, setBusPosition] = useState(null);
   const [notifications, setNotifications] = useState([]);
   const [visitedStations, setVisitedStations] = useState([]);
-
-  function isNearStation(busPos, station, threshold = 0.0005) {
+  let First = 0
+  let Last = 0
+  function isNearStation(busPos, station, threshold = 0.005) {
     // busPos: [lat, lon], station: {ViDo, KinhDo}
+    if (station.TenTram == "Start" && First == 1)
+      return false
+    if (station.TenTram == "End" && Last ==1)
+      return false
     const [lat1, lon1] = busPos;
     const lat2 = station.ViDo;
     const lon2 = station.KinhDo;
@@ -53,8 +58,8 @@ export default function UserLayout() {
           KinhDo: parseFloat(t.y), // longitude
         }));
 
-        const start = { TenTram: "Bến đầu", ViDo: 10.760001410996209, KinhDo: 106.68220465073534 };
-        const end = { TenTram: "Bến cuối", ViDo: 10.760001410996209, KinhDo: 106.68220465073534 };
+        const start = { TenTram: "Start", ViDo: 10.760001410996209, KinhDo: 106.68220465073534 };
+        const end = { TenTram: "End", ViDo: 10.760001410996209, KinhDo: 106.68220465073534 };
 
         // Thêm vào mảng stations
         const updatedStations = [start, ...stations, end];
@@ -95,18 +100,36 @@ export default function UserLayout() {
 
           // Kiểm tra từng trạm
           updatedStations.forEach((station) => {
+
+            if ((station.TenTram) == "Start" && isNearStation(busPos, station)) {
+              setNotifications((prev) => {
+                const newMessage = `Xe bắt đầu di chuyển`;
+                setVisitedStations(station)
+                if (prev.includes(newMessage)) return prev; // chặn trùng
+                First = 1
+                return [...prev, newMessage];
+              });
+            }
+
+            
             if (
               !visitedStations.includes(station.TenTram) &&
               isNearStation(busPos, station)
             ) {
-              // 1️⃣ Lưu trạm đã đi qua trước
+
+              // 1️ Lưu trạm đã đi qua trước
+              console.log(station)
               setVisitedStations((prev) => [...prev, station.TenTram]);
 
-              // 2️⃣ Thêm thông báo "đã đến"
-              setNotifications((prev) => [
-                ...prev,
-                `Xe đã đến trạm: ${station.TenTram}`,
-              ]);
+              // 2️ Thêm thông báo "đã đến"
+              setNotifications((prev) => {
+                const newMessage = `Xe sắp đến trạm: ${station.TenTram}`;
+
+                if (prev.includes(newMessage)) return prev; // chặn trùng
+
+                return [...prev, newMessage];
+              });
+
             }
           });
         });
@@ -145,9 +168,9 @@ export default function UserLayout() {
         </h2>
         <div className="text-sm sm:text-base text-gray-600 flex flex-col gap-1">
           {notifications.length === 0 ? (
-            <p>Xe sắp đến / đến trễ sẽ được hiển thị tại đây theo thời gian thực.</p>
+            <p>Xe sắp đến hiển thị tại đây theo thời gian thực.</p>
           ) : (
-            notifications.map((note, idx) => <p key={idx}>• {note}</p>)
+            notifications.map((note, idx) => <p key={idx}> {note}</p>)
           )}
         </div>
       </div>
