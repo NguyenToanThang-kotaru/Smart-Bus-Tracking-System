@@ -5,7 +5,8 @@ import { io } from "socket.io-client";
 import MarkerIcon from "@/assets/Icon/map-marker.png";
 import homeIcon from "@/assets/Icon/home-icon.png";
 
-const socket = io("http://localhost:3700");
+// const socket = io("http://localhost:3700");
+const socket = io("http://172.20.10.2:3700");
 
 export default function UserLayout() {
   const [routePoints, setRoutePoints] = useState([]);
@@ -13,13 +14,9 @@ export default function UserLayout() {
   const [busPosition, setBusPosition] = useState(null);
   const [notifications, setNotifications] = useState([]);
   const [visitedStations, setVisitedStations] = useState([]);
-  let First = 0
   let Last = 0
-  function isNearStation(busPos, station, threshold = 0.005) {
-    // busPos: [lat, lon], station: {ViDo, KinhDo}
-    if (station.TenTram == "Start" && First == 1)
-      return false
-    if (station.TenTram == "End" && Last ==1)
+  function isNearStation(busPos, station, threshold = 0.004) {
+    if (station.TenTram == "End" && Last == 0)
       return false
     const [lat1, lon1] = busPos;
     const lat2 = station.ViDo;
@@ -29,6 +26,16 @@ export default function UserLayout() {
     return distance < threshold;
   }
 
+    function isStation(busPos, station, threshold = 0.0005) {
+    if (station.TenTram == "End" && Last == 0)
+      return false
+    const [lat1, lon1] = busPos;
+    const lat2 = station.ViDo;
+    const lon2 = station.KinhDo;
+
+    const distance = Math.sqrt((lat1 - lat2) ** 2 + (lon1 - lon2) ** 2);
+    return distance < threshold;
+  }
 
   useEffect(() => {
     const user = JSON.parse(sessionStorage.getItem("isUser"));
@@ -98,47 +105,54 @@ export default function UserLayout() {
           const busPos = [pos.lat, pos.lon];
           setBusPosition(busPos);
 
-          // Kiểm tra từng trạm
-          updatedStations.forEach((station) => {
+          const newVisited = [];
+          const newNoti = [];
 
-            if ((station.TenTram) == "Start" && isNearStation(busPos, station)) {
-              setNotifications((prev) => {
-                const newMessage = `Xe bắt đầu di chuyển`;
-                setVisitedStations(station)
-                if (prev.includes(newMessage)) return prev; // chặn trùng
-                First = 1
-                return [...prev, newMessage];
-              });
+          updatedStations.forEach((station) => {
+            // station đến đúng tọa độ
+            if (isStation(busPos, station)&& station.TenTram != "Start") {
+              console.log("da den")
+              newNoti.push(`Xe đã đến trạm: ${station.TenTram}!`);
             }
 
-            
-            if (
-              !visitedStations.includes(station.TenTram) &&
-              isNearStation(busPos, station)
-            ) {
+            if (!visitedStations.includes(station.TenTram) &&
+              isNearStation(busPos, station)) {
 
-              // 1️ Lưu trạm đã đi qua trước
-              console.log(station)
-              setVisitedStations((prev) => [...prev, station.TenTram]);
+              if (station.TenTram !== "End") {
+                newVisited.push(station.TenTram);
+              }
 
-              // 2️ Thêm thông báo "đã đến"
-              setNotifications((prev) => {
-                const newMessage = `Xe sắp đến trạm: ${station.TenTram}`;
-
-                if (prev.includes(newMessage)) return prev; // chặn trùng
-
-                return [...prev, newMessage];
-              });
-
+              if (station.TenTram === "Start") {
+                newNoti.push("Xe bắt đầu di chuyển!");
+              } else if (station.TenTram !== "End") {
+                newNoti.push(`Xe sắp đến trạm: ${station.TenTram}`);
+              }
             }
           });
+
+          // cập nhật state 1 lần
+          if (newVisited.length)
+            setVisitedStations((prev) => [...prev, ...newVisited]);
+
+          if (newNoti.length)
+            setNotifications((prev) =>
+              [...new Set([...prev, ...newNoti])] // tránh trùng
+            );
         });
 
+        socket.on("trip_end", (data) => {
+          const msg = "Chuyến xe đã hoàn thành"
+          console.log("End roi")
+          setNotifications((prev) =>
+              [...new Set([...prev, msg])] // tránh trùng
+            );
+         })
 
         return () => {
           // socket.emit("leave_bus", selectedBus.bus);
           socket.off("bus_polyline");
           socket.off("bus_position");  // <- OFF LUÔN ĐÂY
+          socket.off("trip_end")
           // socket.off("bus_error");
         };
       } catch (error) {
