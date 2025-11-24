@@ -5,6 +5,7 @@ import Marker from "@/assets/Icon/map-marker.png";
 import busIcon from "@/assets/Icon/map-bus.png";
 import { data } from "react-router-dom";
 import { io } from "socket.io-client";
+import homeIcon from "@/assets/Icon/home-icon.png"
 
 const socket = io("http://localhost:3700");
 
@@ -71,6 +72,7 @@ export default function Dashboard() {
   }, []);
 
 
+  // Đổi bus thì cập nhật lại polyline
   useEffect(() => {
     if (!selectedBus) return;
 
@@ -82,6 +84,7 @@ export default function Dashboard() {
     socket.on("bus_polyline", (data) => {
       if (data.polyline) {
         const points = data.polyline.map(([lon, lat]) => [lat, lon]);
+        console.log(points)
         setRoutePoints(points);
       }
     });
@@ -91,6 +94,25 @@ export default function Dashboard() {
       setBusPosition([pos.lat, pos.lon]); // <- DÒNG QUAN TRỌNG
     });
 
+    socket.on("trip_end", (data) => {
+      const { busId } = data;
+
+      // 1. Nếu bus đang được xem
+      setSelectedBus(prev =>
+        prev && prev.bus === busId
+          ? { ...prev, status: "Hoàn thành" }
+          : prev
+      );
+
+      // 2. Update đúng 1 bus trong list
+      setBusRoutes(prev =>
+        prev.map(bus =>
+          bus.bus === busId ? { ...bus, status: "Hoàn thành" } : bus
+        )
+      );
+    });
+
+    
     socket.on("bus_error", (err) => {
       console.error("Lỗi bus:", err);
     });
@@ -111,13 +133,13 @@ export default function Dashboard() {
         ? "Điểm xuất phát"
         : idx === selectedBus.stations.length - 1
           ? "Điểm xuất phát"
-          : `📍 ${station.TenTram || `Trạm ${idx + 1}`}`,
+          : ` ${station.TenTram || `Trạm ${idx + 1}`}`,
     icon:
       idx === 0
-        ? busIcon
+        ? homeIcon
         : idx === selectedBus.stations.length - 1
-          ? busIcon
-          : Marker, // hoặc để sau đổi icon khác cho trạm giữa
+          ? homeIcon
+          : Marker,
   }));
 
 

@@ -3,6 +3,7 @@ import L from "leaflet";
 import "leaflet/dist/leaflet.css";
 import { useMap } from "react-leaflet";
 import { useEffect } from "react";
+import busIcon from "@/assets/Icon/map-bus.png";
 
 // Icon tuỳ chỉnh
 const createIcon = (iconUrl) =>
@@ -21,7 +22,7 @@ function RecenterMap({ position }) {
   return null;
 }
 
-export default function MapView({ routePoints, markers, busPosition }) {
+export default function MapView({  routePoints = [], markers = [], busPosition = null }) {
   const defaultCenter = routePoints?.[0] || [10.762622, 106.660172];
 
   return (
@@ -52,11 +53,11 @@ export default function MapView({ routePoints, markers, busPosition }) {
           </Marker>
         ))}
 
-      {/* 👇 Marker động của xe buýt */}
+      {/*  Marker động của xe buýt */}
       {busPosition && (
         <Marker
           position={busPosition}
-          icon={createIcon("https://cdn-icons-png.flaticon.com/512/61/61231.png")}
+          icon={createIcon(busIcon)}
         >
           <Popup>Xe buýt đang di chuyển</Popup>
         </Marker>

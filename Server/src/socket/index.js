@@ -13,7 +13,7 @@ module.exports = (io) => {
             error: "Thiếu thông tin busId hoặc danh sách trạm",
           });
         }
-
+        console.log(data)
         // Tham gia room riêng cho bus đó
         socket.join(busId);
         console.log(`🚍 ${socket.id} joined bus room: ${busId}`);
@@ -24,8 +24,6 @@ module.exports = (io) => {
           parseFloat(s.ViDo),
         ]);
 
-        // Thêm toạ độ đầu và cuối mặc định
-        
         // Gọi OSRM để lấy polyline
         const polylineData = await fetchPolyline(coords);
 
