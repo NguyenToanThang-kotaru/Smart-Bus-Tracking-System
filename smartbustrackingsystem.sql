@@ -341,7 +341,8 @@ INSERT INTO `hocsinh` (`MaHS`, `MaPH`, `MaTram`, `TenHS`, `Lop`, `TrangThaiXoa`)
 ('HS000017', 'PH000017', 'TR000002', 'Nguyễn Thùy Trang', '7A5', '0'),
 ('HS000018', 'PH000018', 'TR000003', 'Lê Quốc Huy', '8A4', '0'),
 ('HS000019', 'PH000019', 'TR000001', 'Nguyễn Phương Nhi', '9A3', '0'),
-('HS000020', 'PH000020', 'TR000002', 'Lê Anh Khoa', '6A6', '0');
+('HS000020', 'PH000020', 'TR000002', 'Lê Anh Khoa', '6A6', '0'),
+('HS000021', 'PH000001', 'TR000002', 'Nguyễn Minh Kháng', '6A1', '0');
 
 -- Bảng lich trình 
 INSERT INTO `lichtrinh` (`MaLT`, `MaTX`, `NgayHanhTrinh`, `CaHanhTrinh`, `TrangThai`, `TrangThaiXoa`) VALUES
@@ -367,4 +368,5 @@ INSERT INTO `diemdanh` (`MaLT`, `MaHS`, `TrangThai`, `TrangThaiXoa`) VALUES
 ('LT000001', 'HS000011', '0', '0'),
 ('LT000001', 'HS000014', '0', '0'),
 ('LT000001', 'HS000017', '0', '0'),
-('LT000001', 'HS000020', '0', '0');
+('LT000001', 'HS000020', '0', '0'),
+('LT000001', 'HS000021', '0', '0');
