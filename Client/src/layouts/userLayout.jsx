@@ -5,7 +5,8 @@ import { io } from "socket.io-client";
 import MarkerIcon from "@/assets/Icon/map-marker.png";
 import homeIcon from "@/assets/Icon/home-icon.png";
 
-const socket = io("http://localhost:3700");
+// const socket = io("http://localhost:3700");
+const socket = io("http://172.20.10.2:3700");
 
 export default function UserLayout() {
   const [routePoints, setRoutePoints] = useState([]);
@@ -13,9 +14,10 @@ export default function UserLayout() {
   const [busPosition, setBusPosition] = useState(null);
   const [notifications, setNotifications] = useState([]);
   const [visitedStations, setVisitedStations] = useState([]);
-
-  function isNearStation(busPos, station, threshold = 0.0005) {
-    // busPos: [lat, lon], station: {ViDo, KinhDo}
+  let Last = 0
+  function isNearStation(busPos, station, threshold = 0.004) {
+    if (station.TenTram == "End" && Last == 0)
+      return false
     const [lat1, lon1] = busPos;
     const lat2 = station.ViDo;
     const lon2 = station.KinhDo;
@@ -24,6 +26,16 @@ export default function UserLayout() {
     return distance < threshold;
   }
 
+    function isStation(busPos, station, threshold = 0.0005) {
+    if (station.TenTram == "End" && Last == 0)
+      return false
+    const [lat1, lon1] = busPos;
+    const lat2 = station.ViDo;
+    const lon2 = station.KinhDo;
+
+    const distance = Math.sqrt((lat1 - lat2) ** 2 + (lon1 - lon2) ** 2);
+    return distance < threshold;
+  }
 
   useEffect(() => {
     const user = JSON.parse(sessionStorage.getItem("isUser"));
@@ -53,8 +65,8 @@ export default function UserLayout() {
           KinhDo: parseFloat(t.y), // longitude
         }));
 
-        const start = { TenTram: "Bến đầu", ViDo: 10.760001410996209, KinhDo: 106.68220465073534 };
-        const end = { TenTram: "Bến cuối", ViDo: 10.760001410996209, KinhDo: 106.68220465073534 };
+        const start = { TenTram: "Start", ViDo: 10.760001410996209, KinhDo: 106.68220465073534 };
+        const end = { TenTram: "End", ViDo: 10.760001410996209, KinhDo: 106.68220465073534 };
 
         // Thêm vào mảng stations
         const updatedStations = [start, ...stations, end];
@@ -93,29 +105,54 @@ export default function UserLayout() {
           const busPos = [pos.lat, pos.lon];
           setBusPosition(busPos);
 
-          // Kiểm tra từng trạm
-          updatedStations.forEach((station) => {
-            if (
-              !visitedStations.includes(station.TenTram) &&
-              isNearStation(busPos, station)
-            ) {
-              // 1️⃣ Lưu trạm đã đi qua trước
-              setVisitedStations((prev) => [...prev, station.TenTram]);
+          const newVisited = [];
+          const newNoti = [];
 
-              // 2️⃣ Thêm thông báo "đã đến"
-              setNotifications((prev) => [
-                ...prev,
-                `Xe đã đến trạm: ${station.TenTram}`,
-              ]);
+          updatedStations.forEach((station) => {
+            // station đến đúng tọa độ
+            if (isStation(busPos, station)&& station.TenTram != "Start") {
+              console.log("da den")
+              newNoti.push(`Xe đã đến trạm: ${station.TenTram}!`);
+            }
+
+            if (!visitedStations.includes(station.TenTram) &&
+              isNearStation(busPos, station)) {
+
+              if (station.TenTram !== "End") {
+                newVisited.push(station.TenTram);
+              }
+
+              if (station.TenTram === "Start") {
+                newNoti.push("Xe bắt đầu di chuyển!");
+              } else if (station.TenTram !== "End") {
+                newNoti.push(`Xe sắp đến trạm: ${station.TenTram}`);
+              }
             }
           });
+
+          // cập nhật state 1 lần
+          if (newVisited.length)
+            setVisitedStations((prev) => [...prev, ...newVisited]);
+
+          if (newNoti.length)
+            setNotifications((prev) =>
+              [...new Set([...prev, ...newNoti])] // tránh trùng
+            );
         });
 
+        socket.on("trip_end", (data) => {
+          const msg = "Chuyến xe đã hoàn thành"
+          console.log("End roi")
+          setNotifications((prev) =>
+              [...new Set([...prev, msg])] // tránh trùng
+            );
+         })
 
         return () => {
           // socket.emit("leave_bus", selectedBus.bus);
           socket.off("bus_polyline");
           socket.off("bus_position");  // <- OFF LUÔN ĐÂY
+          socket.off("trip_end")
           // socket.off("bus_error");
         };
       } catch (error) {
@@ -145,9 +182,9 @@ export default function UserLayout() {
         </h2>
         <div className="text-sm sm:text-base text-gray-600 flex flex-col gap-1">
           {notifications.length === 0 ? (
-            <p>Xe sắp đến / đến trễ sẽ được hiển thị tại đây theo thời gian thực.</p>
+            <p>Xe sắp đến hiển thị tại đây theo thời gian thực.</p>
           ) : (
-            notifications.map((note, idx) => <p key={idx}>• {note}</p>)
+            notifications.map((note, idx) => <p key={idx}> {note}</p>)
           )}
         </div>
       </div>

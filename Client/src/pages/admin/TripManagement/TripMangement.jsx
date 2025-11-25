@@ -91,8 +91,26 @@ export default function Dashboard() {
 
     socket.on("bus_position", (pos) => {
       console.log("Nhận vị trí xe:", pos);
-      setBusPosition([pos.lat, pos.lon]); // <- DÒNG QUAN TRỌNG
+      setBusPosition([pos.lat, pos.lon]); // cập nhật vị trí
+
+      // Nếu bus đang xem và trạng thái chưa phải "Đang di chuyển"
+      setSelectedBus(prev => {
+        if (prev && prev.bus === selectedBus.bus && prev.status !== "Đang di chuyển") {
+          return { ...prev, status: "Đang di chuyển" };
+        }
+        return prev;
+      });
+
+      // Update trong danh sách busRoutes
+      setBusRoutes(prev =>
+        prev.map(bus =>
+          bus.bus === selectedBus.bus && bus.status !== "Đang di chuyển"
+            ? { ...bus, status: "Đang di chuyển" }
+            : bus
+        )
+      );
     });
+
 
     socket.on("trip_end", (data) => {
       const { busId } = data;
@@ -112,7 +130,7 @@ export default function Dashboard() {
       );
     });
 
-    
+
     socket.on("bus_error", (err) => {
       console.error("Lỗi bus:", err);
     });
