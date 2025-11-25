@@ -1,5 +1,5 @@
 // src/layouts/AdminLayout.jsx
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { Outlet, Link, useLocation } from "react-router-dom";
 import menu from "@/assets/Icon/menuYellow.png";
 import logout from "@/assets/Icon/logoutYellow.png";
@@ -12,9 +12,10 @@ function handleLogout() {
 }
 
 export default function AdminLayout() {
-  // state để toggle sidebar
   const [isOpen, setIsOpen] = useState(false);
+  const [userRole, setUserRole] = useState(null);
   const location = useLocation();
+
   const titles = {
     "/admin": "Home",
     "/admin/dashboard": "Dashboard",
@@ -26,6 +27,29 @@ export default function AdminLayout() {
     "/admin/driverschedule": "Driver Schedule",
   };
   const title = titles[location.pathname];
+
+  //================ xử lí phân quyên ==================//
+  useEffect(() => {
+    const role = sessionStorage.getItem("role")
+    setUserRole(role)
+  }, [])
+
+  const shouldShowMenuItem = (menuType) => {
+    if (!userRole) return false;
+    
+    switch(userRole) {
+      case "VT000001":
+        return true;
+      case "VT000002": 
+        return menuType !== "dashboard" && menuType !== "userManagement" && menuType !=="driverSchedule";
+      case "VT000003": 
+        return menuType === "driverSchedule";
+      default:
+        return false;
+    }
+  };
+  //================ xử lí phân quyên ==================//
+
 
   return (
     <div className="admin-layout flex h-screen bg-theme ">
@@ -51,10 +75,11 @@ export default function AdminLayout() {
           </button>
         </div>
         <ul className="p-4 space-y-3">
-          <li>
+          <li style={{ display: shouldShowMenuItem("dashboard") ? "block" : "none" }}>
             <Link
               to="/admin/dashboard"
               className="flex gap-1 items-center hover:bg-mainYellow align-middle hover:text-mainBlue text-white text-[16px] font-bold p-2 rounded"
+              style = {{display: "none"}}
               onClick={() => { setIsOpen(false) }}
             >
               <svg
@@ -74,7 +99,7 @@ export default function AdminLayout() {
               <span>Dashboard</span>
             </Link>
           </li>
-          <li>
+          <li style={{ display: shouldShowMenuItem("userManagement") ? "block" : "none" }}>
             <Link
               to="/admin/usermanagement"
               className="flex gap-1 items-center hover:bg-mainYellow align-middle hover:text-mainBlue text-white text-[16px] font-bold p-2 rounded"
@@ -96,7 +121,7 @@ export default function AdminLayout() {
               <span>User Management</span>
             </Link>
           </li>
-          <li>
+          <li style={{ display: shouldShowMenuItem("studentManagement") ? "block" : "none" }}>
             <Link
               to="/admin/studentmanagement"
               className="flex gap-1 items-center hover:bg-mainYellow align-middle hover:text-mainBlue text-white text-[16px] font-bold p-2 rounded"
@@ -118,7 +143,7 @@ export default function AdminLayout() {
               <span>Student Management</span>
             </Link>
           </li>
-          <li>
+          <li style={{ display: shouldShowMenuItem("routeManagement") ? "block" : "none" }}>
             <Link
               to="/admin/routemanagement"
               className="flex gap-1 items-center hover:bg-mainYellow align-middle hover:text-mainBlue text-white text-[16px] font-bold p-2 rounded"
@@ -138,7 +163,7 @@ export default function AdminLayout() {
             </Link>
           </li>
 
-          <li>
+          <li style={{ display: shouldShowMenuItem("scheduleManagement") ? "block" : "none" }}>
             <Link
               to="/admin/schedulemanagement"
               className="flex gap-1 items-center hover:bg-mainYellow align-middle hover:text-mainBlue text-white text-[16px] font-bold p-2 rounded"
@@ -163,7 +188,7 @@ export default function AdminLayout() {
             </Link>
           </li>
 
-          <li>
+          <li style={{ display: shouldShowMenuItem("tripManagement") ? "block" : "none" }}>
             <Link
               to="/admin/tripmanagement"
               className="flex gap-1 items-center hover:bg-mainYellow align-middle hover:text-mainBlue text-white text-[16px] font-bold p-2 rounded"
@@ -183,7 +208,7 @@ export default function AdminLayout() {
               <span>Trip Management</span>
             </Link>
           </li>
-          <li>
+          <li style={{ display: shouldShowMenuItem("driverSchedule") ? "block" : "none" }}>
             <Link
               to="/admin/driverschedule"
               className="flex gap-1 items-center hover:bg-mainYellow align-middle hover:text-mainBlue text-white text-[16px] font-bold p-2 rounded"
