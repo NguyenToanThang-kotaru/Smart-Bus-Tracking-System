@@ -346,12 +346,14 @@ INSERT INTO `hocsinh` (`MaHS`, `MaPH`, `MaTram`, `TenHS`, `Lop`, `TrangThaiXoa`)
 
 -- Bảng lich trình 
 INSERT INTO `lichtrinh` (`MaLT`, `MaTX`, `NgayHanhTrinh`, `CaHanhTrinh`, `TrangThai`, `TrangThaiXoa`) VALUES
-('LT000001', 'ND000003', '2025-10-08', 'Sáng (6:30 - 7:30)', '0', '0');
+('LT000001', 'ND000003', '2025-10-08 17:00:00', 'Sáng', '0', '0'),
+('LT000002', 'ND000004', '2025-10-08 17:00:00', 'Sáng', '0', '0');
 
 -- Bảng trạm lịch trình
 INSERT INTO `tramlichtrinh` (`MaLT`, `MaTram`, `TrangThai`) VALUES
 ('LT000001', 'TR000001', '0'), 
-('LT000001', 'TR000002', '0');  
+('LT000001', 'TR000002', '0'),
+('LT000002', 'TR000003', '0');
 
 -- Bảng điểm danh
 INSERT INTO `diemdanh` (`MaLT`, `MaHS`, `TrangThai`, `TrangThaiXoa`) VALUES
@@ -369,4 +371,10 @@ INSERT INTO `diemdanh` (`MaLT`, `MaHS`, `TrangThai`, `TrangThaiXoa`) VALUES
 ('LT000001', 'HS000014', '0', '0'),
 ('LT000001', 'HS000017', '0', '0'),
 ('LT000001', 'HS000020', '0', '0'),
-('LT000001', 'HS000021', '0', '0');
+('LT000001', 'HS000021', '0', '0'),
+('LT000002', 'HS000003', '0', '0'),
+('LT000002', 'HS000006', '0', '0'),
+('LT000002', 'HS000009', '0', '0'),
+('LT000002', 'HS000012', '0', '0'),
+('LT000002', 'HS000015', '0', '0'),
+('LT000002', 'HS000018', '0', '0');
