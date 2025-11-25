@@ -5,8 +5,8 @@ import { io } from "socket.io-client";
 import MarkerIcon from "@/assets/Icon/map-marker.png";
 import homeIcon from "@/assets/Icon/home-icon.png";
 
-// const socket = io("http://localhost:3700");
-const socket = io("http://172.20.10.2:3700");
+const socket = io("http://localhost:3700");
+// const socket = io("http://172.20.10.2:3700");
 
 export default function UserLayout() {
   const [routePoints, setRoutePoints] = useState([]);

@@ -3,8 +3,8 @@ import axios from "axios";
 import { Navigate } from "react-router-dom";
 
 const axiosClient = axios.create({
-  baseURL: "http://172.20.10.2:3700/api",
-  // baseURL: "http://localhost:3700/api",
+  // baseURL: "http://172.20.10.2:3700/api",
+  baseURL: "http://localhost:3700/api",
   headers: { "Content-Type": "application/json" },
   withCredentials: true,
 });
