@@ -125,7 +125,7 @@ export default function AssignmentContent() {
         <SearchBar onSearch={handleSearch} />
         <AddButton onClick={handleAdd} />
       </div>
-
+      
       <div className="mt-10">
         <Table
           data={assignments.map((obj) => ({
@@ -133,7 +133,6 @@ export default function AssignmentContent() {
             "Tài xế": getDriverLabel(obj.MaTX),
             "Xe Buýt": getBusLabel(obj.SoXeBuyt),
             "Tuyến đường": getRouteLabel(obj.MaTD),
-
             "Hành động": (
               <div className="flex gap-[30px]">
                 <img
@@ -158,7 +157,6 @@ export default function AssignmentContent() {
             ),
           }))}
         />
-
         {showForm && (
           <AssignmentForm
             onClose={() => setShowForm(false)}
