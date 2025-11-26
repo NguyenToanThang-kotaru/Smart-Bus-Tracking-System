@@ -210,3 +210,22 @@ exports.deleteAssignment = (id, callback) => {
     });
   });
 };
+
+exports.getNameUserByDriverId = (driverId, callback) => {
+  scheduleModel.getNameUserByDriverId(driverId, (err, result) => {
+    if (err) return callback({ status: 500, message: err.message });
+
+    if (!result) {
+      return callback({
+        status: 404,
+        message: "Không tìm thấy thông tin người dùng của tài xế"
+      });
+    }
+
+    callback(null, {
+      status: 200,
+      message: "Lấy thông tin người dùng thành công",
+      data: result
+    });
+  });
+};
