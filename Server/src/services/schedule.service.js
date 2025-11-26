@@ -39,7 +39,7 @@ exports.getNextAssignmentId = (callback) => {
 exports.addSchedule = (data, callback) => {
   const { MaLT, MaTX, NgayHanhTrinh, CaHanhTrinh, TrangThai } = data;
 
-  if (!MaLT || !MaTX || !NgayHanhTrinh || !CaHanhTrinh || !TrangThai) {
+  if (!MaLT || !MaTX || !NgayHanhTrinh || !CaHanhTrinh || typeof TrangThai !== "number") {
     return callback({ status: 400, message: "Vui lòng nhập đầy đủ thông tin" });
   }
 

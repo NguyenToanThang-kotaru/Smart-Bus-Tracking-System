@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useEffect  } from "react";
 import axiosClient from "@/middleware/axiosClient";
 import view from "@/assets/Icon/viewYellow.png";
 import edit from "@/assets/Icon/editYellow.png";
@@ -73,7 +73,7 @@ export default function ScheduleForm({ onClose, mode, data, reload }) {
     const loadNextId = async () => {
         try {
             const res = await axiosClient.get("schedule/nextid");
-            setNewId(res.data.nextId);
+            setNewId(res.data?.nextId || "");
         } catch (err) {
             console.error("Lỗi lấy mã lịch trình tiếp theo:", err);
         }
@@ -82,11 +82,27 @@ export default function ScheduleForm({ onClose, mode, data, reload }) {
     const loadDrivers = async () => {
         try {
             const res = await axiosClient.get("users/admin/driver");
-            setDrivers(res.data);
+
+            console.log("KẾT QUẢ API DRIVER:", res.data);
+
+            const arr =
+            Array.isArray(res.data) ? res.data : 
+            res.data?.data ??                      
+            [];                                     
+
+            setDrivers(arr);
         } catch (err) {
             console.error("Lỗi load tài xế:", err);
+            setDrivers([]);
         }
     };
+
+    useEffect(() => {
+        if (currentMode === "add") {
+            loadNextId();
+            loadDrivers();
+        }
+    }, [currentMode]);
 
     const handleAdd = async () => {
         const payload = {
