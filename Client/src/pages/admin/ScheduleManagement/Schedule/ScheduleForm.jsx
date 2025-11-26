@@ -7,6 +7,7 @@ import del from "@/assets/Icon/deleteYellow.png";
 export default function ScheduleForm({ onClose, mode, data, reload }) {
     const [newId, setNewId] = useState("");
     const [currentMode, setCurrentMode] = useState(mode);
+    const [drivers, setDrivers] = useState([]);
     const [selectedTrip, setSelectedTrip] = useState(null);
     const [tripList, setTripList] = useState(data?.trips || []);
 
@@ -57,7 +58,7 @@ export default function ScheduleForm({ onClose, mode, data, reload }) {
             MaTX: document.getElementById("tx").value,
             NgayHanhTrinh: document.getElementById("date").value,
             CaHanhTrinh: document.getElementById("shift").value,
-            TrangThai: document.getElementById("status").value
+            TrangThai: selectedTrip.raw?.TrangThai  
         };
 
         try {
@@ -78,13 +79,22 @@ export default function ScheduleForm({ onClose, mode, data, reload }) {
         }
     };
 
+    const loadDrivers = async () => {
+        try {
+            const res = await axiosClient.get("users/admin/driver");
+            setDrivers(res.data);
+        } catch (err) {
+            console.error("Lỗi load tài xế:", err);
+        }
+    };
+
     const handleAdd = async () => {
         const payload = {
             MaLT: newId,
             MaTX: document.getElementById("add_tx").value,
             NgayHanhTrinh: document.getElementById("add_date").value,
             CaHanhTrinh: document.getElementById("add_shift").value,
-            TrangThai: document.getElementById("add_status").value
+            TrangThai: 0
         };
 
         try {
@@ -169,13 +179,13 @@ export default function ScheduleForm({ onClose, mode, data, reload }) {
                         </div>
 
                         <div>
-                            <label className="text-sm font-semibold">Ca</label>
-                            <input id="shift" type="text" defaultValue={selectedTrip.raw?.CaHanhTrinh} className="border rounded-lg px-3 py-2 w-full" />
-                        </div>
-
-                        <div>
-                            <label className="text-sm font-semibold">Trạng thái</label>
-                            <input id="status" type="text" defaultValue={selectedTrip.raw?.TrangThai} className="border rounded-lg px-3 py-2 w-full" />
+                            <label className="text-sm font-semibold">Ca hành trình</label>
+                            <select id="shift" defaultValue={selectedTrip.raw?.CaHanhTrinh} className="border rounded-lg px-3 py-2 w-full">
+                                <option value="CA 1">CA 1</option>
+                                <option value="CA 2">CA 2</option>
+                                <option value="CA 3">CA 3</option>
+                                <option value="CA 4">CA 4</option>
+                            </select>
                         </div>
                     </form>
                 )}
@@ -198,7 +208,14 @@ export default function ScheduleForm({ onClose, mode, data, reload }) {
 
                         <div>
                             <label className="text-sm font-semibold">Mã tài xế</label>
-                            <input id="add_tx" type="text" className="border rounded-lg px-3 py-2 w-full" />
+                            <select id="add_tx" className="border rounded-lg px-3 py-2 w-full">
+                                <option value="">-- Chọn tài xế --</option>
+                                {drivers.map((d) => (
+                                    <option key={d.MaTX} value={d.MaTX}>
+                                        {d.MaTX} - {d.TenTX}
+                                    </option>
+                                ))}
+                            </select>
                         </div>
 
                         <div>
@@ -215,11 +232,6 @@ export default function ScheduleForm({ onClose, mode, data, reload }) {
                                 <option value="CA 3">CA 3</option>
                                 <option value="CA 4">CA 4</option>
                             </select>
-                        </div>
-
-                        <div>
-                            <label className="text-sm font-semibold">Trạng thái</label>
-                            <input id="add_status" type="text" placeholder="VD: Đang chạy" className="border rounded-lg px-3 py-2 w-full" />
                         </div>
 
                         <div className="flex justify-end mt-6 gap-4">
@@ -264,7 +276,7 @@ export default function ScheduleForm({ onClose, mode, data, reload }) {
                     {isList && (
                         <>
                             <button
-                                onClick={() => { loadNextId(); setCurrentMode("add"); }}
+                                onClick={() => { loadNextId(); loadDrivers(); setCurrentMode("add"); }}
                                 className="text-[15px] bg-mainYellow w-[130px] text-black font-bold py-2 rounded-[10px] hover:bg-yellow-500"
                             >
                                 THÊM

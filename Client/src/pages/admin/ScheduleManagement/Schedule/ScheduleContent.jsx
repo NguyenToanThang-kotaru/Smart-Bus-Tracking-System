@@ -65,9 +65,8 @@ export default function ScheduleContent() {
     setScheduleData(map);
   }, [weekOffset, rawSchedules]);
   const handleViewCell = (shift, day, trips) => {
-    if (!trips || trips.length === 0) return;
     setMode("list");
-    setSelected({ shift, date: day.format("YYYY-MM-DD"), trips });
+    setSelected({ shift, date: day.format("DD/MM/YYYY"), trips: trips || [] });
     setShowForm(true);
   };
   const handleClose = () => setShowForm(false);
