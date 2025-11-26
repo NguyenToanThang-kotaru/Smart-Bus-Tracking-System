@@ -183,3 +183,30 @@ exports.deleteAssignment = (req, res) => {
     res.json({ message: "Xóa phân công thành công" });
   });
 };
+
+exports.getNameUserByDriverId = (req, res) => {
+  const driverId = req.query.id;
+
+  if (!driverId) {
+    return res.status(400).json({ message: "Thiếu mã tài xế (id)" });
+  }
+
+  scheduleService.getNameUserByDriverId(driverId, (err, result) => {
+    if (err) {
+      const status = err.status || 500;
+      return res.status(status).json({ error: { message: err.message } });
+    }
+
+    if (!result) {
+      return res.status(404).json({
+        message: "Không tìm thấy thông tin người dùng của tài xế"
+      });
+    }
+
+    res.json({
+      success: true,
+      message: "Lấy thông tin người dùng thành công",
+      data: result
+    });
+  });
+};

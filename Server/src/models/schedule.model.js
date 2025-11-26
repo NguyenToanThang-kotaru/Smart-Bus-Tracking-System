@@ -208,3 +208,17 @@ exports.addCheckIn = (data, callback) => {
     callback(null, result);
   });
 }
+
+exports.getNameUserByDriverId = (driverId, callback) => {
+  const sql = `
+    SELECT nguoidung.*
+    FROM taixe
+    JOIN nguoidung ON nguoidung.MaND = taixe.MaTX
+    WHERE taixe.MaTX = ? AND nguoidung.TrangThaiXoa = 0
+  `;
+  
+  db.query(sql, [driverId], (err, results) => {
+    if (err) return callback(err);
+    callback(null, results.length > 0 ? results[0] : null);
+  });
+};
