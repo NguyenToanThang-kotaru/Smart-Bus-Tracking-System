@@ -33,7 +33,7 @@ export default function AssignmentForm({ onClose, mode, data, reload }) {
 
     const loadDrivers = async () => {
       try {
-        const res = await axiosClient.get("users/admin/driver"); // chỉnh API theo bạn
+        const res = await axiosClient.get("users/admin/driver");
         setDriverList(normalize(res));
       } catch {
         setDriverList([]);
