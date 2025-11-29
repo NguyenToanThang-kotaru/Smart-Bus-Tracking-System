@@ -60,7 +60,7 @@ export default function AssignmentContent() {
 
   const getDriverLabel = (id) => {
     const d = driverList.find((x) => x.MaTX === id);
-    return d ? `${d.MaTX} - ${d.TenND ?? ""}` : id;
+    return d ? `${d.MaTX} ${d.TenND ?? ""}` : id;
   };
 
   const getBusLabel = (id) => {

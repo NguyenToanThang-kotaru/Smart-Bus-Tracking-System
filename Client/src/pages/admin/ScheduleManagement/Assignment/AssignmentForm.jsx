@@ -154,7 +154,7 @@ export default function AssignmentForm({ onClose, mode, data, reload }) {
               <option value="">-- Chọn tài xế --</option>
               {driverList.map((d) => (
                 <option key={d.MaTX} value={d.MaTX}>
-                  {d.MaTX} – {d.TenND ?? ""}
+                  {d.MaTX} {d.TenND ?? ""}
                 </option>
               ))}
             </select>

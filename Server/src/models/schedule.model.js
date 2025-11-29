@@ -1,7 +1,32 @@
 const db = require('../config/db');
 
 exports.getAllSchedules = (callback) => {
-  const sql = 'SELECT * FROM lichtrinh WHERE TrangThaiXoa = 0';
+  const sql = `
+    SELECT 
+      lt.MaLT,
+      lt.MaTX,
+      lt.NgayHanhTrinh,
+      lt.CaHanhTrinh,
+      lt.TrangThai,
+
+      pc.SoXeBuyt,
+      pc.MaTD,
+
+      xb.BienSoXe,
+      td.TenTD
+
+    FROM lichtrinh lt
+    LEFT JOIN phancong pc 
+        ON lt.MaTX = pc.MaTX AND pc.TrangThaiXoa = 0
+        
+    LEFT JOIN xebuyt xb
+        ON pc.SoXeBuyt = xb.SoXeBuyt AND xb.TrangThaiXoa = 0
+        
+    LEFT JOIN tuyenduong td
+        ON pc.MaTD = td.MaTD AND td.TrangThaiXoa = 0
+
+    WHERE lt.TrangThaiXoa = 0
+  `;
   db.query(sql, callback);
 };
 

@@ -54,8 +54,12 @@ export default function ScheduleContent() {
         if (!map[key]) map[key] = [];
         map[key].push({
           driver: item.MaTX,
-          bus: item.SoXeBuyt || "N/A",
-          route: item.MaTD || "N/A",
+        bus: item.SoXeBuyt 
+          ? `${item.SoXeBuyt} - ${item.BienSoXe}`
+          : "N/A",
+        route: item.MaTD
+          ? `${item.MaTD} - ${item.TenTD}`
+          : "N/A",
           MaLT: item.MaLT,
           raw: item
         });
