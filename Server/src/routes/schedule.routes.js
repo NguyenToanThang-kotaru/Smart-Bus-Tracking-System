@@ -52,4 +52,8 @@ router.post('/', scheduleController.addSchedule);
 // POST /api/schedule/assignment (thêm mới pc)
 router.post('/assignment', authenticateToken.authenticateToken, scheduleController.addAssignment);
 
+router.get("/stops/:MaLT", scheduleController.getStopsByMaLT);
+
+router.post("/update-student-status", scheduleController.updateStudentStatus);
+
 exports = module.exports = router;

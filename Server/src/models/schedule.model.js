@@ -205,7 +205,7 @@ exports.getStationByRouteId = (routeId, callback) => {
 exports.addStationSchedule = (data, callback) => {
   const { MaLT, MaTram } = data;
   const sql = `
-    INSERT INTO tramlichtrinh (MaLT, MaTram, TrangThai)
+    INSERT INTO tramlichtrinh (MaLT, MaTram, TrangThaiXoa)
     VALUES (?, ?, 0)
   `;
   db.query(sql, [MaLT, MaTram], (err, result) => {
@@ -246,4 +246,40 @@ exports.getNameUserByDriverId = (driverId, callback) => {
     if (err) return callback(err);
     callback(null, results.length > 0 ? results[0] : null);
   });
+};
+
+exports.getStopsByMaLT = (MaLT, callback) => {
+    const sql = `
+        SELECT 
+            tl.MaLT,
+            t.MaTram,
+            t.TenTram,
+            hs.MaHS,
+            hs.TenHS,
+            hs.Lop,
+            COALESCE(d.TrangThai, 0) AS TrangThai
+        FROM tramlichtrinh tl
+        JOIN tram t ON tl.MaTram = t.MaTram
+        LEFT JOIN hocsinh hs ON hs.MaTram = t.MaTram AND hs.TrangThaiXoa = 0
+        LEFT JOIN diemdanh d ON d.MaLT = tl.MaLT AND d.MaHS = hs.MaHS
+        WHERE tl.MaLT = ?;
+    `;
+
+    db.query(sql, [MaLT], (err, rows) => {
+        if (err) return callback(err);
+        callback(null, rows);
+    });
+};
+
+exports.updateStudentStatus = (MaLT, MaHS, TrangThai, callback) => {
+    const sql = `
+        INSERT INTO diemdanh (MaLT, MaHS, TrangThai, TrangThaiXoa)
+        VALUES (?, ?, ?, 0)
+        ON DUPLICATE KEY UPDATE TrangThai = VALUES(TrangThai);
+    `;
+
+    db.query(sql, [MaLT, MaHS, TrangThai], (err, result) => {
+        if (err) return callback(err);
+        callback(null, result);
+    });
 };

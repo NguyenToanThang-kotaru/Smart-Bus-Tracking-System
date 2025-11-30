@@ -210,3 +210,25 @@ exports.getNameUserByDriverId = (req, res) => {
     });
   });
 };
+//Lịch tài xế
+exports.getStopsByMaLT = (req, res) => {
+    const MaLT = req.params.MaLT;
+
+    scheduleService.getStopsByMaLT(MaLT, (err, results) => {
+        if (err) return res.status(500).json({ error: err });
+        res.json(results);
+    });
+};
+//Cập nhật đưa đón
+exports.updateStudentStatus = (req, res) => {
+    const data = req.body;
+
+    scheduleService.updateStudentStatus(data, (err, result) => {
+        if (err) return res.status(500).json({ error: err });
+
+        res.json({
+            success: true,
+            message: "Cập nhật trạng thái học sinh thành công"
+        });
+    });
+};

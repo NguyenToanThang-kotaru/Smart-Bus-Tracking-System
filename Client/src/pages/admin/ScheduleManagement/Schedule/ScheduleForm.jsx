@@ -228,7 +228,7 @@ export default function ScheduleForm({ onClose, mode, data, reload }) {
                                 <option value="">-- Chọn tài xế --</option>
                                 {drivers.map((d) => (
                                     <option key={d.MaTX} value={d.MaTX}>
-                                        {d.MaTX} - {d.TenTX}
+                                        {d.MaTX} {d.TenTX}
                                     </option>
                                 ))}
                             </select>
