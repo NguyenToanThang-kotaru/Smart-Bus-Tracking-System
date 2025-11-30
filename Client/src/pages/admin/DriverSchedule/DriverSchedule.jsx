@@ -41,8 +41,6 @@ export default function DriverSchedule() {
   );
 }
 
-
-
 function TableSchedule({ week }) {
   const [showPopup, setShowPopup] = useState(false);
   const [selected, setSelected] = useState(null);
