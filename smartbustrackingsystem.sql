@@ -145,7 +145,7 @@ CREATE TABLE `tram` (
 CREATE TABLE `tramlichtrinh` (
   `MaLT` varchar(10) NOT NULL,
   `MaTram` varchar(10) NOT NULL,
-  `TrangThai` varchar(1) NOT NULL DEFAULT '0'
+  `TrangThaiXoa` varchar(1) NOT NULL DEFAULT '0'
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 -- --------------------------------------------------------
@@ -347,11 +347,11 @@ INSERT INTO `hocsinh` (`MaHS`, `MaPH`, `MaTram`, `TenHS`, `Lop`, `TrangThaiXoa`)
 
 -- Bảng lich trình 
 INSERT INTO `lichtrinh` (`MaLT`, `MaTX`, `NgayHanhTrinh`, `CaHanhTrinh`, `TrangThai`, `TrangThaiXoa`) VALUES
-('LT000001', 'ND000003', '2025-11-26 06:00:00', 'Sáng (06:00 07:00)', '0', '0'),
-('LT000002', 'ND000004', '2025-11-26 06:00:00', 'Sáng (06:00 07:00)', '0', '0');
+('LT000001', 'ND000003', '2025-11-26 06:00:00', 'CA 1', '0', '0'),
+('LT000002', 'ND000004', '2025-11-26 06:00:00', 'CA 2', '0', '0');
 
 -- Bảng trạm lịch trình
-INSERT INTO `tramlichtrinh` (`MaLT`, `MaTram`, `TrangThai`) VALUES
+INSERT INTO `tramlichtrinh` (`MaLT`, `MaTram`, `TrangThaiXoa`) VALUES
 ('LT000001', 'TR000001', '0'), 
 ('LT000001', 'TR000002', '0'),
 ('LT000002', 'TR000003', '0'),
