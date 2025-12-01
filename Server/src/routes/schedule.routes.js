@@ -22,8 +22,11 @@ router.get('/', authenticateToken.authenticateToken, scheduleController.getAllSc
 // GET /api/schedule/assignment (lấy tất cả phân công)
 router.get('/assignment', authenticateToken.authenticateToken, scheduleController.getAllAssignments);
 
-// GET /api/schedule/driverId?id=TX000001 (lấy theo mã tx)
+// GET /api/schedule/driverId?id=ND000001 (lấy theo mã tx)
 router.get('/driverId', authenticateToken.authenticateToken, scheduleController.getScheduleByDriverId)
+
+// GET /api/schedule/driver/user?id=ND000001 (lấy thông tin người dùng từ tài xế)
+router.get('/driver/user',scheduleController.getNameUserByDriverId);
 
 // PUT /api/schedule/update/:id (cập nhật)
 router.put('/update/:id', authenticateToken.authenticateToken, scheduleController.updateSchedule);
@@ -48,5 +51,9 @@ router.post('/', scheduleController.addSchedule);
 
 // POST /api/schedule/assignment (thêm mới pc)
 router.post('/assignment', authenticateToken.authenticateToken, scheduleController.addAssignment);
+
+router.get("/stops/:MaLT", scheduleController.getStopsByMaLT);
+
+router.post("/update-student-status", scheduleController.updateStudentStatus);
 
 exports = module.exports = router;

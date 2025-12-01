@@ -1,5 +1,17 @@
 const scheduleModel = require('../models/schedule.model');
 
+function mergeDateTime(date, shift) {
+  const shiftToTime = {
+    "CA 1": "06:00:00",
+    "CA 2": "11:00:00",
+    "CA 3": "12:00:00",
+    "CA 4": "17:30:00",
+  };
+
+  const time = shiftToTime[shift] || "00:00:00";  
+  return `${date} ${time}`;   
+}
+
 exports.getAllSchedules = (callback) => {
   scheduleModel.getAllSchedules(callback);
 };
@@ -37,9 +49,20 @@ exports.getNextAssignmentId = (callback) => {
 };
 
 exports.addSchedule = (data, callback) => {
-  const { MaLT, MaTX, NgayHanhTrinh, CaHanhTrinh, TrangThai } = data;
+  let { MaLT, MaTX, NgayHanhTrinh, CaHanhTrinh, TrangThai } = data;
 
-  if (!MaLT || !MaTX || !NgayHanhTrinh || !CaHanhTrinh || !TrangThai) {
+  function normalizeDate(dateStr) {
+    if (dateStr.includes("/")) {
+        const [day, month, year] = dateStr.split("/");
+        return `${year}-${month}-${day}`;
+    }
+    return dateStr;
+  }
+
+  NgayHanhTrinh = normalizeDate(NgayHanhTrinh);
+  NgayHanhTrinh = mergeDateTime(NgayHanhTrinh, CaHanhTrinh);
+
+  if (!MaLT || !MaTX || !NgayHanhTrinh || !CaHanhTrinh || typeof TrangThai !== "number") {
     return callback({ status: 400, message: "Vui lòng nhập đầy đủ thông tin" });
   }
 
@@ -140,13 +163,34 @@ exports.addAssignment = (data, callback) => {
 };
 
 exports.updateSchedule = (id, data, callback) => {
-  const { MaTX, NgayHanhTrinh, CaHanhTrinh, TrangThai } = data;
+  let { MaTX, NgayHanhTrinh, CaHanhTrinh, TrangThai } = data;
 
-  if (!MaTX || !NgayHanhTrinh || !CaHanhTrinh || !TrangThai) {
+  if (!MaTX || !NgayHanhTrinh || !CaHanhTrinh || TrangThai === undefined || TrangThai === null) {
     return callback({ status: 400, message: "Vui lòng nhập đầy đủ thông tin" });
   }
 
+  function normalizeDate(dateStr) {
+    if (dateStr.includes("/")) {
+      const [day, month, year] = dateStr.split("/");
+      return `${year}-${month}-${day}`;
+    }
+    return dateStr;
+  }
+
+  NgayHanhTrinh = normalizeDate(NgayHanhTrinh);
+
+  const shiftToTime = {
+    "CA 1": "06:00:00",
+    "CA 2": "11:00:00",
+    "CA 3": "12:00:00",
+    "CA 4": "17:30:00",
+  };
+
+  const time = shiftToTime[CaHanhTrinh] || "00:00:00";
+  NgayHanhTrinh = `${NgayHanhTrinh} ${time}`;
+
   const scheduleData = { MaTX, NgayHanhTrinh, CaHanhTrinh, TrangThai };
+
   scheduleModel.updateSchedule(id, scheduleData, (err, result) => {
     if (err) return callback({ status: 500, message: err.message });
     if (result.affectedRows === 0) {
@@ -160,6 +204,7 @@ exports.updateSchedule = (id, data, callback) => {
     });
   });
 };
+
 
 exports.updateAssignment = (id, data, callback) => {
   const { MaPC, MaTX, SoXeBuyt, MaTD } = data;
@@ -209,4 +254,42 @@ exports.deleteAssignment = (id, callback) => {
       message: "Xóa phân công thành công"
     });
   });
+};
+
+exports.getNameUserByDriverId = (driverId, callback) => {
+  scheduleModel.getNameUserByDriverId(driverId, (err, result) => {
+    if (err) return callback({ status: 500, message: err.message });
+
+    if (!result) {
+      return callback({
+        status: 404,
+        message: "Không tìm thấy thông tin người dùng của tài xế"
+      });
+    }
+
+    callback(null, {
+      status: 200,
+      message: "Lấy thông tin người dùng thành công",
+      data: result
+    });
+  });
+};
+
+exports.getStopsByMaLT = (MaLT, callback) => {
+    scheduleModel.getStopsByMaLT(MaLT, (err, results) => {
+        if (err) return callback(err);
+        callback(null, results);
+    });
+};
+
+exports.updateStudentStatus = (data, callback) => {
+    scheduleModel.updateStudentStatus(
+        data.MaLT,
+        data.MaHS,
+        data.TrangThai,
+        (err, result) => {
+            if (err) return callback(err);
+            callback(null, result);
+        }
+    );
 };
