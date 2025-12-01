@@ -16,6 +16,8 @@ const tripRoutes = require("./src/routes/trip.routes");
 const socketHandler = require("./src/socket");
 const studentRoutes = require('./src/routes/student.routes');
 const scheduleRoutes = require("./src/routes/schedule.routes");
+const scheduleTrip = require("./src/socket/scheduleTrip");
+
 
 const app = express();
 
@@ -49,6 +51,8 @@ const io = new Server(server, {
 
 // gọi socket handler, truyền io vào
 socketHandler(io);
+
+scheduleTrip(io)
 
 // khởi động server
 const PORT = 3700;

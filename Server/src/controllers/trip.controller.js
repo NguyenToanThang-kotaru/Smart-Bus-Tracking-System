@@ -45,3 +45,57 @@ exports.getAllTrip = async (req, res) => {
         res.json(Object.values(grouped));
     });
 };
+
+exports.updateStatus = (req, res) => {
+    const { MaLT, TrangThai } = req.body;
+
+    if (!MaLT || !TrangThai) {
+        return res.status(400).json({ message: "Thiếu dữ liệu MaLT hoặc TrangThai" });
+    }
+
+    tripService.updateStatus(MaLT, TrangThai, (err, result) => {
+        if (err) {
+            console.error(" Lỗi updateStatus:", err);
+            return res.status(500).json({ message: "Lỗi cập nhật trạng thái" });
+        }
+
+        return res.status(200).json({
+            message: "Cập nhật trạng thái thành công",
+            result,
+        });
+    });
+};
+
+// tripController.js
+exports.getLichTrinhByMa = (req, res) => {
+    const { MaLT } = req.body;
+
+    tripService.getLichTrinhByMa(MaLT, (err, result) => {
+        if (err) return res.status(500).json({ error: err });
+
+        res.json(result);
+    });
+};
+
+
+
+exports.getLichTrinhByPhuHuynh = (req, res) => {
+    const { TenDangNhap } = req.body;
+
+    if (!TenDangNhap) {
+        return res.status(400).json({ message: "Thiếu dữ liệu TenDangNhap" });
+    }
+
+    tripService.getLichTrinhByPhuHuynh(TenDangNhap, (err, result) => {
+        if (err) {
+            console.error(" Lỗi getLichTrinhByPhuHuynh:", err);
+            return res.status(500).json({ message: "Lỗi truy vấn lịch trình" });
+        }
+
+        return res.status(200).json({
+            message: "Lấy lịch trình thành công",
+            data: result,
+        });
+    });
+};
+
