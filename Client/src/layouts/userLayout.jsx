@@ -4,6 +4,14 @@ import axiosClient from "../middleware/axiosClient";
 import { io } from "socket.io-client";
 import MarkerIcon from "@/assets/Icon/map-marker.png";
 import homeIcon from "@/assets/Icon/home-icon.png";
+import logout from "@/assets/Icon/logoutYellow.png";
+
+
+function handleLogout() {
+  sessionStorage.clear();
+  // axiosClient.interceptors.response.eject(authInterceptor);
+  window.location.href = "/login";
+}
 
 const socket = io("http://localhost:3700");
 // const socket = io("http://172.20.10.2:3700");
@@ -165,30 +173,42 @@ export default function UserLayout() {
 
 
   return (
-    <div className="flex flex-col items-center bg-white min-h-screen px-4 sm:px-6 lg:px-8">
+    
+    <div className="flex-1 flex flex-col">
       {/* Bản đồ */}
-      <div className="w-full h-[400px] max-w-6xl mt-6 shadow-md rounded-xl ">
-        <MapView
-          routePoints={routePoints}
-          markers={markers}
-          busPosition={busPosition}
-        />
-      </div>
+      <header className="bg-white flex justify-between items-center p-4 h-1/14 shadow-[0_1px_4px_3px_rgba(0,0,0,0.25)] z-15">
+                <div className="flex-1 flex gap-5 justify-end items-center">
+                  <button onClick={handleLogout} className="hover:scale-105 cursor-pointer active:scale-95 flex gap-x-3 bg-white items-center 
+                    border-2 border-mainYellow rounded-[10px] px-[10px] py-[3px] font-semibold text-mainYellow text-[12px]">
+                    ĐĂNG XUẤT
+                    <img src={logout} alt="Logout" className="w-4 h-4" />
+                  </button>
+                </div>
+        </header>
 
-      {/* Thông báo */}
-      <div className="border-2 border-[#F2BA1D] rounded-xl mt-6 px-4 sm:px-6 py-4 text-center text-[#0D2346] w-full max-w-4xl bg-white shadow-sm">
-        <h2 className="text-lg sm:text-xl font-semibold mb-2">
-          🚍 Thông báo hành trình
-        </h2>
-        <div className="text-sm sm:text-base text-gray-600 flex flex-col gap-1">
-          {notifications.length === 0 ? (
-            <p>Xe sắp đến hiển thị tại đây theo thời gian thực.</p>
-          ) : (
-            notifications.map((note, idx) => <p key={idx}> {note}</p>)
-          )}
+      <main className="flex flex-col items-center bg-white min-h-screen px-4 sm:px-6 lg:px-8"> 
+        <div className="w-full h-[500px] max-w-6xl mt-6 shadow-md rounded-xl ">
+          <MapView
+            routePoints={routePoints}
+            markers={markers}
+            busPosition={busPosition}
+          />
         </div>
-      </div>
 
+        {/* Thông báo */}
+        <div className="border-2 border-mainYellow rounded-xl mt-6 px-4 sm:px-6 py-4 text-center text-mainBlue w-full max-w-4xl bg-white shadow-sm">
+          <h2 className="text-lg sm:text-xl font-semibold mb-2">
+            🚍 Thông báo hành trình
+          </h2>
+          <div className="text-sm sm:text-base text-gray-600 flex flex-col gap-1">
+            {notifications.length === 0 ? (
+              <p>Xe sắp đến hiển thị tại đây theo thời gian thực.</p>
+            ) : (
+              notifications.map((note, idx) => <p key={idx}> {note}</p>)
+            )}
+          </div>
+        </div>
+      </main>
     </div>
   );
 }
