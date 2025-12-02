@@ -88,7 +88,7 @@ export default function UserLayout() {
 
         // 6) Join socket room
         socket.emit("join_bus", {
-          busId: tramList[0].SoXeBuyt,
+          tripId: tramList[0].MaLT,
           stations: updatedStations,
         });
 

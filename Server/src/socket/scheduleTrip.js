@@ -68,7 +68,7 @@ async function handleTripStart(trip, io) {
                 clearInterval(interval);
                 console.log(`Trip ${trip.MaLT} đã hoàn thành`);
 
-                io.to(trip.SoXeBuyt).emit("trip_end", {
+                io.to(`trip_${trip.MaLT}`).emit("trip_end", {
                     busId: trip.SoXeBuyt,
                     message: "Xe đã kết thúc hành trình"
                 });
@@ -83,11 +83,12 @@ async function handleTripStart(trip, io) {
             }
 
             const point = expandedPolyline[index];
-            io.to(trip.SoXeBuyt).emit("bus_position", {
+            io.to(`trip_${trip.MaLT}`).emit("bus_position", {
+                tripId: trip.MaLT,
                 lat: point.lat,
                 lon: point.lon
             });
-
+            // console.log(point)
             index++;
         }, 200); // mỗi 0.2s 1 bước => mượt hơn
 

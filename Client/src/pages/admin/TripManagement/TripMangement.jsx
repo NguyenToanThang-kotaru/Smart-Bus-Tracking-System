@@ -47,6 +47,7 @@ export default function Dashboard() {
           ];
 
           return {
+            tripId: trip.MaLT,
             bus: trip.SoXeBuyt,
             status:
               trip.TrangThai === "0"
@@ -76,9 +77,11 @@ export default function Dashboard() {
   useEffect(() => {
     if (!selectedBus) return;
 
+    setBusPosition(null);       // xe biến mất
+    console.log("selected bus: ", selectedBus)
     socket.emit("join_bus", {
-      busId: selectedBus.bus,
-      stations: selectedBus.stations,
+      tripId: selectedBus.tripId,
+      stations: selectedBus.stations
     });
 
     socket.on("bus_polyline", (data) => {
@@ -91,8 +94,12 @@ export default function Dashboard() {
 
     socket.on("bus_position", (pos) => {
       console.log("Nhận vị trí xe:", pos);
+      if (pos.tripId !== selectedBus.tripId) {
+        console.log("Khac trip")
+        setRoutePoints([]);         // xóa polyline nếu muốn
+        return;
+      }
       setBusPosition([pos.lat, pos.lon]); // cập nhật vị trí
-
       // Nếu bus đang xem và trạng thái chưa phải "Đang di chuyển"
       setSelectedBus(prev => {
         if (prev && prev.bus === selectedBus.bus && prev.status !== "Đang di chuyển") {
@@ -104,7 +111,7 @@ export default function Dashboard() {
       // Update trong danh sách busRoutes
       setBusRoutes(prev =>
         prev.map(bus =>
-          bus.bus === selectedBus.bus && bus.status !== "Đang di chuyển"
+          bus.tripId === selectedBus.tripId
             ? { ...bus, status: "Đang di chuyển" }
             : bus
         )
@@ -136,7 +143,7 @@ export default function Dashboard() {
     });
 
     return () => {
-      socket.emit("leave_bus", selectedBus.bus);
+      socket.emit("leave_bus", selectedBus.tripId);
       socket.off("bus_polyline");
       socket.off("bus_position");  // <- OFF LUÔN ĐÂY
       socket.off("bus_error");
