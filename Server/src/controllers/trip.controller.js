@@ -1,6 +1,5 @@
 const tripService = require("../services/trip.service");
 require("dotenv").config();
-
 exports.getAllTrip = async (req, res) => {
     tripService.getAllTrip((err, result) => {
         if (err) return res.status(500).json({ error: err });
@@ -12,18 +11,18 @@ exports.getAllTrip = async (req, res) => {
         const today = new Date().toLocaleDateString("en-CA", { timeZone: "Asia/Ho_Chi_Minh" });
 
         const grouped = result.reduce((acc, trip) => {
-            const key = trip.SoXeBuyt;
+            const key = trip.MaLT;   // ← Group theo mã lịch trình
+
             const tripDate = new Date(trip.NgayHanhTrinh)
                 .toLocaleDateString("en-CA", { timeZone: "Asia/Ho_Chi_Minh" });
 
             if (tripDate !== today) return acc;
 
-            // Nếu chưa có xe này thì tạo mới
             if (!acc[key]) {
                 acc[key] = {
+                    MaLT: trip.MaLT,
                     SoXeBuyt: trip.SoXeBuyt,
                     MaTX: trip.MaTX,
-                    MaLT: trip.MaLT,
                     NgayHanhTrinh: trip.NgayHanhTrinh,
                     CaHanhTrinh: trip.CaHanhTrinh,
                     TrangThai: trip.TrangThai,
@@ -31,12 +30,11 @@ exports.getAllTrip = async (req, res) => {
                 };
             }
 
-            // Push thêm thông tin chi tiết của từng trạm
             acc[key].TramList.push({
                 MaTram: trip.MaTram,
                 TenTram: trip.TenTram,
-                ViDo: trip.x,       // hoặc trip.x
-                KinhDo: trip.y,   // hoặc trip.y
+                ViDo: trip.x,
+                KinhDo: trip.y,
             });
 
             return acc;
@@ -45,6 +43,7 @@ exports.getAllTrip = async (req, res) => {
         res.json(Object.values(grouped));
     });
 };
+
 
 exports.updateStatus = (req, res) => {
     const { MaLT, TrangThai } = req.body;

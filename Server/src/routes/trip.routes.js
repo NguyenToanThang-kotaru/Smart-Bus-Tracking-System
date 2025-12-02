@@ -4,7 +4,7 @@ const tripController = require('../controllers/trip.controller');
 const authenticateToken = require('../middleware/authMiddleware');
 
 
-router.get("/GETALLTRIP", authenticateToken.authenticateToken,tripController.getAllTrip)
+router.get("/GETALLTRIP",tripController.getAllTrip)
 
 router.post("/updatestatus",tripController.updateStatus)
 router.get("/getAllTrips",tripController.getAllTrip)
