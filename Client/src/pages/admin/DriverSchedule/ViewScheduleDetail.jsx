@@ -11,8 +11,9 @@ export default function ViewScheduleDetail({ item, onClose }) {
       .get(`schedule/stops/${item.MaLT}`)
       .then((res) => {
         const grouped = {};
-
+        console.log(res.data)
         res.data.forEach((row) => {
+          console.log(row)
           if (!grouped[row.MaTram]) grouped[row.MaTram] = [];
           if (row.MaHS) {
             grouped[row.MaTram].push(row);
@@ -20,6 +21,7 @@ export default function ViewScheduleDetail({ item, onClose }) {
         });
 
         setGroupedStudents(grouped);
+        console.log("Student group",groupedStudents)
       })
       .catch((err) => {
         console.error("Lỗi load trạm + học sinh:", err);
@@ -43,12 +45,13 @@ export default function ViewScheduleDetail({ item, onClose }) {
         MaHS: hs.MaHS,
         TrangThai: newStatus,
       });
-
+      console.log("Da update: ", hs.MaHS)
       setGroupedStudents((prev) => {
         const updated = { ...prev };
         const list = updated[hs.MaTram];
         const index = list.findIndex((x) => x.MaHS === hs.MaHS);
         list[index].TrangThai = newStatus;
+    
         return updated;
       });
     } catch (error) {
