@@ -222,10 +222,8 @@ exports.getStopsByMaLT = (req, res) => {
 //Cập nhật đưa đón
 exports.updateStudentStatus = (req, res) => {
     const data = req.body;
-
     scheduleService.updateStudentStatus(data, (err, result) => {
         if (err) return res.status(500).json({ error: err });
-
         res.json({
             success: true,
             message: "Cập nhật trạng thái học sinh thành công"

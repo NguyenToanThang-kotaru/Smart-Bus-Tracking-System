@@ -23,7 +23,7 @@ router.get('/', authenticateToken.authenticateToken, scheduleController.getAllSc
 router.get('/assignment', authenticateToken.authenticateToken, scheduleController.getAllAssignments);
 
 // GET /api/schedule/driverId?id=ND000001 (lấy theo mã tx)
-router.get('/driverId', authenticateToken.authenticateToken, scheduleController.getScheduleByDriverId)
+router.get('/driverId', authenticateToken.authenticateToken, scheduleController.getScheduleByDriverId) //==========================
 
 // GET /api/schedule/driver/user?id=ND000001 (lấy thông tin người dùng từ tài xế)
 router.get('/driver/user',scheduleController.getNameUserByDriverId);
