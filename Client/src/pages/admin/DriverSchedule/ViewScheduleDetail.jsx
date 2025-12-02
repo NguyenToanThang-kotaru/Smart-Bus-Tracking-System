@@ -129,8 +129,8 @@ export default function ViewScheduleDetail({ item, onClose }) {
                               className={`flex font-semibold border-2 rounded-lg w-[100px] justify-center cursor-pointer
                                 ${
                                   hs.TrangThai === 1
-                                    ? "text-mainYellow border-mainYellow"
-                                    : "text-mainBlue border-mainBlue"
+                                    ? "text-green-500 border-green-500"
+                                    : "text-red-500 border-red-500"
                                 }`}
                               onClick={() => toggleTrangThai(item.MaLT, hs)}
                             >

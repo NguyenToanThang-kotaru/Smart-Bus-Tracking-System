@@ -1,4 +1,3 @@
-import SearchBar from "@/Components/searchBarComponent";
 import view from "@/assets/Icon/viewYellow.png";
 import right from "@/assets/Icon/arrow_right.png";
 import left from "@/assets/Icon/arrow_left.png";
@@ -14,10 +13,6 @@ export default function DriverSchedule() {
 
   return (
     <div className="p-4">
-      <div className="mb-5 ml-10 mr-10">
-        <SearchBar />
-      </div>
-
       <div className="flex items-center justify-center gap-3 w-full">
         <button
           onClick={handlePrevWeek}
@@ -52,8 +47,15 @@ function TableSchedule({ week }) {
   };
 
   useEffect(() => {
+    const userId = sessionStorage.getItem("userId");
+    if (!userId) {
+      return;
+    }
+
     axiosClient
-      .get("schedule")
+      .get("schedule/driverId", {
+        params: { id: userId }, // trùng với ?id=... trên backend
+      })
       .then((res) => {
         setSchedule(res.data || []);
       })
@@ -71,7 +73,7 @@ function TableSchedule({ week }) {
 
   const days = ["Thứ 2", "Thứ 3", "Thứ 4", "Thứ 5", "Thứ 6", "Thứ 7"];
 
-  //LẤY NGÀY TRONG TUẦN
+  // LẤY NGÀY TRONG TUẦN
   const getWeekDates = (weekOffset) => {
     const today = new Date();
     const dayOfWeek = today.getDay();
@@ -97,7 +99,7 @@ function TableSchedule({ week }) {
     return `${d}/${m}/${y}`;
   };
 
-  //LỌC DỮ LIỆU CHO TỪNG Ô
+  // LỌC DỮ LIỆU CHO TỪNG Ô
   const getScheduleForCell = (dayDate, shift) => {
     return schedule.filter((s) => {
       const date = new Date(s.NgayHanhTrinh);
@@ -120,9 +122,7 @@ function TableSchedule({ week }) {
       <table className="min-w-full border border-gray-300 text-center text-sm">
         <thead className="bg-mainBlue text-white">
           <tr>
-            <th className="border px-3 py-2">
-              LỊCH TRÌNH <br /> TÀI XẾ
-            </th>
+            <th className="border px-3 py-2"> LỊCH TRÌNH </th>
             {days.map((day, index) => (
               <th key={day} className="border px-3 py-2">
                 {day}

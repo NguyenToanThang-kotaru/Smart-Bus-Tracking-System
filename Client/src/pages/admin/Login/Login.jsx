@@ -20,6 +20,7 @@ export default function AdminLogin() {
                 toast.success("Đăng nhập thành công!");
                 const userRole = data.user.MaVT;
                 
+                
                 sessionStorage.setItem("isAdmin", false);
                 sessionStorage.setItem("isManager", false);
                 sessionStorage.setItem("isDriver", false);
@@ -34,6 +35,7 @@ export default function AdminLogin() {
                 
                 sessionStorage.setItem("accessToken", data.accessToken);
                 sessionStorage.setItem("role", userRole);
+                sessionStorage.setItem("userId", data.user.MaND);
 
                 setTimeout(() => {
                     window.location.href = "/admin";

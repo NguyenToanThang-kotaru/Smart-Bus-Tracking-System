@@ -272,13 +272,9 @@ exports.getStopsByMaLT = (MaLT, callback) => {
 };
 
 exports.updateStudentStatus = (MaLT, MaHS, TrangThai, callback) => {
-    const sql = `
-        INSERT INTO diemdanh (MaLT, MaHS, TrangThai, TrangThaiXoa)
-        VALUES (?, ?, ?, 0)
-        ON DUPLICATE KEY UPDATE TrangThai = VALUES(TrangThai);
-    `;
+    const sql = `UPDATE diemdanh SET TrangThai = ? WHERE MaLT = ? AND MaHS = ? AND TrangThaiXoa = 0`;
 
-    db.query(sql, [MaLT, MaHS, TrangThai], (err, result) => {
+    db.query(sql, [TrangThai, MaLT, MaHS], (err, result) => {
         if (err) return callback(err);
         callback(null, result);
     });
