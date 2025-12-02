@@ -12,16 +12,30 @@ export default function AdminLogin() {
         try {
             const res = await axiosClient.post("users/admin/login", { username, password });
             const data = res.data;
-            console.log("da dang nap")
             if (data.error) {
                 toast.error("Lỗi: " + data.error);
             } else if (data.message === "Invalid username format") {
                 toast.error("Sai tài khoản hoặc mật khẩu!");
             } else {
                 toast.success("Đăng nhập thành công!");
-
-                sessionStorage.setItem("isAdmin", true);
+                const userRole = data.user.MaVT;
+                
+                
+                sessionStorage.setItem("isAdmin", false);
+                sessionStorage.setItem("isManager", false);
+                sessionStorage.setItem("isDriver", false);
+                
+                if (userRole === "VT000001") {
+                    sessionStorage.setItem("isAdmin", true);
+                } else if (userRole === "VT000002") {
+                    sessionStorage.setItem("isManager", true);
+                } else if (userRole === "VT000003") {
+                    sessionStorage.setItem("isDriver", true);
+                }
+                
                 sessionStorage.setItem("accessToken", data.accessToken);
+                sessionStorage.setItem("role", userRole);
+                sessionStorage.setItem("userId", data.user.MaND);
 
                 setTimeout(() => {
                     window.location.href = "/admin";

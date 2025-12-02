@@ -16,7 +16,7 @@ export default function BusManagerForm({ onClose, mode, data, reload }) {
     const getNextId = async () => {
       if (mode === "add") {
         try {
-          const res = await axiosClient.get(""); //getNextUserId
+          const res = await axiosClient.get("users/admin/busManager/nextId"); //getNextUserId
           setMaND(res.data.nextId);
         } catch (err) {
           toast.error("Lỗi khi lấy mã người dùng tiếp theo!");

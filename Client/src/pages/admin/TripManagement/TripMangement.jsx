@@ -5,6 +5,7 @@ import Marker from "@/assets/Icon/map-marker.png";
 import busIcon from "@/assets/Icon/map-bus.png";
 import { data } from "react-router-dom";
 import { io } from "socket.io-client";
+import homeIcon from "@/assets/Icon/home-icon.png"
 
 const socket = io("http://localhost:3700");
 
@@ -13,6 +14,7 @@ export default function Dashboard() {
   const [selectedBus, setSelectedBus] = useState(null);
   const [busRoutes, setBusRoutes] = useState([]);
   const [routePoints, setRoutePoints] = useState([])
+  const [busPosition, setBusPosition] = useState(null);
 
   // ====== FETCH API ======
   useEffect(() => {
@@ -45,6 +47,7 @@ export default function Dashboard() {
           ];
 
           return {
+            tripId: trip.MaLT,
             bus: trip.SoXeBuyt,
             status:
               trip.TrangThai === "0"
@@ -70,44 +73,79 @@ export default function Dashboard() {
   }, []);
 
 
+  // Đổi bus thì cập nhật lại polyline
   useEffect(() => {
-    //  Khúc này lấy api tĩnh từ Server thay vì socket
-    // coordsReady = selectedBus.coords.map(toado => [
-    //   parseFloat(toado.ViDo),
-    //   parseFloat(toado.KinhDo),
-    // ])
-
-    console.log("xe bus: ",selectedBus)
-    // const fetchPolyLine = () => {
-    //   const res = axiosClient.post('routes/get-polyline',selectedBus.coords)
-    //   let data = res.data
-    //   console.log("data: ", data)
-    // }
-    // fetchPolyLine()
     if (!selectedBus) return;
-    // Emit lên server
+
+    setBusPosition(null);       // xe biến mất
+    console.log("selected bus: ", selectedBus)
     socket.emit("join_bus", {
-      busId: selectedBus.bus,
-      stations: selectedBus.stations,
+      tripId: selectedBus.tripId,
+      stations: selectedBus.stations
     });
-    
-    // Khi server gửi polyline về
+
     socket.on("bus_polyline", (data) => {
-      console.log("📦 Nhận polyline từ server:", data);
       if (data.polyline) {
         const points = data.polyline.map(([lon, lat]) => [lat, lon]);
+        console.log(points)
         setRoutePoints(points);
       }
     });
+
+    socket.on("bus_position", (pos) => {
+      console.log("Nhận vị trí xe:", pos);
+      if (pos.tripId !== selectedBus.tripId) {
+        console.log("Khac trip")
+        setRoutePoints([]);         // xóa polyline nếu muốn
+        return;
+      }
+      setBusPosition([pos.lat, pos.lon]); // cập nhật vị trí
+      // Nếu bus đang xem và trạng thái chưa phải "Đang di chuyển"
+      setSelectedBus(prev => {
+        if (prev && prev.bus === selectedBus.bus && prev.status !== "Đang di chuyển") {
+          return { ...prev, status: "Đang di chuyển" };
+        }
+        return prev;
+      });
+
+      // Update trong danh sách busRoutes
+      setBusRoutes(prev =>
+        prev.map(bus =>
+          bus.tripId === selectedBus.tripId
+            ? { ...bus, status: "Đang di chuyển" }
+            : bus
+        )
+      );
+    });
+
+
+    socket.on("trip_end", (data) => {
+      const { busId } = data;
+
+      // 1. Nếu bus đang được xem
+      setSelectedBus(prev =>
+        prev && prev.bus === busId
+          ? { ...prev, status: "Hoàn thành" }
+          : prev
+      );
+
+      // 2. Update đúng 1 bus trong list
+      setBusRoutes(prev =>
+        prev.map(bus =>
+          bus.bus === busId ? { ...bus, status: "Hoàn thành" } : bus
+        )
+      );
+    });
+
 
     socket.on("bus_error", (err) => {
       console.error("Lỗi bus:", err);
     });
 
-    // Rời khỏi room khi đổi bus hoặc unmount
     return () => {
-      socket.emit("leave_bus", selectedBus.bus);
+      socket.emit("leave_bus", selectedBus.tripId);
       socket.off("bus_polyline");
+      socket.off("bus_position");  // <- OFF LUÔN ĐÂY
       socket.off("bus_error");
     };
   }, [selectedBus]);
@@ -120,13 +158,13 @@ export default function Dashboard() {
         ? "Điểm xuất phát"
         : idx === selectedBus.stations.length - 1
           ? "Điểm xuất phát"
-          : `📍 ${station.TenTram || `Trạm ${idx + 1}`}`,
+          : ` ${station.TenTram || `Trạm ${idx + 1}`}`,
     icon:
       idx === 0
-        ? busIcon
+        ? homeIcon
         : idx === selectedBus.stations.length - 1
-          ? busIcon
-          : Marker, // hoặc để sau đổi icon khác cho trạm giữa
+          ? homeIcon
+          : Marker,
   }));
 
 
@@ -135,7 +173,7 @@ export default function Dashboard() {
     <div className="flex h-full gap-4 p-4 select-none">
       {/* BẢN ĐỒ BÊN TRÁI */}
       <div className="flex-1 z-0">
-        <MapView routePoints={routePoints} markers={markers} />
+        <MapView routePoints={routePoints} markers={markers} busPosition={busPosition} />
       </div>
 
       {/* THANH THÔNG TIN BÊN PHẢI */}

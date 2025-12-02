@@ -1,7 +1,32 @@
 const db = require('../config/db');
 
 exports.getAllSchedules = (callback) => {
-  const sql = 'SELECT * FROM lichtrinh WHERE TrangThaiXoa = 0';
+  const sql = `
+    SELECT 
+      lt.MaLT,
+      lt.MaTX,
+      lt.NgayHanhTrinh,
+      lt.CaHanhTrinh,
+      lt.TrangThai,
+
+      pc.SoXeBuyt,
+      pc.MaTD,
+
+      xb.BienSoXe,
+      td.TenTD
+
+    FROM lichtrinh lt
+    LEFT JOIN phancong pc 
+        ON lt.MaTX = pc.MaTX AND pc.TrangThaiXoa = 0
+        
+    LEFT JOIN xebuyt xb
+        ON pc.SoXeBuyt = xb.SoXeBuyt AND xb.TrangThaiXoa = 0
+        
+    LEFT JOIN tuyenduong td
+        ON pc.MaTD = td.MaTD AND td.TrangThaiXoa = 0
+
+    WHERE lt.TrangThaiXoa = 0
+  `;
   db.query(sql, callback);
 };
 
@@ -124,7 +149,7 @@ exports.addSchedule = (data, callback) => {
 };
 
 exports.addAssignment = (data, callback) => {
-  const { MaPC, MaTX, SoXeBuyt, MaTD, TrangThaiXoa } = data;
+  const { MaPC, MaTX, SoXeBuyt, MaTD} = data;
   const sql = `
     INSERT INTO phancong (MaPC, MaTX, SoXeBuyt, MaTD, TrangThaiXoa)
     VALUES (?, ?, ?, ?, 0)
@@ -180,7 +205,7 @@ exports.getStationByRouteId = (routeId, callback) => {
 exports.addStationSchedule = (data, callback) => {
   const { MaLT, MaTram } = data;
   const sql = `
-    INSERT INTO tramlichtrinh (MaLT, MaTram, TrangThai)
+    INSERT INTO tramlichtrinh (MaLT, MaTram, TrangThaiXoa)
     VALUES (?, ?, 0)
   `;
   db.query(sql, [MaLT, MaTram], (err, result) => {
@@ -208,3 +233,49 @@ exports.addCheckIn = (data, callback) => {
     callback(null, result);
   });
 }
+
+exports.getNameUserByDriverId = (driverId, callback) => {
+  const sql = `
+    SELECT nguoidung.*
+    FROM taixe
+    JOIN nguoidung ON nguoidung.MaND = taixe.MaTX
+    WHERE taixe.MaTX = ? AND nguoidung.TrangThaiXoa = 0
+  `;
+  
+  db.query(sql, [driverId], (err, results) => {
+    if (err) return callback(err);
+    callback(null, results.length > 0 ? results[0] : null);
+  });
+};
+
+exports.getStopsByMaLT = (MaLT, callback) => {
+    const sql = `
+        SELECT 
+            tl.MaLT,
+            t.MaTram,
+            t.TenTram,
+            hs.MaHS,
+            hs.TenHS,
+            hs.Lop,
+            COALESCE(d.TrangThai, 0) AS TrangThai
+        FROM tramlichtrinh tl
+        JOIN tram t ON tl.MaTram = t.MaTram
+        LEFT JOIN hocsinh hs ON hs.MaTram = t.MaTram AND hs.TrangThaiXoa = 0
+        LEFT JOIN diemdanh d ON d.MaLT = tl.MaLT AND d.MaHS = hs.MaHS
+        WHERE tl.MaLT = ?;
+    `;
+
+    db.query(sql, [MaLT], (err, rows) => {
+        if (err) return callback(err);
+        callback(null, rows);
+    });
+};
+
+exports.updateStudentStatus = (MaLT, MaHS, TrangThai, callback) => {
+    const sql = `UPDATE diemdanh SET TrangThai = ? WHERE MaLT = ? AND MaHS = ? AND TrangThaiXoa = 0`;
+
+    db.query(sql, [TrangThai, MaLT, MaHS], (err, result) => {
+        if (err) return callback(err);
+        callback(null, result);
+    });
+};

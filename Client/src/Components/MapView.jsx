@@ -1,6 +1,9 @@
 import { MapContainer, TileLayer, Polyline, Marker, Popup } from "react-leaflet";
 import L from "leaflet";  
 import "leaflet/dist/leaflet.css";
+import { useMap } from "react-leaflet";
+import { useEffect } from "react";
+import busIcon from "@/assets/Icon/map-bus.png";
 
 // Icon tuỳ chỉnh
 const createIcon = (iconUrl) =>
@@ -10,8 +13,6 @@ const createIcon = (iconUrl) =>
     iconAnchor: [16, 32],
     popupAnchor: [0, -28],
   });
-import { useMap } from "react-leaflet";
-import { useEffect } from "react";
 
 function RecenterMap({ position }) {
   const map = useMap();
@@ -20,8 +21,9 @@ function RecenterMap({ position }) {
   }, [position]);
   return null;
 }
-export default function MapView({ routePoints, markers }) {
-  const defaultCenter = routePoints?.[0] || [10.762622, 106.660172]; // fallback: SG center
+
+export default function MapView({  routePoints = [], markers = [], busPosition = null }) {
+  const defaultCenter = routePoints?.[0] || [10.762622, 106.660172];
 
   return (
     <MapContainer
@@ -39,17 +41,27 @@ export default function MapView({ routePoints, markers }) {
       {/* Vẽ tuyến xe */}
       {routePoints && <Polyline positions={routePoints} color="#2D8CFF" weight={5} />}
 
-      {/* Các điểm đánh dấu */}
+      {/* Marker tĩnh của trạm */}
       {markers &&
         markers.map((m, idx) => (
           <Marker
             key={idx}
             position={m.position}
-            icon={createIcon(m.icon || "https://cdn-icons-png.flaticon.com/512/684/684908.png")}
+            icon={createIcon(m.icon)}
           >
             <Popup>{m.label}</Popup>
           </Marker>
         ))}
+
+      {/*  Marker động của xe buýt */}
+      {busPosition && (
+        <Marker
+          position={busPosition}
+          icon={createIcon(busIcon)}
+        >
+          <Popup>Xe buýt đang di chuyển</Popup>
+        </Marker>
+      )}
     </MapContainer>
   );
 }

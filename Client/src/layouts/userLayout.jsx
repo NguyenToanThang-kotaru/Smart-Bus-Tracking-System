@@ -1,42 +1,173 @@
 import { useEffect, useState } from "react";
-import MapView from "../Components/MapView";
-import io from "socket.io-client";
+import MapView from "@/components/MapView";
+import axiosClient from "../middleware/axiosClient";
+import { io } from "socket.io-client";
+import MarkerIcon from "@/assets/Icon/map-marker.png";
+import homeIcon from "@/assets/Icon/home-icon.png";
+
+const socket = io("http://localhost:3700");
+// const socket = io("http://172.20.10.2:3700");
 
 export default function UserLayout() {
   const [routePoints, setRoutePoints] = useState([]);
   const [markers, setMarkers] = useState([]);
   const [busPosition, setBusPosition] = useState(null);
+  const [notifications, setNotifications] = useState([]);
+  const [visitedStations, setVisitedStations] = useState([]);
+  let Last = 0
+  function isNearStation(busPos, station, threshold = 0.004) {
+    if (station.TenTram == "End" && Last == 0)
+      return false
+    const [lat1, lon1] = busPos;
+    const lat2 = station.ViDo;
+    const lon2 = station.KinhDo;
+
+    const distance = Math.sqrt((lat1 - lat2) ** 2 + (lon1 - lon2) ** 2);
+    return distance < threshold;
+  }
+
+    function isStation(busPos, station, threshold = 0.0005) {
+    if (station.TenTram == "End" && Last == 0)
+      return false
+    const [lat1, lon1] = busPos;
+    const lat2 = station.ViDo;
+    const lon2 = station.KinhDo;
+
+    const distance = Math.sqrt((lat1 - lat2) ** 2 + (lon1 - lon2) ** 2);
+    return distance < threshold;
+  }
 
   useEffect(() => {
-    const socket = io("http://localhost:5000");
     const user = JSON.parse(sessionStorage.getItem("isUser"));
 
-    console.log("Phụ huynh là " + user.TenDangNhap);
-    fetch("/api/routes/1")
-      .then((res) => res.json())
-      .then((data) => {
-        const coords = data.route.map(([lng, lat]) => [lat, lng]);
-        const markersData = data.stops.map((t) => ({
-          position: [t.x, t.y],
-          label: t.TenTram,
-          icon: "https://cdn-icons-png.flaticon.com/512/149/149060.png",
+    const fetchTrips = async () => {
+      try {
+        // 1) Lấy lịch trình phụ huynh
+        const res = await axiosClient.post("/trips/getLichTrinhByPhuHuynh", {
+          TenDangNhap: user.TenDangNhap,
+        });
+
+        const tripList = res.data.data;
+        if (!tripList || tripList.length === 0) return;
+
+        // 2) Lấy chi tiết trạm theo MaLT của chuyến đầu
+        const res2 = await axiosClient.post("/trips/getLichTrinhByMa", {
+          MaLT: tripList[0].MaLT,
+        });
+
+        const tramList = res2.data;
+        if (!tramList || tramList.length === 0) return;
+
+        // 3) Chuẩn hóa dữ liệu trạm
+        const stations = tramList.map((t) => ({
+          TenTram: t.TenTram,
+          ViDo: parseFloat(t.x), // latitude
+          KinhDo: parseFloat(t.y), // longitude
         }));
 
-        setRoutePoints(coords);
+        const start = { TenTram: "Start", ViDo: 10.760001410996209, KinhDo: 106.68220465073534 };
+        const end = { TenTram: "End", ViDo: 10.760001410996209, KinhDo: 106.68220465073534 };
+
+        // Thêm vào mảng stations
+        const updatedStations = [start, ...stations, end];
+
+
+
+        // 5) Tạo markers
+        const markersData = updatedStations.map((s, idx) => ({
+          position: [s.ViDo, s.KinhDo],
+          label:
+            idx === 0
+              ? "Điểm xuất phát"
+              : idx === updatedStations.length - 1
+                ? "Điểm kết thúc"
+                : s.TenTram || `Trạm ${idx + 1}`,
+          icon: idx === 0 || idx === updatedStations.length - 1 ? homeIcon : MarkerIcon,
+        }));
         setMarkers(markersData);
-      });
 
-    socket.on("bus-location", (data) => {
-      setBusPosition([data.lat, data.lng]);
-    });
+        // 6) Join socket room
+        socket.emit("join_bus", {
+          tripId: tramList[0].MaLT,
+          stations: updatedStations,
+        });
 
-    return () => socket.disconnect();
+        socket.on("bus_polyline", (data) => {
+          if (data.polyline) {
+            const points = data.polyline.map(([lon, lat]) => [lat, lon]);
+            console.log(points)
+            setRoutePoints(points);
+          }
+        });
+
+        // 7) Lắng nghe vị trí xe
+        socket.on("bus_position", (pos) => {
+          const busPos = [pos.lat, pos.lon];
+          setBusPosition(busPos);
+
+          const newVisited = [];
+          const newNoti = [];
+
+          updatedStations.forEach((station) => {
+            // station đến đúng tọa độ
+            if (isStation(busPos, station)&& station.TenTram != "Start") {
+              console.log("da den")
+              newNoti.push(`Xe đã đến trạm: ${station.TenTram}!`);
+            }
+
+            if (!visitedStations.includes(station.TenTram) &&
+              isNearStation(busPos, station)) {
+
+              if (station.TenTram !== "End") {
+                newVisited.push(station.TenTram);
+              }
+
+              if (station.TenTram === "Start") {
+                newNoti.push("Xe bắt đầu di chuyển!");
+              } else if (station.TenTram !== "End") {
+                newNoti.push(`Xe sắp đến trạm: ${station.TenTram}`);
+              }
+            }
+          });
+
+          // cập nhật state 1 lần
+          if (newVisited.length)
+            setVisitedStations((prev) => [...prev, ...newVisited]);
+
+          if (newNoti.length)
+            setNotifications((prev) =>
+              [...new Set([...prev, ...newNoti])] // tránh trùng
+            );
+        });
+
+        socket.on("trip_end", (data) => {
+          const msg = "Chuyến xe đã hoàn thành"
+          console.log("End roi")
+          setNotifications((prev) =>
+              [...new Set([...prev, msg])] // tránh trùng
+            );
+         })
+
+        return () => {
+          // socket.emit("leave_bus", selectedBus.bus);
+          socket.off("bus_polyline");
+          socket.off("bus_position");  // <- OFF LUÔN ĐÂY
+          socket.off("trip_end")
+          // socket.off("bus_error");
+        };
+      } catch (error) {
+        console.error("Lỗi khi lấy dữ liệu:", error);
+      }
+    };
+
+    fetchTrips();
   }, []);
+
 
   return (
     <div className="flex flex-col items-center bg-white min-h-screen px-4 sm:px-6 lg:px-8">
       {/* Bản đồ */}
-      <div className="w-full max-w-6xl mt-6 shadow-md rounded-xl overflow-hidden">
+      <div className="w-full h-[400px] max-w-6xl mt-6 shadow-md rounded-xl ">
         <MapView
           routePoints={routePoints}
           markers={markers}
@@ -49,10 +180,15 @@ export default function UserLayout() {
         <h2 className="text-lg sm:text-xl font-semibold mb-2">
           🚍 Thông báo hành trình
         </h2>
-        <p className="text-sm sm:text-base text-gray-600">
-          Xe sắp đến / đến trễ sẽ được hiển thị tại đây theo thời gian thực.
-        </p>
+        <div className="text-sm sm:text-base text-gray-600 flex flex-col gap-1">
+          {notifications.length === 0 ? (
+            <p>Xe sắp đến hiển thị tại đây theo thời gian thực.</p>
+          ) : (
+            notifications.map((note, idx) => <p key={idx}> {note}</p>)
+          )}
+        </div>
       </div>
+
     </div>
   );
 }

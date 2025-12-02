@@ -145,7 +145,7 @@ CREATE TABLE `tram` (
 CREATE TABLE `tramlichtrinh` (
   `MaLT` varchar(10) NOT NULL,
   `MaTram` varchar(10) NOT NULL,
-  `TrangThai` varchar(1) NOT NULL DEFAULT '0'
+  `TrangThaiXoa` varchar(1) NOT NULL DEFAULT '0'
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 -- --------------------------------------------------------
@@ -269,8 +269,8 @@ INSERT INTO `vaitro` (`MaVT`, `TenVT`) VALUES
 INSERT INTO `nguoidung` (`MaND`, `MaVT`, `TenND`, `TenDangNhap`, `MatKhau`, `TrangThaiXoa`) VALUES
 ('ND000001', 'VT000001', 'Administrator', 'admin', '123456', '0'),
 ('ND000002', 'VT000002', 'Lê Quốc Vinh', 'quanlyxebuyt', '123456', '0'),
-('ND000003', 'VT000003', 'Trần Văn Tài', 'taixetv', '123456', '0'),
-('ND000004', 'VT000003', 'Trần Văn Thái', 'taixetv', '123456', '0');
+('ND000003', 'VT000003', 'Trần Văn Tài', 'taixe01', '123456', '0'),
+('ND000004', 'VT000003', 'Trần Văn Thái', 'taixe02', '123456', '0');
 
 -- Bảng phụ huynh
 INSERT INTO `phuhuynh` (`TenDangNhap`, `SdtPH`, `TenPH`, `MatKhau`, `TrangThaiXoa`) VALUES
@@ -301,14 +301,15 @@ INSERT INTO `taixe` (`MaTX`, `SoCccd`, `SdtTX`, `BacBangLai`, `TrangThaiXoa`) VA
 
 -- Bảng tuyến đường
 INSERT INTO `tuyenduong` (`MaTD`, `TenTD`, `TrangThaiXoa`) VALUES
-('TD000001', 'Tuyến số 1: Trường THCS Minh Đức KDC Nam Long', '0'),
-('TD000002', 'Tuyến số 2: Trường THCS Minh Đức Phú Mỹ Hưng', '0');
+('TD000001', 'Tuyến đại học Sài Gòn', '0'),
+('TD000002', 'Tuyến bến xe', '0');
 
 -- Bảng trạm
 INSERT INTO `tram` (`MaTram`, `MaTuyenDuong`, `TenTram`, `x`, `y`, `TrangThaiXoa`) VALUES
-('TR000001', 'TD000001', 'Trạm KDC Nam Long', '10.7361', '106.7092', 0),
-('TR000002', 'TD000001', 'Trạm Võ Văn Kiệt', '10.7355', '106.7105', 0),
-('TR000003', 'TD000002', 'Trạm Phú Mỹ Hưng', '10.7325', '106.7125', 0);
+('TR000001', 'TD000001', 'Trạm SGU cơ sở 1', '10.779388605551073', '106.68431798326547', 0),
+('TR000002', 'TD000001', 'Trạm SGU cơ sở 2', '10.783385989146085', '106.70625338141834', 0),
+('TR000003', 'TD000002', 'Trạm bến xe An Sương', '10.844058123153191', '106.61389231649974', 0),
+('TR000004', 'TD000002', 'Bến xe Miền Tây', '10.741124263520465', '106.61924953858714', 0);
 
 -- Bảng xe buýt
 INSERT INTO `xebuyt` (`SoXeBuyt`, `BienSoXe`, `SucChua`, `TrangThaiXe`, `TrangThaiXoa`) VALUES
@@ -317,8 +318,8 @@ INSERT INTO `xebuyt` (`SoXeBuyt`, `BienSoXe`, `SucChua`, `TrangThaiXe`, `TrangTh
 
 -- Bảng phân công
 INSERT INTO `phancong` (`MaPC`, `MaTX`, `SoXeBuyt`, `MaTD`, `TrangThaiXoa`) VALUES
-('PC000001', 'TX000001', 'BUS01', 'TD000001', '0'),
-('PC000002', 'TX000002', 'BUS02', 'TD000002', '0');
+('PC000001', 'ND000003', 'BUS01', 'TD000001', '0'),
+('PC000002', 'ND000004', 'BUS02', 'TD000002', '0');
 
 -- Bảng học sinh
 INSERT INTO `hocsinh` (`MaHS`, `MaPH`, `MaTram`, `TenHS`, `Lop`, `TrangThaiXoa`) VALUES
@@ -342,5 +343,3 @@ INSERT INTO `hocsinh` (`MaHS`, `MaPH`, `MaTram`, `TenHS`, `Lop`, `TrangThaiXoa`)
 ('HS000018', 'PH000018', 'TR000003', 'Lê Quốc Huy', '8A4', '0'),
 ('HS000019', 'PH000019', 'TR000001', 'Nguyễn Phương Nhi', '9A3', '0'),
 ('HS000020', 'PH000020', 'TR000002', 'Lê Anh Khoa', '6A6', '0');
-
-
