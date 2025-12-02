@@ -6,32 +6,56 @@ export default function ViewScheduleDetail({ item, onClose }) {
   const [groupedStudents, setGroupedStudents] = useState({});
   const [openTram, setOpenTram] = useState(null);
 
-  useEffect(() => {
-    axiosClient
-      .get(`schedule/stops/${item.MaLT}`)
-      .then((res) => {
-        const grouped = {};
+  const loadStops = async (MaLT) => {
+    try {
+      const res = await axiosClient.get(`schedule/stops/${MaLT}`);
+      const grouped = {};
+      res.data.forEach((row) => {
+        if (!row || !row.MaTram) return;
+        if (!grouped[row.MaTram]) {
+          grouped[row.MaTram] = {
+            TenTram: row.TenTram || "",
+            students: [],
+            studentSet: new Set(),
+          };
+        }
 
-        res.data.forEach((row) => {
-          if (!grouped[row.MaTram]) grouped[row.MaTram] = [];
-          if (row.MaHS) {
-            grouped[row.MaTram].push(row);
-          }
-        });
-
-        setGroupedStudents(grouped);
-      })
-      .catch((err) => {
-        console.error("Lỗi load trạm + học sinh:", err);
+        if (row.MaHS && !grouped[row.MaTram].studentSet.has(row.MaHS)) {
+          grouped[row.MaTram].studentSet.add(row.MaHS);
+          grouped[row.MaTram].students.push({
+            MaHS: row.MaHS,
+            TenHS: row.TenHS,
+            Lop: row.Lop,
+            TrangThai: Number(row.TrangThai) || 0,
+            MaTram: row.MaTram,
+          });
+        }
       });
-  }, [item.MaLT]);
 
-  //MỞ / ĐÓNG TRẠM
+      const cleaned = {};
+      Object.keys(grouped).forEach((maTram) => {
+        cleaned[maTram] = {
+          TenTram: grouped[maTram].TenTram,
+          students: grouped[maTram].students
+        };
+      });
+      setGroupedStudents(cleaned);
+    } catch (err) {
+      console.error("Lỗi load trạm + học sinh:", err);
+      setGroupedStudents({});
+    }
+  };
+
+  useEffect(() => {
+    if (item?.MaLT) {
+      loadStops(item.MaLT);
+    }
+  }, [item?.MaLT]);
+
   const toggleTram = (maTram) => {
     setOpenTram((prev) => (prev === maTram ? null : maTram));
   };
 
-  //CẬP NHẬT TRẠNG THÁI HỌC SINH
   const toggleTrangThai = async (MaLT, hs) => {
     if (!hs.MaHS) return;
 
@@ -44,13 +68,9 @@ export default function ViewScheduleDetail({ item, onClose }) {
         TrangThai: newStatus,
       });
 
-      setGroupedStudents((prev) => {
-        const updated = { ...prev };
-        const list = updated[hs.MaTram];
-        const index = list.findIndex((x) => x.MaHS === hs.MaHS);
-        list[index].TrangThai = newStatus;
-        return updated;
-      });
+      if (item?.MaLT) {
+        await loadStops(item.MaLT);
+      }
     } catch (error) {
       console.error("Lỗi update trạng thái:", error);
     }
@@ -87,9 +107,8 @@ export default function ViewScheduleDetail({ item, onClose }) {
         {/* Danh sách trạm */}
         <div className="border-2 bg-[#F5F5F5] rounded-lg border-gray-300 p-2">
           {Object.keys(groupedStudents).map((maTram) => {
-            const students = groupedStudents[maTram];
-            const tenTram = students[0]?.TenTram || "Không có học sinh";
-
+            const tenTram = groupedStudents[maTram].TenTram;
+            const students = groupedStudents[maTram].students;
             return (
               <div key={maTram} className="p-2 rounded">
                 {/* Header trạm */}

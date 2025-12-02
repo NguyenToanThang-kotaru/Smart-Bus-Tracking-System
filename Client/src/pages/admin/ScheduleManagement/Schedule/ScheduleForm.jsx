@@ -38,7 +38,6 @@ export default function ScheduleForm({ onClose, mode, data, reload }) {
     }
   };
 
-  // EDIT: giữ nguyên ngày/ca, chỉ cho đổi tài xế
   const handleSaveEdit = async () => {
     if (!selectedTrip?.raw?.MaLT) return;
 

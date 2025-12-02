@@ -37,6 +37,10 @@ export default function AdminLogin() {
                 sessionStorage.setItem("role", userRole);
                 sessionStorage.setItem("userId", data.user.MaND);
 
+                if (userRole === "VT000003") {
+                    sessionStorage.setItem("driverId", data.user.MaND);
+                }
+
                 setTimeout(() => {
                     window.location.href = "/admin";
                 }, 1000);

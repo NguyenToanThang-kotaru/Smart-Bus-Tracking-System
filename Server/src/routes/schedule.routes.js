@@ -40,6 +40,8 @@ router.put('/delete/:id', authenticateToken.authenticateToken, scheduleControlle
 // PUT /api/schedule/assignment/delete/:id (xóa pc)
 router.put('/assignment/delete/:id', authenticateToken.authenticateToken, scheduleController.deleteAssignment);
 
+router.get("/stops/:MaLT", scheduleController.getStopsByMaLT);
+
 // GET /api/schedule/:id (lấy theo id)
 router.get('/:id', authenticateToken.authenticateToken, scheduleController.getScheduleById);
 
@@ -51,8 +53,6 @@ router.post('/', scheduleController.addSchedule);
 
 // POST /api/schedule/assignment (thêm mới pc)
 router.post('/assignment', authenticateToken.authenticateToken, scheduleController.addAssignment);
-
-router.get("/stops/:MaLT", scheduleController.getStopsByMaLT);
 
 router.post("/update-student-status", scheduleController.updateStudentStatus);
 

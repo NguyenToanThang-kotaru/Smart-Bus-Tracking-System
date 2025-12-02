@@ -24,7 +24,6 @@ export default function ScheduleContent() {
     { id: 4, name: "CA 4", time: "17h30 đến 18h30" },
   ];
 
-  // Lấy lịch trình từ api =============================================================================================
   const loadSchedule = async () => {
     try {
       const res = await axiosClient.get("schedule");
@@ -39,9 +38,7 @@ export default function ScheduleContent() {
   useEffect(() => {
     loadSchedule();
   }, []);
-  // Lấy lịch trình từ api ============================================================================================= END.
 
-  // Mỗi khi đổi tuần (weekOffset) hoặc dữ liệu thô rawSchedule thay đổi, sẽ build lại map schedule ====================
   useEffect(() => {
     const map = {};
     rawSchedule.forEach((item) => {
@@ -69,7 +66,6 @@ export default function ScheduleContent() {
     console.log("schedule keys:", Object.keys(map));
     setSchedule(map);
   }, [weekOffset, rawSchedule]);
-  // Mỗi khi đổi tuần (weekOffset) hoặc dữ liệu thô rawSchedule thay đổi, sẽ build lại map schedule ==================== END.
 
   const handleViewCell = (shift, day, trips) => {
     setMode("list");

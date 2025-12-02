@@ -89,11 +89,34 @@ exports.searchAssignment = (keyword, callback) => {
 };
 
 exports.getScheduleByDriverId = (driverId, callback) => {
-  const sql = 'SELECT * FROM lichtrinh WHERE MaTX = ? AND TrangThaiXoa = "0"';
-  db.query(sql, [driverId], (err, results) => {
-    if (err) return callback(err);
-    callback(null, results);
-  });
+  const sql = `
+    SELECT 
+      lt.MaLT,
+      lt.MaTX,
+      lt.NgayHanhTrinh,
+      lt.CaHanhTrinh,
+      lt.TrangThai,
+
+      pc.SoXeBuyt,
+      pc.MaTD,
+
+      xb.BienSoXe,
+      td.TenTD
+
+    FROM lichtrinh lt
+    LEFT JOIN phancong pc 
+      ON lt.MaTX = pc.MaTX AND pc.TrangThaiXoa = 0
+
+    LEFT JOIN xebuyt xb
+      ON pc.SoXeBuyt = xb.SoXeBuyt AND xb.TrangThaiXoa = 0
+
+    LEFT JOIN tuyenduong td
+      ON pc.MaTD = td.MaTD AND td.TrangThaiXoa = 0
+
+    WHERE lt.TrangThaiXoa = 0 AND lt.MaTX = ?
+  `;
+
+  db.query(sql, [driverId], callback);
 };
 
 exports.getLastScheduleId = (callback) => {
@@ -222,17 +245,23 @@ exports.getStudentByStationId = (routeId, callback) => {
   });
 };
 
-exports.addCheckIn = (data, callback) => {
-  const { MaLT, MaHS} = data;
-  const sql = `
-    INSERT INTO diemdanh (MaLT, MaHS, TrangThai, TrangThaiXoa)
-    VALUES (?, ?, 0, 0)
-  `;
-  db.query(sql, [MaLT, MaHS], (err, result) => {
+exports.addCheckIn = ({ MaLT, MaHS }, callback) => {
+  const checkSql = `
+    SELECT * FROM diemdanh 
+    WHERE MaLT = ? AND MaHS = ? AND TrangThaiXoa = 0
+    `;
+
+  db.query(checkSql, [MaLT, MaHS], (err, rows) => {
     if (err) return callback(err);
-    callback(null, result);
-  });
-}
+    if (rows.length > 0) {
+      return callback(null, { message: "Exists" });
+    }
+    const insertSql = `
+      INSERT INTO diemdanh (MaLT, MaHS, TrangThai) VALUES (?, ?, 0)
+      `;
+    db.query(insertSql, [MaLT, MaHS], callback);
+    });
+};
 
 exports.getNameUserByDriverId = (driverId, callback) => {
   const sql = `
@@ -249,26 +278,34 @@ exports.getNameUserByDriverId = (driverId, callback) => {
 };
 
 exports.getStopsByMaLT = (MaLT, callback) => {
-    const sql = `
-        SELECT 
-            tl.MaLT,
-            t.MaTram,
-            t.TenTram,
-            hs.MaHS,
-            hs.TenHS,
-            hs.Lop,
-            COALESCE(d.TrangThai, 0) AS TrangThai
-        FROM tramlichtrinh tl
-        JOIN tram t ON tl.MaTram = t.MaTram
-        LEFT JOIN hocsinh hs ON hs.MaTram = t.MaTram AND hs.TrangThaiXoa = 0
-        LEFT JOIN diemdanh d ON d.MaLT = tl.MaLT AND d.MaHS = hs.MaHS
-        WHERE tl.MaLT = ?;
-    `;
+  const sql = `
+    SELECT 
+      tl.MaLT,
+      t.MaTram,
+      t.TenTram,
+      hs.MaHS,
+      hs.TenHS,
+      hs.Lop,
+    COALESCE(d.TrangThai, 0) AS TrangThai
+    FROM tramlichtrinh tl
+    JOIN tram t ON tl.MaTram = t.MaTram
+    LEFT JOIN hocsinh hs 
+      ON hs.MaTram = t.MaTram AND hs.TrangThaiXoa = 0
+    LEFT JOIN diemdanh d 
+      ON d.MaLT = tl.MaLT AND d.MaHS = hs.MaHS
+    WHERE tl.MaLT = ?
+  `;
 
-    db.query(sql, [MaLT], (err, rows) => {
-        if (err) return callback(err);
-        callback(null, rows);
+  db.query(sql, [MaLT], (err, rows) => {
+    if (err) return callback(err);
+      const unique = {};
+      rows.forEach(r => {
+        if (r.MaHS) {
+          unique[r.MaHS] = r;
+        }
     });
+    callback(null, Object.values(unique));
+  });
 };
 
 exports.updateStudentStatus = (MaLT, MaHS, TrangThai, callback) => {

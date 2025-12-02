@@ -47,22 +47,36 @@ function TableSchedule({ week }) {
   };
 
   useEffect(() => {
-    const userId = sessionStorage.getItem("userId");
-    if (!userId) {
-      return;
-    }
+    const loadDriverSchedule = async () => {
+      try {
+        const role = sessionStorage.getItem("role");
+        const driverId = sessionStorage.getItem("driverId");
 
-    axiosClient
-      .get("schedule/driverId", {
-        params: { id: userId }, // trùng với ?id=... trên backend
-      })
-      .then((res) => {
-        setSchedule(res.data || []);
-      })
-      .catch((err) => {
+        // ADMIN → get all
+        if (role === "VT000001") {
+          const res = await axiosClient.get("/schedule");
+          console.log("Admin schedule:", res.data);
+          setSchedule(res.data || []);
+          return;
+        }
+
+        if (role === "VT000003" && driverId) {
+          const res = await axiosClient.get("/schedule/driverId", {
+            params: { id: driverId },
+          });
+          console.log("Driver schedule:", res.data);
+          setSchedule(res.data || []);
+          return;
+        }
+
+        console.warn("Không tìm thấy quyền hoặc driverId!");
+      } catch (err) {
         console.error("Failed to load schedules:", err);
-      });
-  }, []);
+      }
+  };
+
+  loadDriverSchedule();
+}, []);
 
   const shifts = [
     { id: 1, name: "CA 1", start: "06:00", end: "07:00" },
@@ -73,7 +87,6 @@ function TableSchedule({ week }) {
 
   const days = ["Thứ 2", "Thứ 3", "Thứ 4", "Thứ 5", "Thứ 6", "Thứ 7"];
 
-  // LẤY NGÀY TRONG TUẦN
   const getWeekDates = (weekOffset) => {
     const today = new Date();
     const dayOfWeek = today.getDay();
@@ -99,7 +112,6 @@ function TableSchedule({ week }) {
     return `${d}/${m}/${y}`;
   };
 
-  // LỌC DỮ LIỆU CHO TỪNG Ô
   const getScheduleForCell = (dayDate, shift) => {
     return schedule.filter((s) => {
       const date = new Date(s.NgayHanhTrinh);
