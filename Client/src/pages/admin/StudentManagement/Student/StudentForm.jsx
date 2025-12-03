@@ -12,6 +12,7 @@ export default function StudentForm({ onClose, mode, data, reload }) {
   const [Lop, setLop] = useState(data?.Lop || "");
   const [MaPH, setMaPH] = useState(data?.MaPH || "");
   const [MaTram, setMaTram] = useState(data?.MaTram || "");
+  const [stations, setStations] = useState([]);
 
   useEffect(() => {
     const getNextId = async () => {
@@ -26,6 +27,20 @@ export default function StudentForm({ onClose, mode, data, reload }) {
     };
     getNextId();
   }, [mode]);
+
+  useEffect(() => {
+    const fetchStations = async () => {
+      try {
+        const res = await axiosClient.get("routes/tram"); 
+        setStations(res.data); 
+      } catch (err) {
+        toast.error("Lỗi khi tải danh sách trạm!");
+      }
+    };
+
+    fetchStations();
+  }, []);
+
 
 
   const handleSubmit = async (e) => {
@@ -100,12 +115,20 @@ export default function StudentForm({ onClose, mode, data, reload }) {
           <div className="flex flex-col gap-y-2">
             <label className="text-xl text-mainBlue font-bold">Trạm đăng ký</label>
             <select
-              value={MaTram} onChange={e => setMaTram(e.target.value)} disabled={isView} 
-              className={`border-2 border-gray-300 rounded-[10px] px-3 w-full h-[35px] ${ isView ? "bg-gray-100" : "focus:outline-mainYellow" }`} >
-              <option value="">Chọn tram</option>
-              <option value="TR000001">TR000001</option>
-              <option value="TR000002">TR000002</option>
-              <option value="TR000003">TR000003</option>
+              value={MaTram}
+              onChange={e => setMaTram(e.target.value)}
+              disabled={isView}
+              className={`border-2 border-gray-300 rounded-[10px] px-3 w-full h-[35px] ${
+                isView ? "bg-gray-100" : "focus:outline-mainYellow"
+              }`}
+            >
+              <option value="">Chọn trạm</option>
+
+              {stations.map(station => (
+                <option key={station.MaTram} value={station.MaTram}>
+                  {station.TenTram}
+                </option>
+              ))}
             </select>
           </div>
         </div>

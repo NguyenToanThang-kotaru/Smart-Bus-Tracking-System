@@ -269,8 +269,8 @@ INSERT INTO `vaitro` (`MaVT`, `TenVT`) VALUES
 INSERT INTO `nguoidung` (`MaND`, `MaVT`, `TenND`, `TenDangNhap`, `MatKhau`, `TrangThaiXoa`) VALUES
 ('ND000001', 'VT000001', 'Administrator', 'admin', '123456', '0'),
 ('ND000002', 'VT000002', 'Lê Quốc Vinh', 'quanlyxebuyt', '123456', '0'),
-('ND000003', 'VT000003', 'Trần Văn Tài', 'taixetv', '123456', '0'),
-('ND000004', 'VT000003', 'Trần Văn Thái', 'taixetv', '123456', '0');
+('ND000003', 'VT000003', 'Trần Văn Tài', 'taixe01', '123456', '0'),
+('ND000004', 'VT000003', 'Trần Văn Thái', 'taixe02', '123456', '0');
 
 -- Bảng phụ huynh
 INSERT INTO `phuhuynh` (`TenDangNhap`, `SdtPH`, `TenPH`, `MatKhau`, `TrangThaiXoa`) VALUES
@@ -342,5 +342,4 @@ INSERT INTO `hocsinh` (`MaHS`, `MaPH`, `MaTram`, `TenHS`, `Lop`, `TrangThaiXoa`)
 ('HS000017', 'PH000017', 'TR000002', 'Nguyễn Thùy Trang', '7A5', '0'),
 ('HS000018', 'PH000018', 'TR000003', 'Lê Quốc Huy', '8A4', '0'),
 ('HS000019', 'PH000019', 'TR000001', 'Nguyễn Phương Nhi', '9A3', '0'),
-('HS000020', 'PH000020', 'TR000002', 'Lê Anh Khoa', '6A6', '0'),
-('HS000021', 'PH000001', 'TR000002', 'Nguyễn Minh Kháng', '6A1', '0');
+('HS000020', 'PH000020', 'TR000002', 'Lê Anh Khoa', '6A6', '0');
