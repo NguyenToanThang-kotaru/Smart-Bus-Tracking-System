@@ -12,6 +12,7 @@ import { toast } from "react-toastify";
 
 export default function StudentContent() {
   const [student, setStudent] = useState([]);
+  const [keyword, setKeyword] = useState("");
   const [showForm, setShowForm] = useState(false);
   const [selected, setSelected] = useState(null);
   const [mode, setMode] = useState("add");
@@ -26,6 +27,20 @@ export default function StudentContent() {
       setStudent(res.data);
     } catch (err) {
       toast.error("Lỗi lấy danh sách học sinh!");
+    }
+  };
+
+  const handleSearch = async (value) => {
+    setKeyword(value);
+    if (value.trim() === "") {
+      loadTableDataStudents();
+      return;
+    }
+    try {
+      const res = await axiosClient.get(`students/admin/search?keyword=${value}`);
+      setStudent(res.data);
+    } catch (err) {
+      toast.error("Lỗi tìm kiếm học sinh!");
     }
   };
 
@@ -62,7 +77,7 @@ export default function StudentContent() {
   return (
     <div>
       <div className="px-10 pt-5 flex w-full justify-between gap-10">
-        <SearchBar />
+        <SearchBar onSearch={handleSearch}/>
         <AddButton onClick={handleAdd} />
       </div>
 

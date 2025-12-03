@@ -61,3 +61,11 @@ exports.getNextStudentId = (req, res) => {
     res.json({ nextId });
   });
 };
+
+exports.searchStudent = (req, res) => {
+  const keyword = req.query.keyword || '';
+  studentService.searchStudent(keyword, (err, data) => {
+    if (err) return res.status(500).json({ message: "Lỗi server", error: err });
+    res.json(data);
+  });
+};

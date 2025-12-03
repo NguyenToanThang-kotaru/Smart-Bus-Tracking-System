@@ -63,3 +63,7 @@ exports.getNextStudentId = (callback) => {
   });
 };
 
+exports.searchStudent = (keyword, callback) => {
+  studentModel.searchStudent(keyword, callback);
+};
+

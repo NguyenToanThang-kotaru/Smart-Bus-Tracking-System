@@ -44,3 +44,13 @@ exports.getLastStudentId = (callback) => {
     callback(null, lastId);
   });
 };
+
+exports.searchStudent = (keyword, callback) => {
+  const searchValue = `%${keyword}%`;
+  const sql = `SELECT * FROM hocsinh WHERE TrangThaiXoa = 0 AND (TenHS LIKE ? OR Lop LIKE ?)`;
+  db.query(sql, [searchValue, searchValue], (err, result) => {
+    if (err) return callback(err, null);
+    callback(null, result);
+  });
+};
+
